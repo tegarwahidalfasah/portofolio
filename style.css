@@ -1,0 +1,480 @@
+body{
+    margin: 0%;
+    background-color: black;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+h1{
+  font-size: 60px;
+  margin: 0%;
+}
+
+h2{
+  font-size: 27px;
+  margin: 0%;
+  font-weight: normal;
+}
+
+p{
+  font-size: 18px;
+  margin: 0%;
+  font-weight: normal;
+}
+
+nav{
+    width: 100%;
+    margin-top: 1%;
+    margin-left: 2%;
+    height: 50px;
+    position: fixed;
+    background-color: rgba(255, 0, 0, 0);
+}
+
+ul {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 50px;
+    margin-right: 20px;
+    margin-top: 17px;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: #0b7097;
+  text-align: center;
+  padding: 0px 5px;
+  text-decoration: none;
+}
+
+
+li > a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+  }
+  
+  li > a:hover {
+    color: #0b7097;
+  }
+  
+  li > a:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #0b7097;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  
+  li > a:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+
+.home{
+    padding-top: 0%;
+    width: 100%;
+    height: 885px;
+    background-image: url("ASET/bg1.png");
+    background-size: cover;
+}
+
+.about{
+    padding-top: 0%;
+    width: 100%;
+    height: 885px;
+    background-image: url("ASET/bg2.png");
+    background-size: cover;
+
+}
+
+.skill{
+    padding-top: 0%;
+    width: 100%;
+    height: 885px;
+    background-image: url("ASET/bg3.png");
+    background-size: cover;
+}
+
+.project{
+    padding-top: 0%;
+    width: 100%;
+    height: 885px;
+    background-image: url("ASET/bg4.png");
+    background-size: cover;
+}
+
+.contact{
+    padding-top: 0%;
+    width: 100%;
+    height: 1000px;
+  background-image: url("ASET/bg5.png");
+    background-size: cover;
+}
+
+.conten-home{
+  position: absolute;
+  top: 250px;
+  left: 3%;
+}
+
+.conten-about{
+  position: absolute;
+  top: 1070px;
+  left: 3%;
+  right: 3%;
+}
+
+.conten-project{
+  position: absolute;
+  left: 3%;
+  right: 3%;
+top: 2650px;
+}
+
+a{
+  font-size: 12px;
+  margin: 0%;
+  font-weight: normal;
+}
+
+.conten-project nav{
+  width: 100%;
+margin-top: 11%;
+  margin-left: 0%;
+  height: 50px;
+  position: absolute;
+  background-color: rgba(255, 0, 0, 0);
+}
+
+.conten-project li{
+  float: right;
+}
+
+.conten-project ul{
+  float: none;
+}
+
+.conten-project table{
+  margin-top: 5%;
+}
+
+.conten-contact{
+  background-color: rgba(0, 0, 255, 0);
+  width: 100%;
+  height: 720px;
+  position: absolute;
+  top: 3770px;
+}
+
+.footer{
+  margin-top: 37%;
+}
+
+button {
+  background-color: #04aa6d00;
+  border: 2px solid white;
+  color: #0b7097;
+  padding: 6px 32px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 350px;
+}
+
+button:hover {
+  background-color: #0b7097;
+  color: white;
+  border-color: rgba(0, 0, 0, 0);
+}
+
+.nav-project{
+  background-color: rgba(255, 0, 0, 0);
+  width: 50%;
+  left: 95px;
+  height: 720px;
+  position: absolute;
+  top: 65px;
+}
+
+.conten-skili{
+  background-color: rgba(255, 0, 0, 0);
+  width: 100%;
+  height: 720px;
+  position: absolute;
+  top: 1850px;
+}
+
+@media (min-width: 320px) and (max-width: 767px){
+  body{
+    margin: 0%;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html{
+  scroll-behavior: smooth;
+  overflow: visible;
+}
+
+h1{
+  font-size: 12px;
+  margin: 0%;
+}
+
+h2{
+  font-size: 8px;
+  margin: 0%;
+  font-weight: normal;
+}
+
+p{
+  font-size: 5px;
+  margin: 0%;
+  font-weight: normal;
+}
+
+nav{
+    width: 100%;
+    margin-top: 1%;
+    margin-left: 2%;
+    height: 25px;
+    position: fixed;
+    background-color: rgba(238, 14, 14, 0);
+}
+
+ul {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 50px;
+    margin-right: 20px;
+    margin-top: 17px;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: #0b7097;
+  text-align: center;
+  padding: 0px 5px;
+  text-decoration: none;
+  font-size: 5px;
+}
+
+
+li > a {
+    position: inherit;
+    color: white;
+    text-decoration: none;
+  }
+  
+  li > a:hover {
+    color: #0b7097;
+  }
+  
+  li > a:before {
+    content: "";
+    position: inherit;
+    width: 100%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #0b7097;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  
+  li > a:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+
+  .container{
+    background-image: url("ASET/bg-01.png");
+    background-size: cover;
+    overflow: hidden;
+    height: 1200px;
+  }
+  .bungkus{
+    margin-top: -720px;
+  }
+
+  .home{
+    background-image: none;
+    padding-top: 10%;
+    width: 100%;
+    height: 216px;
+    
+}
+
+.about{
+  background-image: none;
+    padding-top: 5%;
+    width: 100%;
+    height: 250px;
+    
+}
+
+.skill{
+  background-image: none;
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    height: 250px;
+    
+}
+
+.project{
+  background-image: none;
+    padding-top: 0%;
+    width: 100%;
+    height: 250px;
+    
+}
+
+.contact{
+  background-image:none;
+    padding-top: 0%;
+    width: 100%;
+    height: 250px;
+    
+}
+
+.conten-home{
+  margin-left: 3%;
+  position: inherit;
+  left: 3%;
+  margin-top: 10%;
+}
+
+.conten-about{
+  margin-top: 10%;
+  position: inherit;
+  left: 3%;
+  right: 3%;
+}
+
+.conten-project{
+  margin-top: 10%;
+  position: inherit;
+  left: 3%;
+  right: 3%;
+}
+.conten-project{
+  margin-top: 0;
+}
+
+a{
+  font-size: 12px;
+  margin: 0%;
+  font-weight: normal;
+}
+
+.conten-project h2{
+  margin-bottom: -40px;
+}
+
+.conten-project nav{
+  width: 100%;
+  margin-left: -30%;
+  margin-bottom: -5%;
+  position: inherit;
+  background-color: rgba(255, 0, 0, 0);
+}
+
+.conten-project li{
+  float: right;
+}
+
+.conten-project ul{
+  float: none;
+}
+
+
+
+.conten-contact{
+  width: 100%;
+  position: inherit;
+}
+
+.contak_us{
+  margin-top: 5px;
+}
+
+.footer{
+  margin-top: 10%;
+}
+
+button {
+  background-color: #04aa6d00;
+  border: 2px solid white;
+  color: #0b7097;
+  padding: 6px 15px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 50%;
+  font-size: 8px;
+}
+
+button:hover {
+  background-color: #0b7097;
+  color: white;
+  border-color: rgba(0, 0, 0, 0);
+}
+
+.nav-project{
+  background-color: rgba(255, 0, 0, 0);
+  width: 50%;
+  left: 58px;
+  position: inherit;
+  top: 50px;
+}
+
+.conten-skili{
+  margin-top: -15%;
+  background-color: rgba(255, 0, 0, 0);
+  width: 100%;
+  position: inherit;
+}
+
+}
