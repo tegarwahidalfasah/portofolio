@@ -1,9 +1,8 @@
 /* ───────────────────────────────────────────────
    CMS — Komponen field form untuk halaman admin.
    ─────────────────────────────────────────────── */
-import { useRef, useState, type ReactNode } from "react";
-import { ChevronUp, ChevronDown, Trash2, Plus, Upload, Settings as SettingsIcon } from "lucide-react";
-import { uploadFile, isCloudConfigured, type UploadResult } from "./upload";
+import type { ReactNode } from "react";
+import { ChevronUp, ChevronDown, Trash2, Plus } from "lucide-react";
 
 export const inputCls =
   "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all focus:border-indigo-400/60 focus:bg-white/[0.07] focus:ring-2 focus:ring-indigo-500/20";
@@ -324,117 +323,5 @@ export function ListEditor<T>({
         })}
       </div>
     </Card>
-  );
-}
-
-/* ── Field URL + tombol upload ke Cloudinary ── */
-export function UploadField({
-  label,
-  hint,
-  value,
-  onChange,
-  accept,
-  onUploadedExtra,
-}: {
-  label: string;
-  hint?: string;
-  value: string;
-  onChange: (url: string) => void;
-  accept: "image/*" | "video/*";
-  onUploadedExtra?: (r: UploadResult) => void;
-}) {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [progress, setProgress] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const configured = isCloudConfigured();
-  const isVideo = accept === "video/*";
-
-  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
-    setError(null);
-    setProgress(0);
-    try {
-      const res = await uploadFile(file, setProgress);
-      onChange(res.url);
-      onUploadedExtra?.(res);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload gagal.");
-    } finally {
-      setProgress(null);
-    }
-  };
-
-  return (
-    <div>
-      <span className="mb-1.5 block font-mono text-[11px] font-medium uppercase tracking-widest text-slate-400">
-        {label}
-      </span>
-      <div className="flex items-start gap-2">
-        <div className="min-w-0 flex-1">
-          <Text
-            value={value ?? ""}
-            onChange={onChange}
-            placeholder={isVideo ? "https://… .mp4 / .webm" : "https://… .jpg / .png / .webp"}
-          />
-        </div>
-        <button
-          type="button"
-          onClick={() => fileRef.current?.click()}
-          disabled={progress !== null}
-          title={configured ? "Upload file" : "Konfigurasi Cloudinary dulu di tab Pengaturan"}
-          className="flex h-[42px] shrink-0 items-center gap-1.5 rounded-xl bg-indigo-500/20 px-4 font-display text-xs font-semibold text-indigo-100 transition-colors hover:bg-indigo-500/30 disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          <Upload size={14} />
-          <span className="hidden sm:inline">Upload</span>
-        </button>
-        <input
-          ref={fileRef}
-          type="file"
-          accept={accept}
-          className="hidden"
-          onChange={handleFile}
-        />
-      </div>
-
-      {progress !== null && (
-        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-400 transition-all"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      )}
-      {progress !== null && (
-        <p className="mt-1 font-mono text-[10px] text-indigo-300">Mengupload… {progress}%</p>
-      )}
-      {error && <p className="mt-1.5 text-xs text-rose-300">{error}</p>}
-      {!configured && (
-        <p className="mt-1.5 flex items-start gap-1.5 text-[11px] leading-relaxed text-amber-300/90">
-          <SettingsIcon size={12} className="mt-0.5 shrink-0" />
-          Isi Cloud name & Upload preset gratis di tab Pengaturan untuk mengaktifkan tombol upload.
-          Sementara itu URL bisa ditempel manual.
-        </p>
-      )}
-      {hint && <p className="mt-1.5 block text-[11px] leading-relaxed text-slate-500">{hint}</p>}
-
-      {value && !isVideo && (
-        <img
-          src={value}
-          alt=""
-          loading="lazy"
-          className="mt-2 h-28 w-full rounded-xl border border-white/10 object-cover"
-        />
-      )}
-      {value && isVideo && (
-        <video
-          src={value}
-          controls
-          preload="metadata"
-          className="mt-2 h-32 w-full rounded-xl border border-white/10 bg-black object-contain"
-        />
-      )}
-    </div>
   );
 }

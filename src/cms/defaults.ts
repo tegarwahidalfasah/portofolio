@@ -126,17 +126,6 @@ export type FooterContent = {
   tagline: string;
 };
 
-/* ── Karya & media + URL video hasil upload ── */
-export type CmsWork = Work & {
-  /** URL file video (mp4/webm). Kosong = hanya tampil sebagai gambar. */
-  videoUrl?: string;
-};
-
-export type CmsMediaItem = MediaItem & {
-  /** URL file video (mp4/webm) sebagai alternatif URL embed YouTube. */
-  videoUrl?: string;
-};
-
 /* ── Seluruh konten CMS ── */
 export type CmsContent = {
   profile: CmsProfile;
@@ -151,8 +140,8 @@ export type CmsContent = {
   languages: typeof languages;
   interests: string[];
   tools: Tool[];
-  works: CmsWork[];
-  mediaShowcase: CmsMediaItem[];
+  works: Work[];
+  mediaShowcase: MediaItem[];
   mediaSection: MediaSection;
   platforms: PlatformLink[];
   contactPurposes: ContactOption[];

@@ -50,25 +50,6 @@ website melihat perubahan:
 
 ## 4. Gambar & file
 
-### Upload langsung (disarankan)
-Tab **Karya & Media**, **Profil** punya tombol **Upload** untuk foto
-(jpg/png/webp) dan video (mp4/webm, maks 100MB/file). File tersimpan
-di Cloudinary (gratis ±25GB) dan URL-nya otomatis masuk ke draft.
-
-Aktifkan dulu sekali saja di tab **Pengaturan → Upload foto & video**:
-
-1. Daftar gratis di cloudinary.com → catat **Cloud name** di Dashboard.
-2. Ikon Settings → tab **Upload** → **Upload presets** →
-   **Add upload preset** → **Signing Mode: Unsigned** → Save.
-3. Catat **Preset name**, isi keduanya (+ folder opsional) di Pengaturan → Simpan.
-
-Tanpa konfigurasi ini tombol upload nonaktif, tapi URL tetap bisa
-ditempel manual.
-
-### Catatan tiap field
-- **Karya**: foto/thumbnail tampil di kartu; jika diisi video, kartu
-  bisa diklik pengunjung untuk memutar video (lightbox).
-
 - **Gambar karya / thumbnail video**: isi dengan URL gambar
   (`https://…`), mis. dari Pexels/Unsplash, atau path file di repo
   (mis. `/foto-saya.jpg` jika file ditaruh di `public/`).
@@ -77,8 +58,7 @@ ditempel manual.
 - **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom
   *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`.
 - **Video showcase**: pakai URL embed YouTube,
-  mis. `https://www.youtube.com/embed/VIDEO_ID` — atau upload file
-  video langsung (thumbnail otomatis dibuatkan).
+  mis. `https://www.youtube.com/embed/VIDEO_ID`.
 
 ## 5. Reset / darurat
 
