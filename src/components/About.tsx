@@ -1,103 +1,74 @@
 import { Reveal, SectionLabel } from "./Reveal";
-import { profile, stats } from "../data";
+import { profile } from "../data";
 import { Quote } from "lucide-react";
 
 export function About() {
   return (
-    <section id="tentang" className="relative bg-cream-50 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="about" className="relative px-5 py-16 sm:px-8">
+      <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 01" title="Tentang Saya" />
+          <SectionLabel index="// 01" title="About Me" />
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-7">
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-8">
             <Reveal delay={0.05}>
-              <h2 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-navy-900 sm:text-5xl">
-                Bercerita lewat{" "}
-                <span className="font-accent font-normal italic text-brand-600">
-                  desain, foto
-                </span>{" "}
-                &amp; video.
+              <h2 className="font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
+                Video Editor &{" "}
+                <span className="gradient-text">Creative Media Producer</span>
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-navy-700">
-                {profile.about}
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
+                {profile.summary}
               </p>
             </Reveal>
 
             <Reveal delay={0.18}>
-              <div className="mt-8 flex items-start gap-4 rounded-2xl border border-navy-900/10 bg-cream-100 p-6">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-500/15 text-accent-600">
+              <div className="mt-8 flex items-start gap-4 rounded-2xl border border-accent-500/15 bg-accent-500/5 p-6">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/20">
                   <Quote size={18} />
                 </span>
-                <p className="font-accent text-2xl italic leading-snug text-navy-800">
-                  “Kreativitas bukan sekadar hobi — itu adalah perjalanan yang
-                  saya bangun sejak SMP hingga ke bangku kuliah.”
+                <p className="font-accent text-xl italic leading-snug text-text-primary sm:text-2xl">
+                  "A highly adaptable Computer and Network Engineering student
+                  with proven experience in creative media production and IT
+                  support."
                 </p>
               </div>
             </Reveal>
-
-            <Reveal delay={0.24}>
-              <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-navy-900/10 bg-cream-100 p-5">
-                  <dt className="font-mono text-[11px] uppercase tracking-widest text-navy-500">
-                    Fokus Saat Ini
-                  </dt>
-                  <dd className="mt-1.5 font-display text-base font-semibold text-navy-900">
-                    Konten kreatif & media sosial
-                  </dd>
-                </div>
-                <div className="rounded-2xl border border-navy-900/10 bg-cream-100 p-5">
-                  <dt className="font-mono text-[11px] uppercase tracking-widest text-navy-500">
-                    Status
-                  </dt>
-                  <dd className="mt-1.5 font-display text-base font-semibold text-navy-900">
-                    Mahasiswa TKJ tingkat 3
-                  </dd>
-                </div>
-              </dl>
-            </Reveal>
           </div>
 
-          {/* Stats */}
-          <div className="lg:col-span-5">
+          {/* Info card */}
+          <div className="lg:col-span-4">
             <Reveal delay={0.15}>
-              <div className="grid grid-cols-2 gap-4 sm:gap-5">
-                {stats.map((stat, i) => (
-                  <div
-                    key={stat.label}
-                    className={`card-hover group rounded-3xl border border-navy-900/10 p-7 ${
-                      i % 2 === 0
-                        ? "bg-navy-900 text-cream-50"
-                        : "bg-cream-100 text-navy-900"
-                    } ${i === 0 ? "sm:translate-y-0" : ""} ${
-                      i === 1 ? "sm:translate-y-8" : ""
-                    } ${i === 3 ? "sm:translate-y-8" : ""}`}
-                  >
-                    <span
-                      className={`font-display text-5xl font-bold tracking-tight ${
-                        i % 2 === 0 ? "text-brand-400" : "text-brand-600"
-                      }`}
-                    >
-                      {stat.value}
-                    </span>
-                    <p
-                      className={`mt-3 text-sm leading-snug ${
-                        i % 2 === 0 ? "text-cream-100/70" : "text-navy-600"
-                      }`}
-                    >
-                      {stat.label}
-                    </p>
-                    <span
-                      className={`mt-5 block h-px w-10 transition-all duration-300 group-hover:w-16 ${
-                        i % 2 === 0 ? "bg-brand-400" : "bg-brand-600"
-                      }`}
-                    />
-                  </div>
-                ))}
+              <div className="glass-card-strong h-full p-7">
+                <div className="mb-5 flex items-center gap-2">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent-500 to-sky-400 text-white">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  </span>
+                  <span className="font-display text-xs font-bold uppercase tracking-widest text-text-secondary">
+                    Profil
+                  </span>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { label: "Nama", value: profile.name },
+                    { label: "Lokasi", value: profile.locationShort },
+                    { label: "Email", value: profile.email },
+                    { label: "Telepon", value: profile.phone },
+                    { label: "Instagram", value: profile.instagram },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-start justify-between gap-3">
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted">
+                        {item.label}
+                      </span>
+                      <span className="text-right text-sm font-medium text-text-primary break-all">
+                        {item.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </Reveal>
           </div>

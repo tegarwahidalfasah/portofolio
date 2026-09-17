@@ -1,29 +1,45 @@
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
+import { Stats } from "./components/Stats";
 import { About } from "./components/About";
-import { Skills } from "./components/Skills";
-import { Works } from "./components/Works";
 import { Education } from "./components/Education";
 import { Experience } from "./components/Experience";
-import { Organizations } from "./components/Organizations";
+import { CaseStudies } from "./components/CaseStudies";
+import { Skills } from "./components/Skills";
+import { TechStack } from "./components/TechStack";
+import { Leadership } from "./components/Leadership";
+import { Services } from "./components/Services";
+import { Workflow } from "./components/Workflow";
+import { FAQ } from "./components/FAQ";
+import { MediaShowcase } from "./components/MediaShowcase";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
+import { FloatingBackToTop } from "./components/FloatingBackToTop";
+import { ScrollProgress } from "./components/ScrollProgress";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-cream-50 font-body text-navy-900">
+    <div className="min-h-screen font-body text-text-primary">
+      <ScrollProgress />
       <Navbar />
       <main>
         <Hero />
+        <Stats />
         <About />
-        <Skills />
-        <Works />
         <Education />
         <Experience />
-        <Organizations />
+        <CaseStudies />
+        <Skills />
+        <TechStack />
+        <Services />
+        <Workflow />
+        <Leadership />
+        <MediaShowcase />
+        <FAQ />
         <Contact />
       </main>
       <Footer />
+      <FloatingBackToTop />
     </div>
   );
 }

@@ -1,92 +1,97 @@
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Sparkles, Download } from "lucide-react";
 import { profile } from "../data";
 import { InstagramIcon } from "./Icons";
+import { MailIcon } from "./PlatformIcons";
 
 const navLinks = [
-  { label: "Tentang", href: "#tentang" },
-  { label: "Keahlian", href: "#keahlian" },
-  { label: "Karya", href: "#karya" },
-  { label: "Pengalaman", href: "#pengalaman" },
-  { label: "Kontak", href: "#kontak" },
+  { label: "About", href: "#about" },
+  { label: "Education", href: "#pendidikan" },
+  { label: "Experience", href: "#pengalaman" },
+  { label: "Skills", href: "#skills" },
+  { label: "Services", href: "#layanan" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Contact", href: "#kontak" },
 ];
 
 export function Footer() {
   return (
-    <footer className="border-t border-cream-100/10 bg-navy-950">
+    <footer className="border-t border-glass-300/50 bg-glass-50/60 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-10 md:flex-row md:items-center">
+          {/* Brand */}
           <div>
             <a href="#top" className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 font-display text-sm font-bold text-white">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-sky-400 font-display text-sm font-bold text-white shadow-lg shadow-accent-500/25">
                 {profile.initials}
               </span>
-              <span className="font-display text-lg font-semibold text-cream-50">
-                Tegar Wahid Alfasah
+              <span className="font-display text-lg font-bold text-text-primary">
+                {profile.shortName} Alfasah
               </span>
             </a>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-cream-100/50">
-              Content creator, desainer, fotografer & videografer asal Subang,
-              Jawa Barat.
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-text-muted">
+              Video Editor, Content Creator & Computer Network Engineering Student
+              from Subang, West Java.
             </p>
+            <a
+              href="/CV_Tegar_Wahid_Alfasah.pdf"
+              download
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-5 py-2.5 font-display text-xs font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
+            >
+              <Download size={14} />
+              Download Full CV
+            </a>
           </div>
 
+          {/* Nav */}
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="font-display text-sm text-cream-100/60 transition-colors hover:text-brand-400"
+                className="font-display text-sm font-medium text-text-secondary transition-colors hover:text-accent-600"
               >
                 {link.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          {/* Social icons */}
+          <div className="flex items-center gap-2.5">
             <a
               href={profile.instagramHref}
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-colors hover:border-brand-400 hover:text-brand-400"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600"
             >
               <InstagramIcon size={17} />
             </a>
             <a
               href={`mailto:${profile.email}`}
               aria-label="Email"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-colors hover:border-brand-400 hover:text-brand-400"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600"
             >
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
+              <MailIcon size={17} />
             </a>
             <a
               href="#top"
               aria-label="Kembali ke atas"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-500 text-white transition-colors hover:bg-brand-600"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl"
             >
               <ArrowUp size={17} />
             </a>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-cream-100/10 pt-6 text-xs text-cream-100/40 sm:flex-row sm:items-center">
-          <p>© 2026 Tegar Wahid Alfasah. Seluruh hak cipta dilindungi.</p>
-          <p className="font-mono">
-            Designed &amp; built with creativity{" "}
-            <span className="text-accent-400">✦</span>
-          </p>
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-glass-300/50 pt-6 text-xs text-text-muted sm:flex-row sm:items-center">
+          <p>© 2026 Tegar Wahid Alfasah. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <Sparkles size={12} className="text-accent-400" />
+            <p className="font-mono">
+              Designed & built with creativity
+            </p>
+          </div>
         </div>
       </div>
     </footer>

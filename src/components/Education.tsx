@@ -1,56 +1,61 @@
-import { GraduationCap, ArrowRight } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
 import { education } from "../data";
 
 export function Education() {
   return (
-    <section id="pendidikan" className="relative overflow-hidden bg-cream-50 py-24 sm:py-32">
-      <span
-        aria-hidden
-        className="text-outline-navy pointer-events-none absolute -right-6 top-8 select-none font-display text-[16vw] font-bold leading-none tracking-tight opacity-60 lg:text-[10rem]"
-      >
-        STUDI
-      </span>
-
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="pendidikan" className="relative px-5 py-16 sm:px-8">
+      <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 04" title="Pendidikan" />
+          <SectionLabel index="// 02" title="Education" />
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Reveal delay={0.05}>
+          <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
+            Academic <span className="gradient-text">Background</span>
+          </h2>
+        </Reveal>
+
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {education.map((edu, i) => (
             <Reveal key={edu.school} delay={0.1 * i}>
-              <article className="card-hover group relative h-full overflow-hidden rounded-3xl border border-navy-900/10 bg-cream-100/80 p-8 hover:border-brand-500/60 hover:shadow-lg sm:p-10">
-                <span className="pointer-events-none absolute -right-2 -top-6 select-none font-display text-8xl font-bold text-navy-900/5 transition-colors duration-500 group-hover:text-accent-500/20">
-                  0{i + 1}
+              <article className="glass-card glass-hover group relative h-full overflow-hidden p-7 sm:p-8">
+                <span className="pointer-events-none absolute -right-2 -top-4 select-none font-display text-6xl font-bold text-glass-200/50 transition-colors duration-500 group-hover:text-accent-400/20">
+                  {String(i + 1).padStart(2, "0")}
                 </span>
 
-                <div className="flex items-center justify-between gap-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy-900 text-brand-400">
-                    <GraduationCap size={22} />
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500/10 to-sky-400/10 text-accent-600 transition-all duration-300 group-hover:from-accent-500 group-hover:to-sky-400 group-hover:text-white">
+                    <GraduationCap size={20} />
                   </span>
-                  <span className="rounded-full border border-navy-900/15 bg-cream-50 px-4 py-1.5 font-mono text-xs font-medium text-navy-700">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-accent-500">
                     {edu.period}
                   </span>
                 </div>
 
-                <h3 className="mt-7 font-display text-2xl font-bold tracking-tight text-navy-900">
+                <h3 className="relative mt-5 font-display text-xl font-bold text-text-primary">
                   {edu.school}
                 </h3>
-                <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-brand-600">
+                <p className="relative mt-1 text-sm font-semibold text-accent-600">
                   {edu.program}
                 </p>
-                <p className="mt-4 leading-relaxed text-navy-600">
+                <p className="relative mt-1 text-xs text-text-muted">
+                  {edu.location}
+                </p>
+                <p className="relative mt-4 text-sm leading-relaxed text-text-secondary">
                   {edu.description}
                 </p>
 
-                <span className="mt-7 flex items-center gap-2 font-display text-sm font-semibold text-navy-900 opacity-0 transition-all duration-500 group-hover:opacity-100">
-                  Program keahlian
-                  <ArrowRight
-                    size={15}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </span>
+                {edu.gpa && (
+                  <div className="relative mt-4 inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3 py-1.5">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-accent-600">
+                      GPA
+                    </span>
+                    <span className="font-display text-sm font-bold text-accent-600">
+                      {edu.gpa}
+                    </span>
+                  </div>
+                )}
               </article>
             </Reveal>
           ))}
