@@ -27,7 +27,7 @@ import {
   ExternalLink,
   Info,
 } from "lucide-react";
-import { useCms } from "./store";
+import { useCms, extractDocsPayload, type Docs, type Lang } from "./store";
 import { mergeContent, type CmsContent } from "./defaults";
 import {
   Area,
@@ -219,7 +219,9 @@ function Gate({ onOk }: { onOk: () => void }) {
 /* ── Panel admin ── */
 function Panel({ onLogout }: { onLogout: () => void }) {
   const cms = useCms();
-  const [doc, setDoc] = useState<CmsContent | null>(null);
+  const [docs, setDocs] = useState<Docs | null>(null);
+  const [cmsLang, setCmsLang] = useState<Lang>("id");
+  const doc = docs ? docs[cmsLang] : null;
   const [tab, setTab] = useState<TabId>("profil");
   const [dirty, setDirty] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -229,8 +231,8 @@ function Panel({ onLogout }: { onLogout: () => void }) {
 
   // Inisialisasi dokumen sekali saat konten siap
   useEffect(() => {
-    if (!cms.loading && doc === null) {
-      setDoc(cms.content);
+    if (!cms.loading && docs === null) {
+      setDocs(cms.docs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cms.loading]);
@@ -242,18 +244,18 @@ function Panel({ onLogout }: { onLogout: () => void }) {
   };
 
   const update = (fn: (d: CmsContent) => void) => {
-    setDoc((prev) => {
+    setDocs((prev) => {
       if (!prev) return prev;
       const next = structuredClone(prev);
-      fn(next);
+      fn(next[cmsLang]);
       return next;
     });
     setDirty(true);
   };
 
   const handleSave = () => {
-    if (!doc) return;
-    cms.saveDraft(doc);
+    if (!docs) return;
+    cms.saveDraft(docs);
     setDirty(false);
     showToast("Draft tersimpan di browser ini. Klik Pratinjau untuk melihat.");
   };
@@ -263,11 +265,11 @@ function Panel({ onLogout }: { onLogout: () => void }) {
   };
 
   const handleDownload = () => {
-    if (!doc) return;
+    if (!docs) return;
     const payload = {
-      version: 1,
+      version: 2,
       updatedAt: new Date().toISOString(),
-      content: doc,
+      content: docs,
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], {
       type: "application/json",
@@ -288,14 +290,14 @@ function Panel({ onLogout }: { onLogout: () => void }) {
     if (!file) return;
     try {
       const json = JSON.parse(await file.text()) as unknown;
-      const raw =
-        json && typeof json === "object" && "content" in (json as Record<string, unknown>)
-          ? (json as { content: unknown }).content
-          : json;
-      if (!raw || typeof raw !== "object" || !("profile" in (raw as object))) {
+      const parsed = extractDocsPayload(json);
+      if (!parsed || Object.keys(parsed.docs).length === 0) {
         throw new Error("invalid");
       }
-      setDoc(mergeContent(raw as Partial<CmsContent>));
+      setDocs({
+        id: mergeContent(cms.baseDocs.id, parsed.docs.id),
+        en: mergeContent(cms.baseDocs.en, parsed.docs.en),
+      });
       setDirty(true);
       showToast("File berhasil dimuat ke editor. Jangan lupa Simpan.");
     } catch {
@@ -306,12 +308,12 @@ function Panel({ onLogout }: { onLogout: () => void }) {
   const handleReset = () => {
     if (!window.confirm("Hapus draft dan kembalikan ke konten terakhir yang tayang?")) return;
     cms.clearDraft();
-    setDoc(cms.baseContent);
+    setDocs(cms.baseDocs);
     setDirty(false);
     showToast("Draft dihapus.");
   };
 
-  if (cms.loading || !doc) {
+  if (cms.loading || !docs || !doc) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950">
         <p className="font-mono text-sm text-slate-400">Memuat CMS…</p>
@@ -357,6 +359,22 @@ function Panel({ onLogout }: { onLogout: () => void }) {
                 </span>
               )}
             </div>
+          </div>
+          <div className="flex items-center gap-0.5 rounded-xl border border-white/15 bg-white/5 p-1">
+            {(["id", "en"] as Lang[]).map((l) => (
+              <button
+                key={l}
+                onClick={() => setCmsLang(l)}
+                title={l === "id" ? "Edit Bahasa Indonesia" : "Edit English"}
+                className={`rounded-lg px-3.5 py-2 font-mono text-[11px] font-bold uppercase tracking-wider transition-all ${
+                  cmsLang === l
+                    ? "bg-indigo-500 text-white shadow"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                {l === "id" ? "🇮🇩 ID" : "🇬🇧 EN"}
+              </button>
+            ))}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button

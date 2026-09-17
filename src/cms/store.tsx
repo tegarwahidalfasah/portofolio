@@ -1,7 +1,7 @@
 /* ───────────────────────────────────────────────
    CMS Store — sumber data tunggal untuk seluruh situs.
-   Urutan prioritas: default (kode) ← published
-   (public/cms-content.json) ← draft (localStorage browser ini).
+   - Konten 2 bahasa: id & en (default ← published ← draft)
+   - Bahasa aktif tersimpan di localStorage
    ─────────────────────────────────────────────── */
 import {
   createContext,
@@ -14,56 +14,101 @@ import {
 } from "react";
 import {
   defaultContent,
+  defaultDocs,
   mergeContent,
   type CmsContent,
 } from "./defaults";
+import { strings, siteTitle, type Lang, type Strings } from "./i18n";
 
-export type { CmsContent };
-export { defaultContent };
+export type { CmsContent, Lang, Strings };
+export { defaultContent, defaultDocs };
 
 const DRAFT_KEY = "portfolio-cms-draft-v1";
+const LANG_KEY = "portfolio-lang-v1";
 
-function extractContent(json: unknown): Partial<CmsContent> | null {
+export type Docs = Record<Lang, CmsContent>;
+export type PartialDocs = { id?: Partial<CmsContent>; en?: Partial<CmsContent> };
+
+/** Baca payload published/draft (format baru {id,en} atau lama 1 bahasa). */
+export function extractDocsPayload(
+  json: unknown
+): { docs: PartialDocs; updatedAt: string | null } | null {
   if (!json || typeof json !== "object" || Array.isArray(json)) return null;
   const obj = json as Record<string, unknown>;
   const inner =
     obj.content && typeof obj.content === "object" && !Array.isArray(obj.content)
-      ? (obj.content as Partial<CmsContent>)
-      : (obj as Partial<CmsContent>);
-  if (!inner || typeof inner !== "object") return null;
-  return inner;
+      ? (obj.content as Record<string, unknown>)
+      : (obj as Record<string, unknown>);
+  if (!inner || typeof inner !== "object" || Array.isArray(inner)) return null;
+  // Format lama (satu pohon konten) dianggap Bahasa Indonesia
+  const docs: PartialDocs =
+    "profile" in inner
+      ? { id: inner as unknown as Partial<CmsContent> }
+      : (inner as unknown as PartialDocs);
+  const meta = json as { updatedAt?: unknown };
+  return {
+    docs,
+    updatedAt: typeof meta.updatedAt === "string" ? meta.updatedAt : null,
+  };
 }
 
-function readDraft(): Partial<CmsContent> | null {
+function readDraft(): PartialDocs | null {
   try {
     const raw = localStorage.getItem(DRAFT_KEY);
     if (!raw) return null;
-    return extractContent(JSON.parse(raw));
+    return extractDocsPayload(JSON.parse(raw))?.docs ?? null;
   } catch {
     return null;
   }
 }
 
+function initialLang(): Lang {
+  try {
+    const s = localStorage.getItem(LANG_KEY);
+    if (s === "id" || s === "en") return s;
+  } catch {
+    /* abaikan */
+  }
+  return "id";
+}
+
 type CmsState = {
-  /** Konten final yang dipakai situs (default + published + draft). */
+  /** Bahasa aktif situs. */
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  /** Kamus teks UI untuk bahasa aktif. */
+  t: Strings;
+  /** Konten final bahasa aktif (default + published + draft). */
   content: CmsContent;
-  /** Konten tanpa draft (default + published). */
+  /** Konten bahasa aktif tanpa draft (default + published). */
   baseContent: CmsContent;
+  /** Seluruh dokumen 2 bahasa (final). */
+  docs: Docs;
+  /** Seluruh dokumen 2 bahasa tanpa draft. */
+  baseDocs: Docs;
   loading: boolean;
   hasDraft: boolean;
   hasPublished: boolean;
   publishedAt: string | null;
-  saveDraft: (c: CmsContent) => void;
+  saveDraft: (d: Docs) => void;
   clearDraft: () => void;
 };
 
 const CmsContext = createContext<CmsState | null>(null);
 
+function isAdminPath(): boolean {
+  if (typeof window === "undefined") return false;
+  return (window.location.pathname.replace(/\/+$/, "") || "/") === "/admin";
+}
+
 export function CmsProvider({ children }: { children: ReactNode }) {
-  const [draft, setDraft] = useState<Partial<CmsContent> | null>(() =>
+  const [lang, setLangState] = useState<Lang>(() =>
+    typeof window === "undefined" ? "id" : initialLang()
+  );
+  const [draft, setDraft] = useState<PartialDocs | null>(() =>
     typeof window === "undefined" ? null : readDraft()
   );
-  const [published, setPublished] = useState<Partial<CmsContent> | null>(null);
+  const [published, setPublished] = useState<PartialDocs | null>(null);
   const [publishedAt, setPublishedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -78,14 +123,11 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       })
       .then((json: unknown) => {
         if (!alive) return;
-        const content = extractContent(json);
-        // Abaikan file kosong/contoh yang belum berisi konten apapun
-        if (content && Object.keys(content).length > 0) {
-          setPublished(content);
-          const meta = json as { updatedAt?: unknown };
-          setPublishedAt(
-            typeof meta.updatedAt === "string" ? meta.updatedAt : null
-          );
+        const parsed = extractDocsPayload(json);
+        const docs = parsed?.docs;
+        if (docs && Object.keys(docs).length > 0) {
+          setPublished(docs);
+          setPublishedAt(parsed?.updatedAt ?? null);
         }
       })
       .catch(() => {
@@ -99,13 +141,28 @@ export function CmsProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const saveDraft = useCallback((c: CmsContent) => {
+  // Terapkan bahasa ke <html> + judul tab (di luar /admin)
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    if (!isAdminPath()) document.title = siteTitle[lang];
+  }, [lang]);
+
+  const setLang = useCallback((l: Lang) => {
+    setLangState(l);
+    try {
+      localStorage.setItem(LANG_KEY, l);
+    } catch {
+      /* abaikan */
+    }
+  }, []);
+
+  const saveDraft = useCallback((d: Docs) => {
     try {
       localStorage.setItem(
         DRAFT_KEY,
-        JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), content: c })
+        JSON.stringify({ version: 2, updatedAt: new Date().toISOString(), content: d })
       );
-      setDraft(c);
+      setDraft(d);
     } catch {
       /* storage penuh / mode privat — abaikan */
     }
@@ -121,10 +178,22 @@ export function CmsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo<CmsState>(() => {
-    const baseContent = mergeContent(published);
+    const baseDocs: Docs = {
+      id: mergeContent(defaultDocs.id, published?.id),
+      en: mergeContent(defaultDocs.en, published?.en),
+    };
+    const docs: Docs = {
+      id: mergeContent(defaultDocs.id, published?.id, draft?.id),
+      en: mergeContent(defaultDocs.en, published?.en, draft?.en),
+    };
     return {
-      content: mergeContent(published, draft),
-      baseContent,
+      lang,
+      setLang,
+      t: strings[lang],
+      content: docs[lang],
+      baseContent: baseDocs[lang],
+      docs,
+      baseDocs,
       loading,
       hasDraft: draft !== null && Object.keys(draft).length > 0,
       hasPublished: published !== null && Object.keys(published).length > 0,
@@ -132,7 +201,7 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       saveDraft,
       clearDraft,
     };
-  }, [published, publishedAt, draft, loading, saveDraft, clearDraft]);
+  }, [lang, setLang, published, publishedAt, draft, loading, saveDraft, clearDraft]);
 
   return <CmsContext.Provider value={value}>{children}</CmsContext.Provider>;
 }

@@ -16,20 +16,20 @@ const categoryColors: Record<string, string> = {
 
 export function TechStack() {
   const { tools } = useCms().content;
+  const { t } = useCms();
   return (
     <section className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 06" title="Tech Stack" />
+          <SectionLabel index="// 06" title={t.techLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Tools & <span className="gradient-text">Software</span>
+            {t.techH1} <span className="gradient-text">{t.techH2}</span>
           </h2>
           <p className="mt-3 max-w-lg text-text-secondary">
-            Professional tools I use for creative media production, video editing,
-            graphic design, and IT support.
+            {t.techDesc}
           </p>
         </Reveal>
 

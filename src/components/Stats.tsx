@@ -9,7 +9,7 @@ export function Stats() {
     <section className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <div className="overflow-hidden rounded-3xl border border-glass-border bg-white/60 p-8 shadow-xl shadow-accent-500/5 backdrop-blur-xl sm:p-10">
+          <div className="overflow-hidden rounded-3xl border border-glass-border bg-white/60 dark:bg-slate-950/60 p-8 shadow-xl shadow-accent-500/5 backdrop-blur-xl sm:p-10">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
               {stats.map((stat, i) => (
                 <div

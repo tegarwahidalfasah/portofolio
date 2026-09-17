@@ -5,7 +5,7 @@ import { Reveal, SectionLabel } from "./Reveal";
 import { useCms } from "../cms/store";
 import type { MediaItem } from "../cms/defaults";
 
-function MediaCard({ item, onPlay }: { item: MediaItem; onPlay: () => void }) {
+function MediaCard({ item, onPlay, playLabel }: { item: MediaItem; onPlay: () => void; playLabel: string }) {
   return (
     <article className="glass-card glass-hover group relative overflow-hidden">
       {/* Thumbnail */}
@@ -22,16 +22,16 @@ function MediaCard({ item, onPlay }: { item: MediaItem; onPlay: () => void }) {
         <button
           onClick={onPlay}
           className="absolute inset-0 flex items-center justify-center"
-          aria-label={`Putar ${item.title}`}
+          aria-label={playLabel}
         >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full border border-glass-border bg-white/80 text-accent-600 shadow-xl backdrop-blur-xl transition-transform duration-300 group-hover:scale-110 group-hover:bg-white">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full border border-glass-border bg-white/80 dark:bg-slate-950/80 text-accent-600 shadow-xl backdrop-blur-xl transition-transform duration-300 group-hover:scale-110 group-hover:bg-white">
             <Play size={22} fill="currentColor" />
           </span>
         </button>
 
         {/* Duration badge */}
         {item.duration && (
-          <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 shadow-lg backdrop-blur-xl">
+          <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-white/80 dark:bg-slate-950/80 px-3 py-1.5 shadow-lg backdrop-blur-xl">
             <Clock size={11} className="text-text-secondary" />
             <span className="font-mono text-xs font-semibold text-text-primary">
               {item.duration}
@@ -70,13 +70,14 @@ function MediaCard({ item, onPlay }: { item: MediaItem; onPlay: () => void }) {
 
 export function MediaShowcase() {
   const { mediaShowcase, mediaSection } = useCms().content;
+  const { t } = useCms();
   const [active, setActive] = useState<MediaItem | null>(null);
 
   return (
     <section id="media" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 07" title="Media & Highlight" />
+          <SectionLabel index="// 07" title={t.mediaLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
@@ -93,7 +94,7 @@ export function MediaShowcase() {
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {mediaShowcase.map((item, i) => (
               <Reveal key={item.title} delay={0.08 * i}>
-                <MediaCard item={item} onPlay={() => setActive(item)} />
+                <MediaCard item={item} onPlay={() => setActive(item)} playLabel={`${t.play} ${item.title}`} />
               </Reveal>
             ))}
           </div>
@@ -115,7 +116,7 @@ export function MediaShowcase() {
               href={mediaSection.twitchUrl}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
+              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
             >
               <ExternalLink size={16} />
               {mediaSection.twitchLabel}
@@ -135,7 +136,7 @@ export function MediaShowcase() {
             onClick={() => setActive(null)}
           >
             <motion.div
-              className="mx-4 w-full max-w-4xl overflow-hidden rounded-3xl border border-glass-border bg-white/90 shadow-2xl backdrop-blur-xl"
+              className="mx-4 w-full max-w-4xl overflow-hidden rounded-3xl border border-glass-border bg-white/90 dark:bg-slate-950/90 shadow-2xl backdrop-blur-xl"
               initial={{ scale: 0.9, y: 30 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 30 }}
@@ -148,8 +149,8 @@ export function MediaShowcase() {
                 </h3>
                 <button
                   onClick={() => setActive(null)}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-glass-300 bg-white/80 text-text-secondary transition-colors hover:bg-glass-100 hover:text-text-primary"
-                  aria-label="Tutup"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-glass-300 bg-white/80 dark:bg-slate-950/80 text-text-secondary transition-colors hover:bg-glass-100 hover:text-text-primary"
+                  aria-label={t.close}
                 >
                   <X size={18} />
                 </button>

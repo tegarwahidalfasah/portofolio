@@ -57,6 +57,15 @@
       ]
     }
     </script>
+    <!-- Theme: pasang mode gelap sebelum render agar tidak kedip -->
+    <script>
+      try {
+        var t = localStorage.getItem("portfolio-theme-v1");
+        if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

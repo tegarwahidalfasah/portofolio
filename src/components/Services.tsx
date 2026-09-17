@@ -11,21 +11,21 @@ const iconMap: Record<string, typeof Video> = {
 
 export function Services() {
   const { services } = useCms().content;
+  const { t } = useCms();
 
   return (
     <section id="layanan" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 08" title="Services" />
+          <SectionLabel index="// 08" title={t.svcLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Layanan & <span className="gradient-text">Harga</span>
+            {t.svcH1} <span className="gradient-text">{t.svcH2}</span>
           </h2>
           <p className="mt-3 max-w-lg text-text-secondary">
-            Jasa profesional yang saya tawarkan. Semua layanan bisa dikustomisasi
-            sesuai kebutuhan proyek Anda.
+            {t.svcDesc}
           </p>
         </Reveal>
 

@@ -21,7 +21,9 @@ Atau klik link kecil **Admin** di bagian paling bawah website (footer).
 
 ## 2. Cara mengedit konten
 
-1. Pilih tab sesuai bagian yang mau diubah (Profil, Hero, Riwayat,
+1. Pilih **bahasa yang mau diedit** (tombol 🇮🇩 ID / 🇬🇧 EN di bar atas).
+   Kedua bahasa disimpan terpisah — ubah di dua-duanya agar konsisten.
+2. Pilih tab sesuai bagian yang mau diubah (Profil, Hero, Riwayat,
    Skill, Karya, Layanan, FAQ, Kontak).
 2. Ubah teks / tambah / hapus / susun ulang item.
 3. Klik **Simpan** (menyimpan draft di browser ini).
@@ -81,3 +83,15 @@ website melihat perubahan:
   import langsung dari `src/data.ts`.
 - `vercel.json` me-rewrite `/admin` ke `index.html` agar routing
   sisi klien berfungsi di Vercel.
+
+## 7. Bahasa, tema & font
+
+- **Translate ID/EN**: pengunjung mengganti bahasa lewat tombol
+  ID/EN di navbar (tersimpan otomatis di browser). Konten kedua
+  bahasa diedit terpisah di CMS (tombol 🇮🇩/🇬🇧 di bar atas admin);
+  teks UI (menu, tombol, judul section) dari kamus `src/cms/i18n.ts`.
+- **Mode gelap/terang**: tombol matahari/bulan di navbar.
+  Default mengikuti sistem HP/laptop pengunjung. Halaman `/admin`
+  selalu gelap.
+- **Font**: hanya 2 font web (Inter + Instrument Serif). Font mono
+  memakai font bawaan sistem agar loading tetap ringan.

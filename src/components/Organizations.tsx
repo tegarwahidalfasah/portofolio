@@ -32,7 +32,7 @@ export function Organizations() {
           </Reveal>
 
           <div className="lg:col-span-7">
-            <div className="overflow-hidden rounded-3xl border border-navy-900/10 bg-white/70">
+            <div className="overflow-hidden rounded-3xl border border-navy-900/10 bg-white/70 dark:bg-slate-950/70">
               {organizations.map((org, i) => (
                 <Reveal key={org.name} delay={0.06 * i}>
                   <article

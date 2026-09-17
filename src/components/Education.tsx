@@ -4,16 +4,17 @@ import { useCms } from "../cms/store";
 
 export function Education() {
   const { education } = useCms().content;
+  const { t } = useCms();
   return (
     <section id="pendidikan" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 02" title="Education" />
+          <SectionLabel index="// 02" title={t.eduLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Academic <span className="gradient-text">Background</span>
+            {t.eduH1} <span className="gradient-text">{t.eduH2}</span>
           </h2>
         </Reveal>
 
@@ -50,7 +51,7 @@ export function Education() {
                 {edu.gpa && (
                   <div className="relative mt-4 inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3 py-1.5">
                     <span className="font-mono text-[10px] uppercase tracking-wider text-accent-600">
-                      GPA
+                      {t.gpaBadge}
                     </span>
                     <span className="font-display text-sm font-bold text-accent-600">
                       {edu.gpa}

@@ -2,17 +2,17 @@ import { ArrowRight, Play } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
 import { useCms } from "../cms/store";
 
-const categories = ["Desain", "Foto", "Video", "Sosial Media"];
-
 export function CaseStudies() {
   const { works } = useCms().content;
+  const { t } = useCms();
+  const categories = [t.catDesign, t.catPhoto, t.catVideo, t.catSocial];
   return (
     <section className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <div className="flex items-center justify-between">
-            <SectionLabel index="// 02" title="Featured Case Studies" />
-            <button className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600">
+            <SectionLabel index="// 02" title={t.csLabel} />
+            <button className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600">
               <ArrowRight size={18} />
             </button>
           </div>
@@ -27,7 +27,7 @@ export function CaseStudies() {
                 className={`rounded-full px-4 py-2 font-display text-xs font-semibold transition-all ${
                   i === 0
                     ? "bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25"
-                    : "border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl hover:border-accent-400 hover:text-accent-600"
+                    : "border border-glass-300 bg-white/60 dark:bg-slate-950/60 text-text-secondary backdrop-blur-xl hover:border-accent-400 hover:text-accent-600"
                 }`}
               >
                 {cat}

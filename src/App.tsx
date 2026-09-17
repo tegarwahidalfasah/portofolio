@@ -18,6 +18,7 @@ import { Footer } from "./components/Footer";
 import { FloatingBackToTop } from "./components/FloatingBackToTop";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { CmsProvider, useCms } from "./cms/store";
+import { ThemeProvider } from "./cms/theme";
 import { Admin } from "./cms/Admin";
 
 function isAdminRoute(): boolean {
@@ -30,7 +31,7 @@ function isAdminRoute(): boolean {
 
 /** Banner kecil penanda mode pratinjau draft (hanya terlihat di browser admin). */
 function DraftBanner() {
-  const { hasDraft } = useCms();
+  const { hasDraft, t } = useCms();
   if (!hasDraft) return null;
   return (
     <a
@@ -38,7 +39,7 @@ function DraftBanner() {
       className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full border border-indigo-400/30 bg-slate-950/90 px-4 py-2.5 font-mono text-[11px] font-medium text-indigo-200 shadow-2xl backdrop-blur-xl transition-all hover:bg-slate-900"
     >
       <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400" />
-      Pratinjau draft CMS — Buka Admin →
+      {t.bannerPreview}
     </a>
   );
 }
@@ -84,5 +85,9 @@ export default function App() {
     };
   }, []);
 
-  return <CmsProvider>{admin ? <Admin /> : <Site />}</CmsProvider>;
+  return (
+    <CmsProvider>
+      <ThemeProvider>{admin ? <Admin /> : <Site />}</ThemeProvider>
+    </CmsProvider>
+  );
 }

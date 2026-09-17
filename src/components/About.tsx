@@ -4,12 +4,13 @@ import { Quote } from "lucide-react";
 
 export function About() {
   const { profile, about } = useCms().content;
+  const { t } = useCms();
 
   return (
     <section id="about" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 01" title="About Me" />
+          <SectionLabel index="// 01" title={t.aboutLabel} />
         </Reveal>
 
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12">
@@ -48,15 +49,15 @@ export function About() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                   </span>
                   <span className="font-display text-xs font-bold uppercase tracking-widest text-text-secondary">
-                    Profil
+                    {t.cardProfile}
                   </span>
                 </div>
                 <div className="space-y-4">
                   {[
-                    { label: "Nama", value: profile.name },
-                    { label: "Lokasi", value: profile.locationShort },
+                    { label: t.rowName, value: profile.name },
+                    { label: t.rowLocation, value: profile.locationShort },
                     { label: "Email", value: profile.email },
-                    { label: "Telepon", value: profile.phone },
+                    { label: t.rowPhone, value: profile.phone },
                     { label: "Instagram", value: profile.instagram },
                   ].map((item) => (
                     <div key={item.label} className="flex items-start justify-between gap-3">

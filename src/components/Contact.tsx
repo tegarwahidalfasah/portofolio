@@ -12,6 +12,7 @@ const platformIconMap: Record<string, typeof InstagramIcon> = {
 
 export function Contact() {
   const { profile, platforms, contactPurposes, contactSection } = useCms().content;
+  const { t } = useCms();
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -21,15 +22,15 @@ export function Contact() {
   });
 
   const contactCards = [
-    { label: "Telepon / WhatsApp", value: profile.phone, href: profile.phoneHref, icon: Phone },
+    { label: t.ctCardPhone, value: profile.phone, href: profile.phoneHref, icon: Phone },
     { label: "Instagram", value: profile.instagram, href: profile.instagramHref, icon: InstagramIcon },
     { label: "Email", value: profile.email, href: `mailto:${profile.email}`, icon: MailIcon },
-    { label: "Lokasi", value: profile.location, href: contactSection.mapUrl, icon: MapPin },
+    { label: t.ctCardLocation, value: profile.location, href: contactSection.mapUrl, icon: MapPin },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const purposeLabel = contactPurposes.find(p => p.value === formData.purpose)?.label || "Pertanyaan";
+    const purposeLabel = contactPurposes.find(p => p.value === formData.purpose)?.label || t.ctDefaultPurpose;
     const subject = `[${purposeLabel}] dari ${formData.name}`;
     const body = `Nama: ${formData.name}%0AEmail: ${formData.email}%0AKeperluan: ${purposeLabel}%0A%0APesan:%0A${encodeURIComponent(formData.message)}`;
     window.open(`mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${body}`, "_blank");
@@ -41,7 +42,7 @@ export function Contact() {
     <section id="kontak" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 09" title="Contact" />
+          <SectionLabel index="// 09" title={t.ctLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
@@ -95,10 +96,10 @@ export function Contact() {
                 </span>
                 <div>
                   <h3 className="font-display text-lg font-bold text-text-primary">
-                    Business Contact Form
+                    {t.ctFormTitle}
                   </h3>
                   <p className="text-sm text-text-muted">
-                    Untuk jasa edit video, kolaborasi, sponsorship, atau pertanyaan lainnya.
+                    {t.ctFormDesc}
                   </p>
                 </div>
               </div>
@@ -107,10 +108,10 @@ export function Contact() {
                 <div className="flex flex-col items-center gap-4 rounded-2xl border border-green-500/20 bg-green-500/5 p-10 text-center">
                   <CheckCircle size={40} className="text-green-500" />
                   <p className="font-display text-lg font-bold text-text-primary">
-                    Pesan Siap Dikirim!
+                    {t.ctOkTitle}
                   </p>
                   <p className="text-sm text-text-muted">
-                    Aplikasi email akan terbuka untuk menyelesaikan pengiriman.
+                    {t.ctOkDesc}
                   </p>
                 </div>
               ) : (
@@ -118,14 +119,14 @@ export function Contact() {
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
                       <label className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
-                        Nama Lengkap
+                        {t.ctName}
                       </label>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Masukkan nama Anda"
+                        placeholder={t.ctNamePh}
                         className="form-glass mt-2"
                       />
                     </div>
@@ -146,7 +147,7 @@ export function Contact() {
 
                   <div>
                     <label className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
-                      Jenis Keperluan
+                      {t.ctPurpose}
                     </label>
                     <select
                       required
@@ -154,7 +155,7 @@ export function Contact() {
                       onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
                       className="form-glass mt-2"
                     >
-                      <option value="" disabled>Pilih jenis keperluan...</option>
+                      <option value="" disabled>{t.ctPurposePh}</option>
                       {contactPurposes.map((opt) => (
                         <option key={opt.value} value={opt.value}>{opt.label}</option>
                       ))}
@@ -163,14 +164,14 @@ export function Contact() {
 
                   <div>
                     <label className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
-                      Pesan
+                      {t.ctMessage}
                     </label>
                     <textarea
                       required
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Ceritakan detail kebutuhan Anda..."
+                      placeholder={t.ctMessagePh}
                       className="form-glass mt-2 resize-none"
                     />
                   </div>
@@ -180,7 +181,7 @@ export function Contact() {
                     className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl"
                   >
                     <Send size={16} />
-                    Kirim Pesan
+                    {t.ctSend}
                     <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
                 </form>

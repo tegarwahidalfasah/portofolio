@@ -3,16 +3,17 @@ import { useCms } from "../cms/store";
 
 export function Experience() {
   const { experience } = useCms().content;
+  const { t } = useCms();
   return (
     <section id="pengalaman" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 03" title="Experience" />
+          <SectionLabel index="// 03" title={t.expLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Professional <span className="gradient-text">Experience</span>
+            {t.expH1} <span className="gradient-text">{t.expH2}</span>
           </h2>
         </Reveal>
 
