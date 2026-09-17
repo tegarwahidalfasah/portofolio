@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { works } from "../data";
+import { useCms } from "../cms/store";
 
 // Bento arrangement: wide, tall(rows 1-2), then four tiles, last wide
 const layout = [
@@ -15,6 +15,7 @@ const order = [0, 2, 3, 4, 1, 5];
 const heights = ["h-64", "h-96", "h-64", "h-64", "h-64", "h-64"];
 
 export function Works() {
+  const { works } = useCms().content;
   return (
     <section id="karya" className="relative bg-cream-100 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -26,7 +27,7 @@ export function Works() {
           <Reveal delay={0.05}>
             <h2 className="max-w-xl font-display text-4xl font-bold leading-tight tracking-tight text-navy-900 sm:text-5xl">
               Cuplikan{" "}
-              <span className="font-accent font-normal italic text-brand-600">
+              <span className="font-accent font-normal text-brand-600">
                 bidang karya
               </span>{" "}
               saya

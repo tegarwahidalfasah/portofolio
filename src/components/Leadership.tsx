@@ -1,18 +1,20 @@
 import { Award, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { organizations } from "../data";
+import { useCms } from "../cms/store";
 
 export function Leadership() {
+  const { organizations } = useCms().content;
+  const { t } = useCms();
   return (
     <section id="organisasi" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 07" title="Leadership & Activities" />
+          <SectionLabel index="// 07" title={t.leadLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Leadership & <span className="gradient-text">Activities</span>
+            {t.leadH1} <span className="gradient-text">{t.leadH2}</span>
           </h2>
         </Reveal>
 

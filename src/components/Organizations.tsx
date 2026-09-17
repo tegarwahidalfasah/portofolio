@@ -1,8 +1,9 @@
 import { Users, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { organizations } from "../data";
+import { useCms } from "../cms/store";
 
 export function Organizations() {
+  const { organizations } = useCms().content;
   return (
     <section id="organisasi" className="relative bg-cream-100 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -18,7 +19,7 @@ export function Organizations() {
               </span>
               <h2 className="mt-6 font-display text-4xl font-bold leading-tight tracking-tight text-navy-900 sm:text-5xl">
                 Pengalaman{" "}
-                <span className="font-accent font-normal italic text-brand-600">
+                <span className="font-accent font-normal text-brand-600">
                   berorganisasi
                 </span>
               </h2>
@@ -31,7 +32,7 @@ export function Organizations() {
           </Reveal>
 
           <div className="lg:col-span-7">
-            <div className="overflow-hidden rounded-3xl border border-navy-900/10 bg-white/70">
+            <div className="overflow-hidden rounded-3xl border border-navy-900/10 bg-white/70 dark:bg-slate-950/70">
               {organizations.map((org, i) => (
                 <Reveal key={org.name} delay={0.06 * i}>
                   <article

@@ -1,66 +1,37 @@
 import { Video, Palette, Camera, Monitor, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
+import { useCms } from "../cms/store";
 
-const services = [
-  {
-    icon: Video,
-    title: "Video Editing",
-    description:
-      "Professional editing untuk YouTube, reels, TikTok, dan broadcast. Termasuk color grading, audio mixing, dan motion graphics.",
-    features: ["Premiere Pro", "After Effects", "CapCut", "DaVinci Resolve"],
-    color: "from-rose-500 to-pink-500",
-    price: "Mulai Rp 150.000",
-  },
-  {
-    icon: Palette,
-    title: "Graphic Design",
-    description:
-      "Desain visual untuk social media, poster, banner, dan branding. Cepat dan sesuai kebutuhan klien.",
-    features: ["Photoshop", "Illustrator", "Canva", "Lightroom"],
-    color: "from-amber-500 to-orange-500",
-    price: "Mulai Rp 75.000",
-  },
-  {
-    icon: Camera,
-    title: "Photography",
-    description:
-      "Dokumentasi acara, foto produk, portrait, dan konten visual untuk media sosial dan marketing.",
-    features: ["Portrait", "Event", "Product", "Street"],
-    color: "from-cyan-500 to-sky-500",
-    price: "Mulai Rp 500.000",
-  },
-  {
-    icon: Monitor,
-    title: "IT Support",
-    description:
-      "Konsultasi dan troubleshooting IT, setup jaringan, maintenance sistem, dan dukungan teknis lainnya.",
-    features: ["Networking", "Troubleshoot", "Setup", "Maintenance"],
-    color: "from-accent-500 to-accent-600",
-    price: "Mulai Rp 100.000/jam",
-  },
-];
+const iconMap: Record<string, typeof Video> = {
+  video: Video,
+  palette: Palette,
+  camera: Camera,
+  monitor: Monitor,
+};
 
 export function Services() {
+  const { services } = useCms().content;
+  const { t } = useCms();
+
   return (
     <section id="layanan" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 08" title="Services" />
+          <SectionLabel index="// 08" title={t.svcLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Layanan & <span className="gradient-text">Harga</span>
+            {t.svcH1} <span className="gradient-text">{t.svcH2}</span>
           </h2>
           <p className="mt-3 max-w-lg text-text-secondary">
-            Jasa profesional yang saya tawarkan. Semua layanan bisa dikustomisasi
-            sesuai kebutuhan proyek Anda.
+            {t.svcDesc}
           </p>
         </Reveal>
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, i) => {
-            const Icon = service.icon;
+            const Icon = iconMap[service.icon] || Video;
             return (
               <Reveal key={service.title} delay={0.08 * i}>
                 <article className="glass-card glass-hover group relative h-full overflow-hidden p-7">

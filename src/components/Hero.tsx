@@ -1,12 +1,16 @@
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, MapPin, Mail, GraduationCap, Download } from "lucide-react";
-import { profile } from "../data";
+import { useCms } from "../cms/store";
 import { InstagramIcon } from "./Icons";
 import portrait from "../assets/portrait.jpg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Hero() {
+  const { profile, hero } = useCms().content;
+  const { t } = useCms();
+  const portraitSrc = profile.photoUrl?.trim() ? profile.photoUrl.trim() : portrait;
+
   return (
     <section
       id="top"
@@ -33,11 +37,11 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease }}
-            className="inline-flex items-center gap-2.5 rounded-full border border-accent-500/20 bg-white/60 px-4 py-1.5 backdrop-blur-xl"
+            className="inline-flex items-center gap-2.5 rounded-full border border-accent-500/20 bg-white/60 dark:bg-slate-950/60 px-4 py-1.5 backdrop-blur-xl"
           >
             <span className="animate-pulse-dot h-2 w-2 rounded-full bg-green-500" />
             <span className="font-mono text-xs tracking-wide text-text-secondary">
-              Available for freelance & collaboration
+              {t.available}
             </span>
           </motion.div>
 
@@ -47,9 +51,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.1, ease }}
             className="mt-6 hero-display"
           >
-            TEGAR WAHID
+            {hero.line1}
             <br />
-            <span className="gradient-text">ALFASAH</span>
+            <span className="gradient-text">{hero.line2}</span>
           </motion.h1>
 
           <motion.p
@@ -58,7 +62,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.22, ease }}
             className="mt-5 font-display text-lg font-semibold tracking-tight text-text-primary sm:text-xl"
           >
-            Video Editor & Creative Media Producer
+            {hero.role}
           </motion.p>
 
           <motion.p
@@ -67,8 +71,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.28, ease }}
             className="mt-4 max-w-lg text-base leading-relaxed text-text-secondary"
           >
-            A highly adaptable Computer and Network Engineering student with
-            proven experience in creative media production and IT support.
+            {hero.intro}
           </motion.p>
 
           <motion.div
@@ -81,25 +84,25 @@ export function Hero() {
               href="#karya"
               className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl hover:shadow-accent-500/35"
             >
-              View Work
+              {t.viewWork}
               <ArrowDown
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-y-0.5"
               />
             </a>
             <a
-              href="/CV_Tegar_Wahid_Alfasah.pdf"
+              href={profile.cvUrl}
               download
-              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 hover:bg-white/80"
+              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 hover:bg-white/80 dark:hover:bg-slate-900/80"
             >
               <Download size={16} />
-              Download CV
+              {t.downloadCv}
             </a>
             <a
               href="#kontak"
               className="group flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-7 py-3.5 font-display text-sm font-semibold text-accent-600 transition-all hover:border-accent-500/50 hover:bg-accent-500/15"
             >
-              Hire Me
+              {t.hireMe}
               <ArrowUpRight
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -135,7 +138,7 @@ export function Hero() {
             </a>
             <span className="flex items-center gap-2">
               <GraduationCap size={15} className="text-accent-500" />
-              GPA {profile.gpa} — Class of {profile.graduationYear}
+              {t.gpa} {profile.gpa} — {t.classOf} {profile.graduationYear}
             </span>
           </motion.div>
         </div>
@@ -149,17 +152,17 @@ export function Hero() {
             className="relative animate-float"
           >
             {/* Portrait frame */}
-            <div className="overflow-hidden rounded-[2rem] border border-glass-border bg-white/40 shadow-2xl shadow-accent-500/10 backdrop-blur-xl">
+            <div className="overflow-hidden rounded-[2rem] border border-glass-border bg-white/40 dark:bg-slate-950/40 shadow-2xl shadow-accent-500/10 backdrop-blur-xl">
               <img
-                src={portrait}
-                alt="Tegar Wahid Alfasah — Video Editor & Creative Media Producer"
+                src={portraitSrc}
+                alt={`${profile.name} — ${hero.role}`}
                 className="aspect-[3/4] w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/40 via-transparent to-transparent" />
             </div>
 
             {/* Floating chip: role */}
-            <div className="animate-float-slow absolute -left-6 top-12 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-10">
+            <div className="animate-float-slow absolute -left-6 top-12 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 dark:bg-slate-950/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-10">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
               </span>
@@ -174,24 +177,24 @@ export function Hero() {
             </div>
 
             {/* Floating chip: available */}
-            <div className="animate-float absolute -bottom-4 -right-2 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-6">
+            <div className="animate-float absolute -bottom-4 -right-2 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 dark:bg-slate-950/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-6">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
               </span>
               <div>
                 <p className="font-display text-xs font-bold text-text-primary">
-                  Available
+                  {t.chipAvailable}
                 </p>
                 <p className="font-mono text-[10px] text-text-muted">
-                  for freelance
+                  {t.chipFreelance}
                 </p>
               </div>
             </div>
 
             {/* Small badge */}
-            <div className="absolute -top-3 -right-3 flex h-12 w-12 items-center justify-center rounded-full border border-glass-border bg-white/80 shadow-lg backdrop-blur-xl">
+            <div className="absolute -top-3 -right-3 flex h-12 w-12 items-center justify-center rounded-full border border-glass-border bg-white/80 dark:bg-slate-950/80 shadow-lg backdrop-blur-xl">
               <div className="h-8 w-8 rounded-full bg-gradient-to-br from-accent-400 to-sky-400 flex items-center justify-center">
-                <span className="text-[10px] font-bold text-white">TWA</span>
+                <span className="text-[10px] font-bold text-white">{profile.initials}</span>
               </div>
             </div>
           </motion.div>

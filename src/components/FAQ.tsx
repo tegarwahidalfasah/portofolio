@@ -1,56 +1,26 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-
-const faqs = [
-  {
-    question: "Berapa lama proses editing video?",
-    answer:
-      "Tergantung kompleksitas dan durasi video. Untuk video pendek (1-3 menit), biasanya 2-3 hari kerja. Video panjang (10+ menit) bisa memakan waktu 5-7 hari kerja. Revisi minor biasanya selesai dalam 1 hari.",
-  },
-  {
-    question: "Apakah bisa revisi hasil editing?",
-    answer:
-      "Tentu! Saya menyediakan 2x revisi gratis untuk setiap proyek. Revisi tambahan dikenakan biaya sesuai kesepakatan. Saya selalu berkomunikasi dengan klien di setiap tahap untuk memastikan hasil sesuai ekspektasi.",
-  },
-  {
-    question: "Bagaimana cara memesan jasa?",
-    answer:
-      "Anda bisa menghubungi saya melalui formulir kontak di website ini, email ke tegarwahidalfasah@gmail.com, atau DM Instagram @tegarwahidalfasah. Saya akan merespon dalam waktu 24 jam.",
-  },
-  {
-    question: "Apa yang perlu disiapkan sebelum memesan?",
-    answer:
-      "Untuk video editing: footage mentah, referensi style yang diinginkan, durasi target, dan brief singkat. Untuk desain: teks/konten, ukuran yang dibutuhkan, referensi visual, dan brand guidelines jika ada.",
-  },
-  {
-    question: "Apakah ada garansi?",
-    answer:
-      "Saya menjamin kualitas kerja profesional. Jika hasil tidak sesuai brief yang disepakati, saya akan melakukan revisi tanpa biaya tambahan. Kepuasan klien adalah prioritas utama saya.",
-  },
-  {
-    question: "Metode pembayaran apa yang diterima?",
-    answer:
-      "Saya menerima pembayaran via transfer bank (BCA, BRI, Mandiri), e-wallet (GoPay, OVO, DANA), dan pembayaran di muka 50% sebelum proyek dimulai, 50% setelah selesai.",
-  },
-];
+import { useCms } from "../cms/store";
 
 export function FAQ() {
+  const { faqs } = useCms().content;
+  const { t } = useCms();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section id="faq" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-4xl">
         <Reveal>
-          <SectionLabel index="// 10" title="FAQ" />
+          <SectionLabel index="// 10" title={t.faqLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Frequently Asked <span className="gradient-text">Questions</span>
+            {t.faqH1} <span className="gradient-text">{t.faqH2}</span>
           </h2>
           <p className="mt-3 max-w-lg text-text-secondary">
-            Pertanyaan umum yang sering ditanyakan oleh calon klien.
+            {t.faqDesc}
           </p>
         </Reveal>
 
@@ -62,7 +32,7 @@ export function FAQ() {
                 <div className="glass-card overflow-hidden">
                   <button
                     onClick={() => setOpenIndex(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-4 p-6 text-left transition-colors hover:bg-white/40"
+                    className="flex w-full items-center justify-between gap-4 p-6 text-left transition-colors hover:bg-white/40 dark:hover:bg-white/10"
                   >
                     <span className="font-display text-base font-bold text-text-primary sm:text-lg">
                       {faq.question}

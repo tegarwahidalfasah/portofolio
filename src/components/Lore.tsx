@@ -55,12 +55,12 @@ export function Lore() {
 
         {/* Reference sheet + Hashtags */}
         <Reveal delay={0.15}>
-          <div className="mt-12 grid grid-cols-1 overflow-hidden rounded-3xl border border-glass-border bg-white/60 shadow-xl shadow-accent-500/5 backdrop-blur-xl lg:grid-cols-2">
+          <div className="mt-12 grid grid-cols-1 overflow-hidden rounded-3xl border border-glass-border bg-white/60 dark:bg-slate-950/60 shadow-xl shadow-accent-500/5 backdrop-blur-xl lg:grid-cols-2">
             {/* Reference sheet side */}
             <div className="relative flex items-center justify-center p-10 sm:p-14">
               <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 via-transparent to-sky-400/5" />
               <div className="relative text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-glass-border bg-white/80 shadow-xl backdrop-blur-xl">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-glass-border bg-white/80 dark:bg-slate-950/80 shadow-xl backdrop-blur-xl">
                   <div className="h-12 w-12 rounded-full bg-gradient-to-br from-accent-400 to-sky-400 flex items-center justify-center">
                     <Sparkles size={24} className="text-white" />
                   </div>
@@ -68,7 +68,7 @@ export function Lore() {
                 <h3 className="mt-6 font-display text-2xl font-bold text-text-primary">
                   Reference Sheet
                 </h3>
-                <p className="mt-2 font-accent text-lg italic text-text-secondary">
+                <p className="mt-2 font-accent text-lg text-text-secondary">
                   Tampak Depan, Samping & Belakang
                 </p>
                 <p className="mt-4 text-sm text-text-muted">
