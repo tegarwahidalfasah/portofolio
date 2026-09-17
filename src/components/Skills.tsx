@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { tools, disciplines } from "../data";
+import { disciplines, programmingSkills, languages, interests } from "../data";
 
-const skillData = [
-  { name: "UI / UX Design", percent: 95 },
-  { name: "Desain Grafis", percent: 90 },
+const creativeSkills = [
+  { name: "Video Editing", percent: 95 },
+  { name: "Broadcast Management", percent: 90 },
   { name: "Photography", percent: 88 },
-  { name: "Videography", percent: 85 },
-  { name: "Video Editing", percent: 90 },
-  { name: "Streaming / VTuber", percent: 80 },
+  { name: "Videography", percent: 90 },
+  { name: "Graphic Design", percent: 88 },
+  { name: "Live Streaming", percent: 85 },
+  { name: "IT Support", percent: 90 },
+  { name: "Content Creation", percent: 92 },
 ];
 
 export function Skills() {
@@ -25,32 +27,37 @@ export function Skills() {
       { threshold: 0.3 }
     );
 
-    const el = document.getElementById("keahlian");
+    const el = document.getElementById("skills");
     if (el) observer.observe(el);
 
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section id="keahlian" className="relative px-5 py-16 sm:px-8">
+    <section id="skills" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <SectionLabel index="// 05" title="Skills & Expertise" />
         </Reveal>
 
-        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12">
-          {/* Skills with progress bars */}
+        <Reveal delay={0.05}>
+          <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
+            Skills & <span className="gradient-text">Expertise</span>
+          </h2>
+        </Reveal>
+
+        <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12">
+          {/* Creative skills with progress bars */}
           <div className="lg:col-span-7">
-            <Reveal delay={0.05}>
-              <h2 className="font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-                Keahlian{" "}
-                <span className="gradient-text">kreatif</span>
-              </h2>
+            <Reveal delay={0.08}>
+              <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
+                Creative & Technical Skills
+              </p>
             </Reveal>
 
-            <div className="mt-8 space-y-6">
-              {skillData.map((skill, i) => (
-                <Reveal key={skill.name} delay={0.08 * i}>
+            <div className="mt-5 space-y-5">
+              {creativeSkills.map((skill, i) => (
+                <Reveal key={skill.name} delay={0.06 * i}>
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="font-display text-sm font-semibold text-text-primary">
@@ -65,7 +72,7 @@ export function Skills() {
                         className="progress-bar-fill"
                         style={{
                           width: visible ? `${skill.percent}%` : "0%",
-                          transitionDelay: `${i * 0.1}s`,
+                          transitionDelay: `${i * 0.08}s`,
                         }}
                       />
                     </div>
@@ -75,51 +82,92 @@ export function Skills() {
             </div>
           </div>
 
-          {/* Disciplines */}
-          <div className="lg:col-span-5">
+          {/* Right column */}
+          <div className="space-y-6 lg:col-span-5">
+            {/* Programming Skills */}
             <Reveal delay={0.1}>
               <div className="glass-card-strong p-7">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
-                  Bidang Kreatif
+                  Programming
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {disciplines.map((d) => (
-                    <span
-                      key={d}
-                      className="rounded-full border border-glass-300 bg-white/60 px-4 py-2 text-xs font-medium text-text-secondary backdrop-blur transition-all hover:border-accent-400 hover:bg-accent-500/10 hover:text-accent-600"
+                  {programmingSkills.map((skill) => (
+                    <div
+                      key={skill.name}
+                      className="rounded-xl border border-glass-300 bg-white/50 px-3 py-2"
                     >
-                      {d}
-                    </span>
+                      <p className="font-display text-xs font-bold text-text-primary">
+                        {skill.name}
+                      </p>
+                      <p className="font-mono text-[9px] text-text-muted">
+                        {skill.level}
+                      </p>
+                    </div>
                   ))}
                 </div>
               </div>
             </Reveal>
 
-            {/* Tools quick list */}
+            {/* Languages */}
             <Reveal delay={0.15}>
-              <div className="glass-card mt-6 p-7">
+              <div className="glass-card p-7">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
-                  Tools Utama
+                  Languages
                 </p>
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  {tools.slice(0, 6).map((tool) => (
-                    <div
-                      key={tool.name}
-                      className="flex items-center gap-2.5 rounded-xl border border-glass-300 bg-white/50 px-3 py-2.5"
-                    >
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent-500/10 to-sky-400/10 text-accent-500">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                <div className="mt-4 space-y-3">
+                  {languages.map((lang) => (
+                    <div key={lang.name} className="flex items-center justify-between">
+                      <span className="font-display text-sm font-semibold text-text-primary">
+                        {lang.name}
                       </span>
-                      <span className="text-xs font-semibold text-text-primary">
-                        {tool.name}
+                      <span className="rounded-full bg-accent-500/10 px-3 py-1 font-mono text-[10px] font-medium text-accent-600">
+                        {lang.level}
                       </span>
                     </div>
                   ))}
                 </div>
               </div>
             </Reveal>
+
+            {/* Interests */}
+            <Reveal delay={0.2}>
+              <div className="glass-card p-7">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
+                  Interests
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {interests.map((interest) => (
+                    <span
+                      key={interest}
+                      className="rounded-full border border-glass-300 bg-white/50 px-4 py-2 text-xs font-medium text-text-secondary"
+                    >
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
           </div>
         </div>
+
+        {/* All disciplines */}
+        <Reveal delay={0.25}>
+          <div className="mt-8 glass-card p-7">
+            <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
+              All Competencies
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {disciplines.map((d) => (
+                <span
+                  key={d}
+                  className="rounded-full border border-glass-300 bg-white/50 px-4 py-2 text-xs font-medium text-text-secondary transition-all hover:border-accent-400 hover:bg-accent-500/10 hover:text-accent-600"
+                >
+                  {d}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

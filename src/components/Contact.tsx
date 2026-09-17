@@ -1,22 +1,20 @@
 import { useState } from "react";
-import { Phone, Mail, MapPin, ArrowUpRight, Send, CheckCircle, Sparkles } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowUpRight, Send, CheckCircle } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
 import { profile, platforms, contactPurposes } from "../data";
 import { InstagramIcon } from "./Icons";
-import { YouTubeIcon, TwitchIcon, TikTokIcon, HeartIcon } from "./PlatformIcons";
+import { MailIcon } from "./PlatformIcons";
 
 const contactCards = [
   { label: "Telepon / WhatsApp", value: profile.phone, href: profile.phoneHref, icon: Phone },
   { label: "Instagram", value: profile.instagram, href: profile.instagramHref, icon: InstagramIcon },
-  { label: "Lokasi", value: profile.locationShort, href: "https://maps.google.com/?q=Walahar+Dangdeur+Subang", icon: MapPin },
+  { label: "Email", value: profile.email, href: `mailto:${profile.email}`, icon: MailIcon },
+  { label: "Lokasi", value: profile.location, href: "https://maps.google.com/?q=Subang+West+Java", icon: MapPin },
 ];
 
 const platformIconMap: Record<string, typeof InstagramIcon> = {
   instagram: InstagramIcon,
-  youtube: YouTubeIcon,
-  twitch: TwitchIcon,
-  tiktok: TikTokIcon,
-  heart: HeartIcon,
+  mail: MailIcon,
 };
 
 export function Contact() {
@@ -42,7 +40,7 @@ export function Contact() {
     <section id="kontak" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 09" title="Kontak" />
+          <SectionLabel index="// 09" title="Contact" />
         </Reveal>
 
         <Reveal delay={0.05}>
@@ -65,7 +63,7 @@ export function Contact() {
                 <a
                   key={p.name}
                   href={p.url}
-                  target="_blank"
+                  target={p.url.startsWith("mailto") ? undefined : "_blank"}
                   rel="noreferrer"
                   className="glass-card glass-hover group flex items-center gap-3 px-5 py-3"
                 >
@@ -97,10 +95,10 @@ export function Contact() {
                 </span>
                 <div>
                   <h3 className="font-display text-lg font-bold text-text-primary">
-                    Formulir Kontak Bisnis
+                    Business Contact Form
                   </h3>
                   <p className="text-sm text-text-muted">
-                    Untuk komisi, sponsor, kolaborasi, atau pertanyaan lainnya.
+                    Untuk jasa edit video, kolaborasi, sponsorship, atau pertanyaan lainnya.
                   </p>
                 </div>
               </div>
@@ -209,7 +207,7 @@ export function Contact() {
                       <span className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
                         {card.label}
                       </span>
-                      <span className="mt-1 block font-display text-base font-bold text-text-primary">
+                      <span className="mt-1 block font-display text-base font-bold text-text-primary break-all">
                         {card.value}
                       </span>
                     </span>
@@ -217,31 +215,6 @@ export function Contact() {
                 </Reveal>
               );
             })}
-
-            {/* Donation CTA */}
-            <Reveal delay={0.3}>
-              <a
-                href={profile.donation}
-                target="_blank"
-                rel="noreferrer"
-                className="glass-card glass-hover group flex items-center gap-4 border-accent-500/20 bg-accent-500/5 p-6"
-              >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25">
-                  <HeartIcon size={20} />
-                </span>
-                <span className="min-w-0">
-                  <span className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
-                    Dukung Sora
-                  </span>
-                  <span className="mt-1 block font-display text-base font-bold text-text-primary">
-                    {profile.donationLabel} — Trakteer
-                  </span>
-                  <span className="mt-0.5 block text-xs text-text-muted">
-                    Apresiasi karya & dukung perjalanan kreatif
-                  </span>
-                </span>
-              </a>
-            </Reveal>
           </div>
         </div>
       </div>

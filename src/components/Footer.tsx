@@ -1,15 +1,15 @@
 import { ArrowUp, Sparkles } from "lucide-react";
 import { profile } from "../data";
 import { InstagramIcon } from "./Icons";
-import { YouTubeIcon, TwitchIcon, TikTokIcon, HeartIcon } from "./PlatformIcons";
+import { MailIcon } from "./PlatformIcons";
 
 const navLinks = [
   { label: "About", href: "#about" },
-  { label: "Lore", href: "#lore" },
-  { label: "Karya", href: "#karya" },
-  { label: "Media", href: "#media" },
-  { label: "Guideline", href: "#guideline" },
-  { label: "Kontak", href: "#kontak" },
+  { label: "Education", href: "#pendidikan" },
+  { label: "Experience", href: "#pengalaman" },
+  { label: "Skills", href: "#skills" },
+  { label: "Leadership", href: "#organisasi" },
+  { label: "Contact", href: "#kontak" },
 ];
 
 export function Footer() {
@@ -24,12 +24,12 @@ export function Footer() {
                 {profile.initials}
               </span>
               <span className="font-display text-lg font-bold text-text-primary">
-                {profile.shortName}
+                {profile.shortName} Alfasah
               </span>
             </a>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-text-muted">
-              VTuber, content creator, desainer, fotografer & videografer
-              asal Subang, Jawa Barat.
+              Video Editor, Content Creator & Computer Network Engineering Student
+              from Subang, West Java.
             </p>
           </div>
 
@@ -48,24 +48,22 @@ export function Footer() {
 
           {/* Social icons */}
           <div className="flex items-center gap-2.5">
-            {[
-              { icon: YouTubeIcon, href: profile.youtubeHref, label: "YouTube" },
-              { icon: TwitchIcon, href: profile.twitchHref, label: "Twitch" },
-              { icon: InstagramIcon, href: profile.instagramHref, label: "Instagram" },
-              { icon: TikTokIcon, href: profile.tiktokHref, label: "TikTok" },
-              { icon: HeartIcon, href: profile.donation, label: "Trakteer" },
-            ].map(({ icon: Icon, href, label }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={label}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600"
-              >
-                <Icon size={17} />
-              </a>
-            ))}
+            <a
+              href={profile.instagramHref}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600"
+            >
+              <InstagramIcon size={17} />
+            </a>
+            <a
+              href={`mailto:${profile.email}`}
+              aria-label="Email"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600"
+            >
+              <MailIcon size={17} />
+            </a>
             <a
               href="#top"
               aria-label="Kembali ke atas"
@@ -78,7 +76,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-glass-300/50 pt-6 text-xs text-text-muted sm:flex-row sm:items-center">
-          <p>© 2026 Sora Wirya (Tegar Wahid Alfasah). All rights reserved.</p>
+          <p>© 2026 Tegar Wahid Alfasah. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <Sparkles size={12} className="text-accent-400" />
             <p className="font-mono">

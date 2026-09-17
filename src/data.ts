@@ -1,158 +1,192 @@
 /* ───────────────────────────────────────────────
-   Profil Utama — Sora Wirya (VTuber Persona)
+   Profil Utama — Tegar Wahid Alfasah
    ─────────────────────────────────────────────── */
 export const profile = {
-  name: "Sora Wirya",
-  realName: "Tegar Wahid Alfasah",
-  shortName: "Sora Wirya",
-  lastName: "Wirya",
-  initials: "SW",
-  roles: ["VTuber", "Content Creator", "Desainer", "Fotografer", "Videografer"],
-  tagline: "VTuber & visual storyteller dari Indonesia",
+  name: "Tegar Wahid Alfasah",
+  shortName: "Tegar Wahid",
+  lastName: "Alfasah",
+  initials: "TWA",
+  roles: [
+    "Computer & Network Engineering Student",
+    "Video Editor",
+    "Content Creator",
+    "IT Support",
+  ],
+  tagline: "Visual Editor & Creative Media Producer",
   intro:
-    "Mengubah ide menjadi konten visual yang menarik — mulai dari desain, fotografi, videografi, hingga manajemen media sosial. Aktif sebagai VTuber dengan persona Sora Wirya.",
-  about:
-    "Saya adalah Sora Wirya — seorang VTuber, content creator, dan visual storyteller. Di balik layar, saya adalah Tegar Wahid Alfasah, mahasiswa tingkat 3 di Universitas Mandiri. Saya memiliki ketertarikan di bidang kreatif sejak duduk di bangku SMP dan terus berkembang hingga sekarang. Sebagai VTuber, saya melakukan streaming game, ngobrol, dan kreasi konten kreatif. Di luar streaming, saya juga menerima jasa desain grafis, editing video, dan dokumentasi.",
-  location: "Walahar, Dangdeur, Subang — Jawa Barat",
-  locationShort: "Subang, Jawa Barat",
-  phone: "0851-7435-3873",
+    "A highly adaptable Computer and Network Engineering student with proven experience in creative media production and IT support.",
+  summary:
+    "A highly adaptable Computer and Network Engineering student with proven experience in creative media production and IT support. Proficient in video editing, broadcast management, and technical troubleshooting. Seeking to leverage a unique blend of technical expertise and creative skills in a dynamic working environment.",
+  location: "Subang, 41213, West Java, Indonesia",
+  locationShort: "Subang, West Java",
+  phone: "+6285174353873",
   phoneHref: "tel:+6285174353873",
   email: "tegarwahidalfasah@gmail.com",
   instagram: "@tegarwahidalfasah",
   instagramHref: "https://instagram.com/tegarwahidalfasah",
-  youtube: "@sorawirya",
-  youtubeHref: "https://youtube.com/@sorawirya",
-  twitch: "sorawirya",
-  twitchHref: "https://twitch.tv/sorawirya",
-  tiktok: "@sorawirya",
-  tiktokHref: "https://tiktok.com/@sorawirya",
-  donation: "https://trakteer.id/sorawirya",
-  donationLabel: "Trakteer",
+  youtube: "",
+  youtubeHref: "",
+  twitch: "",
+  twitchHref: "",
+  tiktok: "",
+  tiktokHref: "",
+  donation: "",
+  donationLabel: "",
+  gpa: "3.60",
+  graduationYear: "2026",
 };
 
 /* ───────────────────────────────────────────────
-   Lore / Kisah Karakter — Sora Wirya
+   Education
    ─────────────────────────────────────────────── */
-export type LoreEntry = {
-  chapter: string;
-  title: string;
-  content: string;
-  icon: string;
+export type Education = {
+  school: string;
+  period: string;
+  program: string;
+  location: string;
+  description: string;
+  gpa?: string;
 };
 
-export const lore: LoreEntry[] = [
+export const education: Education[] = [
   {
-    chapter: "Asal-Usul",
-    title: "Lahir dari Langit Subang",
-    content:
-      "Sora Wirya konon lahir dari perpaduan angin selatan dan cahaya bintang di langit Subang. Ia tumbuh sebagai penjelajah digital yang selalu penasaran dengan keindahan visual di setiap sudut dunia maya.",
-    icon: "compass",
+    school: "Mandiri University",
+    period: "2022 — 2026",
+    program: "Bachelor of Engineering, Computer and Network Engineering",
+    location: "Subang, West Java",
+    description:
+      "Concentration in Computer and Network Engineering with a GPA of 3.60.",
+    gpa: "3.60",
   },
   {
-    chapter: "Perjalanan",
-    title: "Menempa Diri di Dunia Kreatif",
-    content:
-      "Sejak SMP, Sora mulai mengenal dunia desain dan fotografi. Melalui berbagai proyek kreatif — dari dokumentasi acara hingga konten media sosial — ia mengasah kemampuan bercerita melalui gambar dan video.",
-    icon: "route",
+    school: "Bina Wisata Lembang Vocational High School",
+    period: "2019 — 2022",
+    program: "Vocational High School Diploma, Software Engineering",
+    location: "Lembang, West Java",
+    description:
+      "Alumni angkatan 2019–2022 program studi Software Engineering (RPL).",
   },
-  {
-    chapter: "Transformasi",
-    title: "Menjadi VTuber",
-    content:
-      "Dengan semangat untuk menjangkau lebih banyak orang, Sora bertransformasi menjadi VTuber. Kini ia aktif melakukan streaming game, berkreasi, dan berinteraksi dengan komunitasnya di YouTube dan Twitch.",
-    icon: "sparkles",
-  },
-  {
-    chapter: "Misi",
-    title: "Menginspirasi Lewat Karya",
-    content:
-      "Misi Sora sederhana: menginspirasi orang lain untuk berani berkarya dan mengekspresikan kreativitas mereka. Setiap stream, setiap desain, dan setiap foto adalah langkah kecil menuju dampak yang lebih besar.",
-    icon: "target",
-  },
-];
-
-export const referenceSheet = {
-  title: "Reference Sheet",
-  subtitle: "Tampak Depan, Samping & Belakang",
-  description:
-    "Desain karakter Sora Wirya — referensi visual resmi untuk seniman dan kreator yang ingin menggambar karakter ini.",
-  tags: ["Karakter Original", "VTuber Model", "Desain by Tegar Wahid"],
-};
-
-export const hashtags = [
-  "#SoraWirya",
-  "#SoraArt",
-  "#WiryaStream",
-  "#SoraFanart",
-  "#TimSora",
-  "#SoraLive",
 ];
 
 /* ───────────────────────────────────────────────
-   Guideline / Pedoman Komunitas
+   Experience
    ─────────────────────────────────────────────── */
-export type GuidelineSection = {
-  title: string;
-  icon: string;
-  rules: string[];
-  tone: "info" | "warning" | "success";
+export type Experience = {
+  company: string;
+  period: string;
+  role: string;
+  location: string;
+  description: string[];
+  tags: string[];
 };
 
-export const guidelines: GuidelineSection[] = [
+export const experience: Experience[] = [
   {
-    title: "Aturan Chat di Stream",
-    icon: "message-circle",
-    tone: "info",
-    rules: [
-      "Selalu hormati semua penonton dan moderator — tidak ada bully, rasisme, atau SARA.",
-      "Dilarang spam, capslock berlebihan, atau mengirim pesan berulang.",
-      "Jangan spoiler tanpa peringatan — gunakan tag [SPOILER] di awal pesan.",
-      "Ikuti topik obrolan dan jangan mengganggu streamer saat momen penting.",
-      "Dilarang mempromosikan channel/produk lain tanpa izin.",
-      "Pertanyaan tentang kolaborasi? Kirim melalui form kontak bisnis.",
+    company: "JEV (Jasa Edit Video)",
+    period: "2026",
+    role: "Video Editor",
+    location: "West Java, Indonesia",
+    description: [
+      "Edit multimedia content for various clients utilizing CapCut, Streamlabs, OBS, and FL Studio to ensure high-quality production.",
+      "Manage technical broadcast configurations and audio separation techniques.",
     ],
+    tags: ["Video Editing", "CapCut", "OBS", "Streamlabs", "FL Studio"],
   },
   {
-    title: "Izin Karya Turunan (Derivative Work)",
-    icon: "palette",
-    tone: "success",
-    rules: [
-      "Fanart & fanfiction DIizinkan dengan senang hati!",
-      "Wajib mencantumkan kredit: 'Sora Wirya by @tegarwahidalfasah'.",
-      "Boleh digunakan untuk portofolio pribadi & media sosial (non-komersial).",
-      "Boleh membuat cover, remix, atau aransemen ulang musik original.",
-      "Dilarang menggunakan desain karakter untuk proyek komersial tanpa izin tertulis.",
-      "Dilarang membuat konten NSFW atau yang bertentangan dengan persona karakter.",
+    company: "Regional Secretariat of Subang Regency (Setda Subang)",
+    period: "2025",
+    role: "IT Support Intern (PKL), Natural Resources Division",
+    location: "West Java, Indonesia",
+    description: [
+      "Provided comprehensive IT support and troubleshooting for staff within the Natural Resources Division.",
+      "Assisted in maintaining technical infrastructure and ensuring smooth operational systems.",
     ],
+    tags: ["IT Support", "Troubleshooting", "Infrastructure"],
   },
   {
-    title: "Aturan Monetisasi Fanart",
-    icon: "coins",
-    tone: "warning",
-    rules: [
-      "Penjualan cetak fanart (poster, stiker, pin) dalam jumlah kecil DIperbolehkan.",
-      "Wajib mencantumkan kredit dan tautan ke channel resmi Sora Wirya.",
-      "Tidak boleh memproduksi massal merchandise tanpa lisensi resmi.",
-      "Jika keuntungan melebihi Rp 2.000.000, silakan hubungi untuk bagi hasil.",
-      "Fanart yang dijual harus jelas merupakan karya orisinal Anda, bukan trace/repost.",
-      "Dukung sesama kreator — jangan meniru gaya secara berlebihan untuk keuntungan.",
+    company: "HG Adventure",
+    period: "2022",
+    role: "Content Creator",
+    location: "West Java, Indonesia",
+    description: [
+      "Managed social media platforms and developed creative content strategies.",
+      "Produced digital assets utilizing photography, videography, and video editing skills.",
+      "Executed graphic design tasks to support marketing and digital presence.",
     ],
+    tags: ["Content Creation", "Photography", "Videography", "Social Media"],
   },
   {
-    title: "Privasi & Batasan",
-    icon: "shield",
-    tone: "warning",
-    rules: [
-      "Dilarang menyebarkan informasi pribadi (doxxing) tentang VTuber di balik layar.",
-      "Identitas asli hanya boleh dibagikan oleh VTuber itu sendiri.",
-      "Screenshot percakapan pribadi dilarang dipublikasikan tanpa izin.",
-      "Hormati batasan antara persona karakter dan kehidupan pribadi.",
+    company: "The Lodge Maribaya",
+    period: "2021",
+    role: "IT Department Intern",
+    location: "Bandung, West Java",
+    description: [
+      "Completed a 3-month field internship providing operational IT support.",
+      "Assisted with technical documentation and digital design initiatives.",
     ],
+    tags: ["IT Support", "Documentation", "Digital Design"],
+  },
+  {
+    company: "SMK Bina Wisata Lembang",
+    period: "2020 — 2022",
+    role: "Technical Support, IT Team",
+    location: "West Java, Indonesia",
+    description: [
+      "Provided technical troubleshooting and system support for school infrastructure.",
+      "Maintained technical documentation and contributed to multimedia design projects.",
+    ],
+    tags: ["Technical Support", "Documentation", "Multimedia"],
   },
 ];
 
 /* ───────────────────────────────────────────────
-   Tools / Keahlian
+   Leadership & Activities
+   ─────────────────────────────────────────────── */
+export type Organization = {
+  name: string;
+  period: string;
+  role: string;
+  location: string;
+  description: string;
+};
+
+export const organizations: Organization[] = [
+  {
+    name: "BEM FT UM (Student Executive Board, Faculty of Engineering)",
+    period: "2023 — 2025",
+    role: "Department of Arts, Culture, and Sports",
+    location: "Subang, West Java",
+    description:
+      "Organize and coordinate faculty-wide events promoting cultural engagement and physical fitness.",
+  },
+  {
+    name: "HIMA TKJ (Computer and Network Engineering Student Association)",
+    period: "2022 — 2023",
+    role: "President",
+    location: "Subang, West Java",
+    description:
+      "Led student organizational initiatives and managed executive committee operations.",
+  },
+  {
+    name: "BW Jurnal",
+    period: "2019 — 2022",
+    role: "Vice Chairman & Secretary",
+    location: "Lembang, West Java",
+    description:
+      "Directed publication activities and managed administrative records for the organization.",
+  },
+  {
+    name: "OSIS SMK Bina Wisata Lembang",
+    period: "2020 — 2022",
+    role: "Technology Research Division",
+    location: "Lembang, West Java",
+    description:
+      "Spearheaded technology-focused programs and research initiatives for the student council.",
+  },
+];
+
+/* ───────────────────────────────────────────────
+   Skills & Interests
    ─────────────────────────────────────────────── */
 export type Tool = {
   name: string;
@@ -163,166 +197,118 @@ export type Tool = {
 
 export const tools: Tool[] = [
   {
-    name: "Adobe Family",
+    name: "Adobe Premiere Pro",
     description:
-      "Photoshop, Illustrator, Premiere Pro dan keluarga Adobe untuk kebutuhan desain serta editing profesional.",
-    icon: "palette",
-    tags: ["Photoshop", "Illustrator", "Premiere"],
+      "Professional video editing for multimedia content and broadcast production.",
+    icon: "film",
+    tags: ["Video Edit", "Broadcast", "Production"],
   },
   {
-    name: "Canva",
+    name: "After Effects",
     description:
-      "Desain grafis cepat untuk feed, story, poster dan berbagai kebutuhan konten media sosial.",
-    icon: "shapes",
-    tags: ["Feed", "Story", "Poster"],
+      "Motion graphics, visual effects, and compositing for professional video projects.",
+    icon: "sparkles",
+    tags: ["VFX", "Motion", "Compositing"],
+  },
+  {
+    name: "Illustrator & Photoshop",
+    description:
+      "Vector illustration and photo manipulation for graphic design and marketing assets.",
+    icon: "palette",
+    tags: ["Graphic Design", "Illustration", "Photo"],
+  },
+  {
+    name: "Lightroom",
+    description:
+      "Professional photo editing and color grading for photography workflows.",
+    icon: "camera",
+    tags: ["Photo Edit", "Color", "Batch"],
   },
   {
     name: "CapCut",
     description:
-      "Editing video pendek yang dinamis untuk konten TikTok, Reels dan media sosial lainnya.",
+      "Dynamic short-form video editing for TikTok, Reels, and social media content.",
     icon: "clapperboard",
-    tags: ["Reels", "Short Video", "Color"],
+    tags: ["Short Video", "Reels", "Social"],
   },
   {
-    name: "DaVinci Resolve",
+    name: "OBS Studio & Streamlabs",
     description:
-      "Color grading profesional dan editing video tingkat lanjut untuk produksi berkualitas tinggi.",
-    icon: "film",
-    tags: ["Color Grade", "Edit", "VFX"],
-  },
-  {
-    name: "OBS Studio",
-    description:
-      "Software streaming dan recording untuk live broadcast di YouTube dan Twitch.",
+      "Live streaming and broadcast management for content production.",
     icon: "radio",
-    tags: ["Streaming", "Recording", "Scene"],
+    tags: ["Streaming", "Broadcast", "Live"],
   },
   {
-    name: "Live2D / VTuber",
+    name: "TikTok Live Studio",
     description:
-      "Model rigged untuk ekspresi real-time saat streaming sebagai VTuber.",
-    icon: "smile",
-    tags: ["VTuber", "Rigging", "Motion"],
+      "Mobile-first live streaming platform for real-time audience engagement.",
+    icon: "smartphone",
+    tags: ["Live", "Mobile", "Engagement"],
   },
+  {
+    name: "FL Studio",
+    description:
+      "Digital audio workstation for music production and audio editing.",
+    icon: "music",
+    tags: ["Audio", "Music", "Production"],
+  },
+  {
+    name: "Canva",
+    description:
+      "Rapid graphic design for social media feeds, stories, and marketing materials.",
+    icon: "shapes",
+    tags: ["Social Media", "Design", "Quick"],
+  },
+  {
+    name: "Microsoft Office Suite",
+    description:
+      "Word, Excel, PowerPoint for documentation, reports, and presentations.",
+    icon: "file-text",
+    tags: ["Word", "Excel", "PowerPoint"],
+  },
+];
+
+export const programmingSkills = [
+  { name: "HTML", level: "Intermediate" },
+  { name: "CSS", level: "Intermediate" },
+  { name: "JavaScript", level: "Intermediate" },
+  { name: "TypeScript", level: "Intermediate" },
+  { name: "React", level: "Intermediate" },
+  { name: "Next.js", level: "Intermediate" },
+  { name: "Node.js", level: "Intermediate" },
+  { name: "C++", level: "Intermediate" },
 ];
 
 export const disciplines = [
-  "VTuber Streaming",
-  "Desain Grafis",
+  "Video Editing",
   "Photography",
   "Videography",
-  "Video Editor",
+  "Graphic Design",
+  "Broadcast Management",
+  "Live Streaming",
+  "IT Support",
+  "Content Creation",
   "Social Media Management",
-  "Dokumentasi",
-  "Live2D / Motion",
-  "Technical Support",
+  "Technical Troubleshooting",
+  "Project Management",
+  "Programming",
+];
+
+export const languages = [
+  { name: "Indonesian", level: "Native" },
+  { name: "English", level: "Basic" },
+];
+
+export const interests = [
+  "Programming",
+  "Live Streaming",
+  "Creative Media Production",
+  "Project Management",
 ];
 
 /* ───────────────────────────────────────────────
-   Pendidikan
-   ─────────────────────────────────────────────── */
-export type Education = {
-  school: string;
-  period: string;
-  program: string;
-  description: string;
-};
-
-export const education: Education[] = [
-  {
-    school: "Universitas Mandiri",
-    period: "2022 — Sekarang",
-    program: "Teknik Komputer Jaringan (TKJ)",
-    description:
-      "Mahasiswa program studi TKJ (Teknik Komputer Jaringan) di Universitas Mandiri, saat ini duduk di tingkat 3.",
-  },
-  {
-    school: "SMK Bina Wisata Lembang",
-    period: "2019 — 2022",
-    program: "Rekayasa Perangkat Lunak (RPL)",
-    description:
-      "Alumni angkatan 2019–2022 program studi RPL (Rekayasa Perangkat Lunak) di SMK Bina Wisata Lembang.",
-  },
-];
-
-/* ───────────────────────────────────────────────
-   Pengalaman Kerja
-   ─────────────────────────────────────────────── */
-export type Experience = {
-  company: string;
-  period: string;
-  role: string;
-  description: string;
-  tags: string[];
-};
-
-export const experience: Experience[] = [
-  {
-    company: "HG Adventure",
-    period: "2022",
-    role: "Content Creator",
-    description:
-      "Content creator media sosial di HG Adventure. Bertanggung jawab atas seluruh proses produksi konten, mulai dari ide hingga publikasi.",
-    tags: ["Desain", "Photography", "Videography", "Editor", "Social Media"],
-  },
-  {
-    company: "The Lodge Maribaya Bandung",
-    period: "2021",
-    role: "Departemen IT — PKL",
-    description:
-      "Praktek Kerja Lapangan (PKL) di The Lodge Maribaya Bandung selama 3 bulan di departemen IT, dengan fokus pada desain dan dokumentasi.",
-    tags: ["Desain", "Dokumentasi"],
-  },
-  {
-    company: "Tim IT SMK Bina Wisata Lembang",
-    period: "2020 — 2021",
-    role: "Technical Support",
-    description:
-      "Bagian dari Tim IT SMK Bina Wisata Lembang, menangani kebutuhan teknis, desain dan dokumentasi sekolah.",
-    tags: ["Desain", "Dokumentasi", "Technical Support"],
-  },
-];
-
-/* ───────────────────────────────────────────────
-   Organisasi
-   ─────────────────────────────────────────────── */
-export type Organization = {
-  name: string;
-  period: string;
-  role: string;
-};
-
-export const organizations: Organization[] = [
-  {
-    name: "BEM FT UM",
-    period: "2023 — Sekarang",
-    role: "Departemen Seni Budaya dan Olahraga",
-  },
-  {
-    name: "HIMA TKJ",
-    period: "2022 — 2023",
-    role: "Ketua HIMA",
-  },
-  {
-    name: "BW Jurnal",
-    period: "2019 — 2022",
-    role: "Sekretaris / Wakil Ketua",
-  },
-  {
-    name: "OSIS SMK Bina Wisata Lembang",
-    period: "2020 — 2021",
-    role: "Riset Teknologi",
-  },
-  {
-    name: "OSIS SMP Negeri 2 Lembang",
-    period: "2017 — 2018",
-    role: "Bendahara 3",
-  },
-];
-
-/* ───────────────────────────────────────────────
-   Karya / Portofolio
-   ─────────────────────────────────────────────── */
+   Works / Portfolio (placeholder - update with real works)
+   ────────────────────────────────────────────── */
 export type Work = {
   title: string;
   client: string;
@@ -333,49 +319,49 @@ export type Work = {
 
 export const works: Work[] = [
   {
-    title: "Adventure Social Media Content",
-    client: "HG Adventure",
-    category: "Photography · Videography",
+    title: "Multimedia Content Production",
+    client: "JEV (Jasa Edit Video)",
+    category: "Video Editing · Broadcast",
     image:
       "https://images.pexels.com/photos/12757209/pexels-photo-12757209.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
-    type: "image",
+    type: "video",
   },
   {
-    title: "Golden Hour Frames",
-    client: "Color & Editing",
-    category: "Videography · Editor",
+    title: "Broadcast Configuration & Audio",
+    client: "Live Production",
+    category: "Streaming · Audio",
     image:
       "https://images.pexels.com/photos/36920917/pexels-photo-36920917.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
-    type: "image",
+    type: "video",
   },
   {
-    title: "Potret & Visual Storytelling",
-    client: "Photography",
-    category: "Foto Dokumentasi",
+    title: "Creative Content Strategy",
+    client: "HG Adventure",
+    category: "Social Media · Photography",
     image:
       "https://images.pexels.com/photos/31681666/pexels-photo-31681666.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800",
     type: "image",
   },
   {
-    title: "Dokumentasi Wisata Alam",
-    client: "The Lodge Maribaya",
-    category: "Dokumentasi",
+    title: "Digital Design & Marketing Assets",
+    client: "HG Adventure",
+    category: "Graphic Design · Marketing",
     image:
       "https://images.pexels.com/photos/29546725/pexels-photo-29546725.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     type: "image",
   },
   {
-    title: "Behind the Scenes Produksi",
-    client: "Videography",
-    category: "Video Production",
+    title: "Technical Documentation",
+    client: "The Lodge Maribaya",
+    category: "IT Support · Documentation",
     image:
       "https://images.pexels.com/photos/34037222/pexels-photo-34037222.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
-    type: "video",
+    type: "image",
   },
   {
-    title: "Desain Konten & Visual Identity",
-    client: "Graphic Design",
-    category: "Desain · Sosial Media",
+    title: "Multimedia Design Projects",
+    client: "SMK Bina Wisata Lembang",
+    category: "Design · Multimedia",
     image:
       "https://images.pexels.com/photos/3850210/pexels-photo-3850210.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     type: "image",
@@ -383,7 +369,7 @@ export const works: Work[] = [
 ];
 
 /* ───────────────────────────────────────────────
-   Highlight Stream / Showcase Media
+   Media Showcase (placeholder)
    ─────────────────────────────────────────────── */
 export type MediaItem = {
   title: string;
@@ -397,37 +383,37 @@ export type MediaItem = {
 
 export const mediaShowcase: MediaItem[] = [
   {
-    title: "Stream Highlights — Horror Game Night",
+    title: "Video Editing Showcase",
     description:
-      "Momen-momen seru saat Sora Wirya bermain game horror bersama komunitas di live stream.",
-    type: "youtube",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail:
-      "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
-    duration: "12:34",
-    tags: ["Gaming", "Horror", "Highlight"],
-  },
-  {
-    title: "Jasa Edit Video — Cinematic Montage",
-    description:
-      "Contoh hasil editing video cinematic untuk klien. Tersedia untuk komisi editing video profesional.",
+      "Contoh hasil editing video multimedia untuk klien JEV. Menggunakan CapCut, OBS, dan FL Studio.",
     type: "video",
     embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     thumbnail:
       "https://images.pexels.com/photos/2098989/pexels-photo-2098989.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
     duration: "03:22",
-    tags: ["Editing", "Commission", "Cinematic"],
+    tags: ["Video Editing", "CapCut", "OBS"],
   },
   {
-    title: "Just Chatting — Q&A Session",
+    title: "Broadcast & Streaming Setup",
     description:
-      "Sesi ngobrol santai bersama komunitas Sora Wirya. Tanya jawab, cerita seru, dan interaksi dengan penonton.",
-    type: "twitch",
-    embedUrl: "https://player.twitch.tv/?channel=sorawirya&parent=localhost",
+      "Konfigurasi broadcast live streaming dengan OBS Studio dan Streamlabs untuk produksi konten berkualitas tinggi.",
+    type: "video",
+    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    thumbnail:
+      "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
+    duration: "05:15",
+    tags: ["Broadcast", "Streaming", "OBS"],
+  },
+  {
+    title: "Creative Content Production",
+    description:
+      "Proses produksi konten kreatif untuk HG Adventure — dari konsep hingga publikasi di media sosial.",
+    type: "video",
+    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     thumbnail:
       "https://images.pexels.com/photos/382297/pexels-photo-382297.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
-    duration: "45:10",
-    tags: ["Chatting", "Q&A", "Community"],
+    duration: "04:30",
+    tags: ["Content", "Photography", "Videography"],
   },
 ];
 
@@ -443,34 +429,16 @@ export type PlatformLink = {
 
 export const platforms: PlatformLink[] = [
   {
-    name: "YouTube",
-    url: profile.youtubeHref,
-    icon: "youtube",
-    description: "Video, stream replay & highlight",
-  },
-  {
-    name: "Twitch",
-    url: profile.twitchHref,
-    icon: "twitch",
-    description: "Live streaming gaming & chatting",
-  },
-  {
     name: "Instagram",
     url: profile.instagramHref,
     icon: "instagram",
-    description: "Behind the scenes & daily life",
+    description: "Portfolio & behind the scenes",
   },
   {
-    name: "TikTok",
-    url: profile.tiktokHref,
-    icon: "tiktok",
-    description: "Short-form content & clips",
-  },
-  {
-    name: "Trakteer",
-    url: profile.donation,
-    icon: "heart",
-    description: "Dukung & apresiasi karya Sora",
+    name: "Email",
+    url: `mailto:${profile.email}`,
+    icon: "mail",
+    description: "Business inquiries",
   },
 ];
 
@@ -483,11 +451,11 @@ export type ContactOption = {
 };
 
 export const contactPurposes: ContactOption[] = [
-  { value: "commission", label: "Komisi Desain / Editing" },
+  { value: "commission", label: "Jasa Edit Video" },
   { value: "collab", label: "Kolaborasi Konten" },
   { value: "sponsor", label: "Sponsorship / Partnership" },
-  { value: "vtuber", label: "Jasa VTuber / Streaming" },
-  { value: "fanart", label: "Pertanyaan Fanart / Lisensi" },
+  { value: "it", label: "IT Support / Konsultasi" },
+  { value: "design", label: "Jasa Desain Grafis" },
   { value: "other", label: "Lainnya" },
 ];
 
@@ -495,8 +463,8 @@ export const contactPurposes: ContactOption[] = [
    Statistik
    ─────────────────────────────────────────────── */
 export const stats = [
-  { value: "03", label: "Pengalaman Kerja" },
-  { value: "40+", label: "Proyek Kreatif" },
-  { value: "05", label: "Organisasi Aktif" },
-  { value: "02", label: "Institusi Pendidikan" },
+  { value: "05", label: "Pengalaman\nKerja" },
+  { value: "40+", label: "Proyek\nKreatif" },
+  { value: "04", label: "Organisasi\nAktif" },
+  { value: "02", label: "Institusi\nPendidikan" },
 ];

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
+import { Menu, X, ArrowUpRight, Briefcase } from "lucide-react";
 import { profile } from "../data";
 
 const links = [
   { label: "About", href: "#about" },
-  { label: "Lore", href: "#lore" },
-  { label: "Karya", href: "#karya" },
-  { label: "Media", href: "#media" },
-  { label: "Guideline", href: "#guideline" },
-  { label: "Kontak", href: "#kontak" },
+  { label: "Education", href: "#pendidikan" },
+  { label: "Experience", href: "#pengalaman" },
+  { label: "Skills", href: "#skills" },
+  { label: "Leadership", href: "#organisasi" },
+  { label: "Contact", href: "#kontak" },
 ];
 
 export function Navbar() {
@@ -48,8 +48,8 @@ export function Navbar() {
               {profile.shortName}
             </span>
             <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-accent-500/20 bg-accent-500/5 px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-wider text-accent-600">
-              <Sparkles size={10} />
-              VTuber
+              <Briefcase size={10} />
+              Video Editor
             </span>
           </a>
 
@@ -68,12 +68,10 @@ export function Navbar() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <a
-              href={profile.youtubeHref}
-              target="_blank"
-              rel="noreferrer"
+              href="#kontak"
               className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-5 py-2.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl hover:shadow-accent-500/35"
             >
-              Tonton Stream
+              Hire Me
               <ArrowUpRight
                 size={15}
                 className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -116,16 +114,14 @@ export function Navbar() {
                 </motion.a>
               ))}
               <motion.a
-                href={profile.youtubeHref}
-                target="_blank"
-                rel="noreferrer"
+                href="#kontak"
                 onClick={() => setOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 className="mt-4 flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-base font-semibold text-white shadow-lg shadow-accent-500/25"
               >
-                Tonton Stream
+                Hire Me
                 <ArrowUpRight size={18} />
               </motion.a>
             </div>

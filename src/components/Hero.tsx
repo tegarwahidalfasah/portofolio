@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, MapPin, Aperture, Mail, Sparkles, Tv } from "lucide-react";
-import { profile, disciplines } from "../data";
+import { ArrowDown, ArrowUpRight, MapPin, Mail, GraduationCap } from "lucide-react";
+import { profile } from "../data";
 import { InstagramIcon } from "./Icons";
-import portrait from "../assets/portrait.jpg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -15,7 +14,6 @@ export function Hero() {
       {/* Background glow orbs */}
       <div className="glow-orb h-[520px] w-[520px] -right-40 top-10 bg-accent-400/30" />
       <div className="glow-orb h-[440px] w-[440px] -left-52 bottom-0 bg-sky-400/20" />
-      <div className="glow-orb h-[300px] w-[300px] left-1/3 bottom-1/3 bg-bg-tertiary/50" />
 
       {/* Faint grid */}
       <div
@@ -38,7 +36,7 @@ export function Hero() {
           >
             <span className="animate-pulse-dot h-2 w-2 rounded-full bg-green-500" />
             <span className="font-mono text-xs tracking-wide text-text-secondary">
-              VTuber • Terbuka untuk kolaborasi & proyek kreatif
+              Available for freelance & collaboration
             </span>
           </motion.div>
 
@@ -48,9 +46,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.1, ease }}
             className="mt-6 hero-display"
           >
-            SORA
+            TEGAR WAHID
             <br />
-            WIRYA
+            <span className="gradient-text">ALFASAH</span>
           </motion.h1>
 
           <motion.p
@@ -59,17 +57,17 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.22, ease }}
             className="mt-5 font-display text-lg font-semibold tracking-tight text-text-primary sm:text-xl"
           >
-            Digital Designer & Experience Creator
+            Video Editor & Creative Media Producer
           </motion.p>
 
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.28, ease }}
-            className="mt-4 max-w-md text-base leading-relaxed text-text-secondary"
+            className="mt-4 max-w-lg text-base leading-relaxed text-text-secondary"
           >
-            I design immersive VTuber experiences and visual content that blend
-            clarity, creativity, and innovation.
+            A highly adaptable Computer and Network Engineering student with
+            proven experience in creative media production and IT support.
           </motion.p>
 
           <motion.div
@@ -92,20 +90,11 @@ export function Hero() {
               href="#kontak"
               className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 hover:bg-white/80"
             >
-              Download CV
+              Contact Me
               <ArrowUpRight
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               />
-            </a>
-            <a
-              href={profile.twitchHref}
-              target="_blank"
-              rel="noreferrer"
-              className="group flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-6 py-3.5 font-display text-sm font-semibold text-accent-600 transition-all hover:border-accent-500/50 hover:bg-accent-500/15"
-            >
-              <Tv size={16} />
-              Live Now
             </a>
           </motion.div>
 
@@ -117,7 +106,7 @@ export function Hero() {
           >
             <span className="flex items-center gap-2">
               <MapPin size={15} className="text-accent-500" />
-              {profile.locationShort}
+              {profile.location}
             </span>
             <a
               href={profile.instagramHref}
@@ -135,38 +124,45 @@ export function Hero() {
               <Mail size={15} className="text-accent-500" />
               Email
             </a>
+            <span className="flex items-center gap-2">
+              <GraduationCap size={15} className="text-accent-500" />
+              GPA {profile.gpa} — Class of {profile.graduationYear}
+            </span>
           </motion.div>
         </div>
 
-        {/* Portrait column */}
-        <div className="relative order-1 mx-auto w-full max-w-xs sm:max-w-sm lg:order-2 lg:col-span-5 lg:max-w-none">
+        {/* Right side — portrait placeholder */}
+        <div className="relative order-1 mx-auto w-full max-w-sm lg:order-2 lg:col-span-5 lg:max-w-none">
           <motion.div
             initial={{ opacity: 0, scale: 0.92, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2, ease }}
-            className="relative animate-float"
+            className="relative"
           >
-            {/* Portrait frame */}
             <div className="overflow-hidden rounded-[2rem] border border-glass-border bg-white/40 shadow-2xl shadow-accent-500/10 backdrop-blur-xl">
-              <img
-                src={portrait}
-                alt="Sora Wirya — VTuber & Content Creator"
-                className="aspect-[4/5] w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/40 via-transparent to-transparent" />
+              <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-br from-accent-500/10 via-white/20 to-sky-400/10">
+                <div className="text-center">
+                  <span className="font-display text-8xl font-bold tracking-tight text-accent-500/30">
+                    {profile.initials}
+                  </span>
+                  <p className="mt-3 font-display text-lg font-semibold text-text-muted">
+                    {profile.name}
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Floating chip: role */}
             <div className="animate-float-slow absolute -left-6 top-12 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-10">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25">
-                <Aperture size={18} />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
               </span>
               <div>
                 <p className="font-display text-xs font-bold text-text-primary">
-                  VTuber Creator
+                  Video Editor
                 </p>
                 <p className="font-mono text-[10px] text-text-muted">
-                  Stream · Design · Video
+                  Premiere · After Effects · CapCut
                 </p>
               </div>
             </div>
@@ -174,7 +170,7 @@ export function Hero() {
             {/* Floating chip: available */}
             <div className="animate-float absolute -bottom-4 -right-2 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-6">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25">
-                <Sparkles size={18} />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
               </span>
               <div>
                 <p className="font-display text-xs font-bold text-text-primary">
@@ -185,33 +181,7 @@ export function Hero() {
                 </p>
               </div>
             </div>
-
-            {/* Small badge */}
-            <div className="absolute -top-3 -right-3 flex h-12 w-12 items-center justify-center rounded-full border border-glass-border bg-white/80 shadow-lg backdrop-blur-xl">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-accent-400 to-sky-400 flex items-center justify-center">
-                <Sparkles size={14} className="text-white" />
-              </div>
-            </div>
           </motion.div>
-        </div>
-      </div>
-
-      {/* Marquee */}
-      <div className="marquee-mask relative border-t border-glass-300/50 bg-glass-50/40 py-4 backdrop-blur-sm">
-        <div className="flex w-max animate-marquee gap-0">
-          {[0, 1].map((dup) => (
-            <div key={dup} className="flex shrink-0 items-center">
-              {disciplines.map((item) => (
-                <span
-                  key={`${dup}-${item}`}
-                  className="flex items-center font-display text-sm font-medium uppercase tracking-[0.15em] text-text-muted"
-                >
-                  <span className="px-7">{item}</span>
-                  <span className="text-accent-400">✦</span>
-                </span>
-              ))}
-            </div>
-          ))}
         </div>
       </div>
     </section>
