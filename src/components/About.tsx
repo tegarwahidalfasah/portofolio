@@ -14,11 +14,11 @@ export function About() {
           <div className="lg:col-span-7">
             <Reveal delay={0.05}>
               <h2 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-navy-900 sm:text-5xl">
-                Bercerita lewat{" "}
+                VTuber, desainer{" "}
                 <span className="font-accent font-normal italic text-brand-600">
-                  desain, foto
+                  & visual
                 </span>{" "}
-                &amp; video.
+                storyteller.
               </h2>
             </Reveal>
 
@@ -34,8 +34,9 @@ export function About() {
                   <Quote size={18} />
                 </span>
                 <p className="font-accent text-2xl italic leading-snug text-navy-800">
-                  “Kreativitas bukan sekadar hobi — itu adalah perjalanan yang
-                  saya bangun sejak SMP hingga ke bangku kuliah.”
+                  "Kreativitas bukan sekadar hobi — itu adalah perjalanan yang
+                  saya bangun sejak SMP hingga ke bangku kuliah, kini hidup
+                  dalam karakter Sora Wirya."
                 </p>
               </div>
             </Reveal>
@@ -44,18 +45,18 @@ export function About() {
               <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-navy-900/10 bg-cream-100 p-5">
                   <dt className="font-mono text-[11px] uppercase tracking-widest text-navy-500">
-                    Fokus Saat Ini
+                    Persona Aktif
                   </dt>
                   <dd className="mt-1.5 font-display text-base font-semibold text-navy-900">
-                    Konten kreatif & media sosial
+                    VTuber — Sora Wirya
                   </dd>
                 </div>
                 <div className="rounded-2xl border border-navy-900/10 bg-cream-100 p-5">
                   <dt className="font-mono text-[11px] uppercase tracking-widest text-navy-500">
-                    Status
+                    Fokus Saat Ini
                   </dt>
                   <dd className="mt-1.5 font-display text-base font-semibold text-navy-900">
-                    Mahasiswa TKJ tingkat 3
+                    Streaming, desain & konten kreatif
                   </dd>
                 </div>
               </dl>

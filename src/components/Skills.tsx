@@ -1,4 +1,4 @@
-import { Palette, Shapes, Clapperboard, FileText, ArrowUpRight } from "lucide-react";
+import { Palette, Shapes, Clapperboard, FileText, Film, Radio, Smile, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
 import { tools, disciplines } from "../data";
 
@@ -7,6 +7,9 @@ const iconMap: Record<string, typeof Palette> = {
   shapes: Shapes,
   clapperboard: Clapperboard,
   "file-text": FileText,
+  film: Film,
+  radio: Radio,
+  smile: Smile,
 };
 
 export function Skills() {
@@ -16,7 +19,7 @@ export function Skills() {
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal>
-          <SectionLabel index="// 02" title="Keahlian" tone="dark" />
+          <SectionLabel index="// 03" title="Keahlian" tone="dark" />
         </Reveal>
 
         <div className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -31,14 +34,14 @@ export function Skills() {
           <Reveal delay={0.12}>
             <p className="max-w-md text-cream-100/60">
               Perangkat lunak utama yang saya gunakan untuk menghasilkan karya
-              desain, foto, video dan dokumen.
+              desain, foto, video, streaming VTuber, dan dokumen.
             </p>
           </Reveal>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool, i) => {
-            const Icon = iconMap[tool.icon];
+            const Icon = iconMap[tool.icon] || Palette;
             return (
               <Reveal key={tool.name} delay={0.08 * i}>
                 <article className="card-hover group relative h-full overflow-hidden rounded-3xl border border-cream-100/10 bg-navy-900 p-7 hover:border-brand-500/50">

@@ -1,12 +1,14 @@
 import { ArrowUp } from "lucide-react";
 import { profile } from "../data";
 import { InstagramIcon } from "./Icons";
+import { YouTubeIcon, TwitchIcon, TikTokIcon, HeartIcon } from "./PlatformIcons";
 
 const navLinks = [
   { label: "Tentang", href: "#tentang" },
-  { label: "Keahlian", href: "#keahlian" },
+  { label: "Lore", href: "#lore" },
   { label: "Karya", href: "#karya" },
-  { label: "Pengalaman", href: "#pengalaman" },
+  { label: "Media", href: "#media" },
+  { label: "Guideline", href: "#guideline" },
   { label: "Kontak", href: "#kontak" },
 ];
 
@@ -21,12 +23,12 @@ export function Footer() {
                 {profile.initials}
               </span>
               <span className="font-display text-lg font-semibold text-cream-50">
-                Tegar Wahid Alfasah
+                Sora Wirya
               </span>
             </a>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-cream-100/50">
-              Content creator, desainer, fotografer & videografer asal Subang,
-              Jawa Barat.
+              VTuber, content creator, desainer, fotografer & videografer
+              asal Subang, Jawa Barat.
             </p>
           </div>
 
@@ -44,6 +46,24 @@ export function Footer() {
 
           <div className="flex items-center gap-3">
             <a
+              href={profile.youtubeHref}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="YouTube"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-colors hover:border-brand-400 hover:text-brand-400"
+            >
+              <YouTubeIcon size={17} />
+            </a>
+            <a
+              href={profile.twitchHref}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Twitch"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-colors hover:border-accent-400 hover:text-accent-400"
+            >
+              <TwitchIcon size={17} />
+            </a>
+            <a
               href={profile.instagramHref}
               target="_blank"
               rel="noreferrer"
@@ -53,23 +73,22 @@ export function Footer() {
               <InstagramIcon size={17} />
             </a>
             <a
-              href={`mailto:${profile.email}`}
-              aria-label="Email"
+              href={profile.tiktokHref}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="TikTok"
               className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-colors hover:border-brand-400 hover:text-brand-400"
             >
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
+              <TikTokIcon size={17} />
+            </a>
+            <a
+              href={profile.donation}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Dukung Sora Wirya"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-colors hover:border-accent-400 hover:text-accent-400"
+            >
+              <HeartIcon size={17} />
             </a>
             <a
               href="#top"
@@ -82,9 +101,9 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-cream-100/10 pt-6 text-xs text-cream-100/40 sm:flex-row sm:items-center">
-          <p>© 2026 Tegar Wahid Alfasah. Seluruh hak cipta dilindungi.</p>
+          <p>© 2026 Sora Wirya (Tegar Wahid Alfasah). Seluruh hak cipta dilindungi.</p>
           <p className="font-mono">
-            Designed &amp; built with creativity{" "}
+            VTuber • Content Creator • Visual Designer{" "}
             <span className="text-accent-400">✦</span>
           </p>
         </div>

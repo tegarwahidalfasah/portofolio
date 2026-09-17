@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, MapPin, Aperture, Mail } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MapPin, Aperture, Mail, Tv } from "lucide-react";
 import { profile, disciplines } from "../data";
 import { InstagramIcon } from "./Icons";
 import portrait from "../assets/portrait.jpg";
@@ -36,7 +36,7 @@ export function Hero() {
           >
             <span className="animate-pulse-dot h-2 w-2 rounded-full bg-accent-400" />
             <span className="font-mono text-xs tracking-wide text-cream-100/80">
-              Terbuka untuk kolaborasi & proyek kreatif
+              VTuber • Terbuka untuk kolaborasi & proyek kreatif
             </span>
           </motion.div>
 
@@ -46,9 +46,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.1, ease }}
             className="mt-6 font-display text-[13vw] font-bold leading-[0.95] tracking-tight text-cream-50 sm:text-6xl lg:text-[5.4rem] xl:text-[6.2rem]"
           >
-            TEGAR WAHID
+            SORA WIRYA
             <br />
-            <span className="text-outline-blue">ALFASAH</span>
+            <span className="text-outline-blue">VISUAL STORYTELLER</span>
           </motion.h1>
 
           <motion.p
@@ -81,14 +81,23 @@ export function Hero() {
               />
             </a>
             <a
-              href="#kontak"
-              className="group flex items-center gap-2 rounded-full border border-cream-100/25 px-7 py-3.5 font-display text-sm font-semibold text-cream-50 transition-colors hover:border-brand-400 hover:text-brand-400"
+              href="#lore"
+              className="group flex items-center gap-2 rounded-full border border-cream-100/25 px-7 py-3.5 font-display text-sm font-semibold text-cream-50 transition-colors hover:border-accent-400 hover:text-accent-400"
             >
-              Hubungi Saya
+              Baca Lore
               <ArrowUpRight
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               />
+            </a>
+            <a
+              href={profile.twitchHref}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-7 py-3.5 font-display text-sm font-semibold text-accent-300 transition-colors hover:border-accent-500 hover:text-accent-400"
+            >
+              <Tv size={16} />
+              Live Now
             </a>
           </motion.div>
 
@@ -134,7 +143,7 @@ export function Hero() {
             <div className="overflow-hidden rounded-t-[220px] rounded-b-3xl border border-cream-100/15 bg-navy-800">
               <img
                 src={portrait}
-                alt="Potret Tegar Wahid Alfasah"
+                alt="Sora Wirya — VTuber & Content Creator"
                 className="aspect-[4/5] w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950/55 via-transparent to-transparent" />
@@ -147,17 +156,17 @@ export function Hero() {
               </span>
               <div>
                 <p className="font-display text-xs font-semibold text-cream-50">
-                  Content Creator
+                  VTuber Creator
                 </p>
                 <p className="font-mono text-[10px] text-cream-100/50">
-                  Photo · Video · Design
+                  Stream · Design · Video
                 </p>
               </div>
             </div>
 
             {/* floating chip: location */}
             <div className="animate-float-slower absolute -bottom-5 -right-2 flex items-center gap-2.5 rounded-2xl border border-cream-100/15 bg-navy-900/90 px-4 py-3 shadow-2xl backdrop-blur sm:-right-6">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500/15 text-brand-400">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-500/15 text-accent-400">
                 <MapPin size={18} />
               </span>
               <div>

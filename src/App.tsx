@@ -1,8 +1,11 @@
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
+import { Lore } from "./components/Lore";
 import { Skills } from "./components/Skills";
 import { Works } from "./components/Works";
+import { MediaShowcase } from "./components/MediaShowcase";
+import { Guidelines } from "./components/Guidelines";
 import { Education } from "./components/Education";
 import { Experience } from "./components/Experience";
 import { Organizations } from "./components/Organizations";
@@ -16,8 +19,11 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <Lore />
         <Skills />
         <Works />
+        <MediaShowcase />
+        <Guidelines />
         <Education />
         <Experience />
         <Organizations />
