@@ -1,4 +1,4 @@
-import { ArrowUp, Sparkles } from "lucide-react";
+import { ArrowUp, Sparkles, Download } from "lucide-react";
 import { profile } from "../data";
 import { InstagramIcon } from "./Icons";
 import { MailIcon } from "./PlatformIcons";
@@ -8,7 +8,8 @@ const navLinks = [
   { label: "Education", href: "#pendidikan" },
   { label: "Experience", href: "#pengalaman" },
   { label: "Skills", href: "#skills" },
-  { label: "Leadership", href: "#organisasi" },
+  { label: "Services", href: "#layanan" },
+  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#kontak" },
 ];
 
@@ -31,6 +32,14 @@ export function Footer() {
               Video Editor, Content Creator & Computer Network Engineering Student
               from Subang, West Java.
             </p>
+            <a
+              href="/CV_Tegar_Wahid_Alfasah.pdf"
+              download
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-5 py-2.5 font-display text-xs font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
+            >
+              <Download size={14} />
+              Download Full CV
+            </a>
           </div>
 
           {/* Nav */}

@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, MapPin, Mail, GraduationCap } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MapPin, Mail, GraduationCap, Download } from "lucide-react";
 import { profile } from "../data";
 import { InstagramIcon } from "./Icons";
+import portrait from "../assets/portrait.jpg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -87,10 +88,18 @@ export function Hero() {
               />
             </a>
             <a
-              href="#kontak"
+              href="/CV_Tegar_Wahid_Alfasah.pdf"
+              download
               className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 hover:bg-white/80"
             >
-              Contact Me
+              <Download size={16} />
+              Download CV
+            </a>
+            <a
+              href="#kontak"
+              className="group flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-7 py-3.5 font-display text-sm font-semibold text-accent-600 transition-all hover:border-accent-500/50 hover:bg-accent-500/15"
+            >
+              Hire Me
               <ArrowUpRight
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -131,25 +140,22 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right side — portrait placeholder */}
-        <div className="relative order-1 mx-auto w-full max-w-sm lg:order-2 lg:col-span-5 lg:max-w-none">
+        {/* Portrait column */}
+        <div className="relative order-1 mx-auto w-full max-w-xs sm:max-w-sm lg:order-2 lg:col-span-5 lg:max-w-none">
           <motion.div
             initial={{ opacity: 0, scale: 0.92, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2, ease }}
-            className="relative"
+            className="relative animate-float"
           >
+            {/* Portrait frame */}
             <div className="overflow-hidden rounded-[2rem] border border-glass-border bg-white/40 shadow-2xl shadow-accent-500/10 backdrop-blur-xl">
-              <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-br from-accent-500/10 via-white/20 to-sky-400/10">
-                <div className="text-center">
-                  <span className="font-display text-8xl font-bold tracking-tight text-accent-500/30">
-                    {profile.initials}
-                  </span>
-                  <p className="mt-3 font-display text-lg font-semibold text-text-muted">
-                    {profile.name}
-                  </p>
-                </div>
-              </div>
+              <img
+                src={portrait}
+                alt="Tegar Wahid Alfasah — Video Editor & Creative Media Producer"
+                className="aspect-[3/4] w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/40 via-transparent to-transparent" />
             </div>
 
             {/* Floating chip: role */}
@@ -179,6 +185,13 @@ export function Hero() {
                 <p className="font-mono text-[10px] text-text-muted">
                   for freelance
                 </p>
+              </div>
+            </div>
+
+            {/* Small badge */}
+            <div className="absolute -top-3 -right-3 flex h-12 w-12 items-center justify-center rounded-full border border-glass-border bg-white/80 shadow-lg backdrop-blur-xl">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-accent-400 to-sky-400 flex items-center justify-center">
+                <span className="text-[10px] font-bold text-white">TWA</span>
               </div>
             </div>
           </motion.div>

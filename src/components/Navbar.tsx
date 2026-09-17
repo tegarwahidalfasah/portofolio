@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, ArrowUpRight, Briefcase } from "lucide-react";
+import { Menu, X, ArrowUpRight, Briefcase, Download } from "lucide-react";
 import { profile } from "../data";
 
 const links = [
@@ -8,8 +8,8 @@ const links = [
   { label: "Education", href: "#pendidikan" },
   { label: "Experience", href: "#pengalaman" },
   { label: "Skills", href: "#skills" },
-  { label: "Leadership", href: "#organisasi" },
-  { label: "Contact", href: "#kontak" },
+  { label: "Services", href: "#layanan" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export function Navbar() {
@@ -54,7 +54,7 @@ export function Navbar() {
           </a>
 
           {/* Desktop links */}
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden items-center gap-1 xl:flex">
             {links.map((link) => (
               <a
                 key={link.href}
@@ -66,7 +66,15 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-3 xl:flex">
+            <a
+              href="/CV_Tegar_Wahid_Alfasah.pdf"
+              download
+              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-4 py-2.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
+            >
+              <Download size={14} />
+              CV
+            </a>
             <a
               href="#kontak"
               className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-5 py-2.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl hover:shadow-accent-500/35"
@@ -82,7 +90,7 @@ export function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setOpen(!open)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-300 bg-glass-bg text-text-primary backdrop-blur-lg lg:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-300 bg-glass-bg text-text-primary backdrop-blur-lg xl:hidden"
             aria-label="Toggle menu"
           >
             {open ? <X size={20} /> : <Menu size={20} />}
@@ -97,7 +105,7 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-bg-primary/90 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 bg-bg-primary/90 backdrop-blur-xl xl:hidden"
           >
             <div className="flex h-full flex-col items-center justify-center gap-6">
               {links.map((link, i) => (
@@ -114,12 +122,23 @@ export function Navbar() {
                 </motion.a>
               ))}
               <motion.a
+                href="/CV_Tegar_Wahid_Alfasah.pdf"
+                download
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-base font-semibold text-text-primary"
+              >
+                <Download size={18} />
+                Download CV
+              </motion.a>
+              <motion.a
                 href="#kontak"
                 onClick={() => setOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="mt-4 flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-base font-semibold text-white shadow-lg shadow-accent-500/25"
+                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-base font-semibold text-white shadow-lg shadow-accent-500/25"
               >
                 Hire Me
                 <ArrowUpRight size={18} />
