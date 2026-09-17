@@ -1,40 +1,18 @@
 import { MessageSquare, FileText, Clapperboard, Eye, CheckCircle } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
+import { useCms } from "../cms/store";
 
-const steps = [
-  {
-    icon: MessageSquare,
-    step: "01",
-    title: "Konsultasi",
-    description: "Diskusi kebutuhan, tujuan, dan ekspektasi proyek Anda secara detail.",
-  },
-  {
-    icon: FileText,
-    step: "02",
-    title: "Brief & Deal",
-    description: "Penyepakatan brief kerja, timeline, harga, dan metode pembayaran.",
-  },
-  {
-    icon: Clapperboard,
-    step: "03",
-    title: "Produksi",
-    description: "Proses editing/desain dengan update progress secara berkala.",
-  },
-  {
-    icon: Eye,
-    step: "04",
-    title: "Review",
-    description: "Anda review hasil kerja. 2x revisi gratis sesuai brief.",
-  },
-  {
-    icon: CheckCircle,
-    step: "05",
-    title: "Finalisasi",
-    description: "Delivery file final dalam format yang dibutuhkan. Selesai!",
-  },
-];
+const iconMap: Record<string, typeof Eye> = {
+  "message-square": MessageSquare,
+  "file-text": FileText,
+  clapperboard: Clapperboard,
+  eye: Eye,
+  "check-circle": CheckCircle,
+};
 
 export function Workflow() {
+  const { workflowSteps } = useCms().content;
+
   return (
     <section id="workflow" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
@@ -53,13 +31,13 @@ export function Workflow() {
         </Reveal>
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
+          {workflowSteps.map((step, i) => {
+            const Icon = iconMap[step.icon] || MessageSquare;
             return (
               <Reveal key={step.step} delay={0.08 * i}>
                 <div className="glass-card glass-hover group relative p-6 text-center">
                   {/* Connector line */}
-                  {i < steps.length - 1 && (
+                  {i < workflowSteps.length - 1 && (
                     <div className="absolute -right-2 top-1/2 hidden h-px w-4 -translate-y-1/2 bg-gradient-to-r from-accent-400 to-transparent lg:block" />
                   )}
 

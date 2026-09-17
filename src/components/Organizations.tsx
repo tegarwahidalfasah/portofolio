@@ -1,8 +1,9 @@
 import { Users, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { organizations } from "../data";
+import { useCms } from "../cms/store";
 
 export function Organizations() {
+  const { organizations } = useCms().content;
   return (
     <section id="organisasi" className="relative bg-cream-100 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

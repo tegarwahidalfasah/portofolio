@@ -1,5 +1,5 @@
 import { ArrowUp, Sparkles, Download } from "lucide-react";
-import { profile } from "../data";
+import { useCms } from "../cms/store";
 import { InstagramIcon } from "./Icons";
 import { MailIcon } from "./PlatformIcons";
 
@@ -14,6 +14,8 @@ const navLinks = [
 ];
 
 export function Footer() {
+  const { profile, footer } = useCms().content;
+
   return (
     <footer className="border-t border-glass-300/50 bg-glass-50/60 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
@@ -25,15 +27,14 @@ export function Footer() {
                 {profile.initials}
               </span>
               <span className="font-display text-lg font-bold text-text-primary">
-                {profile.shortName} Alfasah
+                {profile.shortName} {profile.lastName}
               </span>
             </a>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-text-muted">
-              Video Editor, Content Creator & Computer Network Engineering Student
-              from Subang, West Java.
+              {footer.tagline}
             </p>
             <a
-              href="/CV_Tegar_Wahid_Alfasah.pdf"
+              href={profile.cvUrl}
               download
               className="mt-4 inline-flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-5 py-2.5 font-display text-xs font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
             >
@@ -85,12 +86,16 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-glass-300/50 pt-6 text-xs text-text-muted sm:flex-row sm:items-center">
-          <p>© 2026 Tegar Wahid Alfasah. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {profile.name}. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <Sparkles size={12} className="text-accent-400" />
             <p className="font-mono">
               Designed & built with creativity
             </p>
+            <span className="text-glass-300">•</span>
+            <a href="/admin" className="font-mono transition-colors hover:text-accent-600">
+              Admin
+            </a>
           </div>
         </div>
       </div>

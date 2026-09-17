@@ -1,5 +1,5 @@
 import { Reveal, SectionLabel } from "./Reveal";
-import { tools } from "../data";
+import { useCms } from "../cms/store";
 
 const categoryColors: Record<string, string> = {
   film: "from-rose-500 to-pink-500",
@@ -15,6 +15,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export function TechStack() {
+  const { tools } = useCms().content;
   return (
     <section className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">

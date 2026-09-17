@@ -1,8 +1,10 @@
 import { Reveal, SectionLabel } from "./Reveal";
-import { profile } from "../data";
+import { useCms } from "../cms/store";
 import { Quote } from "lucide-react";
 
 export function About() {
+  const { profile, about } = useCms().content;
+
   return (
     <section id="about" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
@@ -14,8 +16,8 @@ export function About() {
           <div className="lg:col-span-8">
             <Reveal delay={0.05}>
               <h2 className="font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-                Video Editor &{" "}
-                <span className="gradient-text">Creative Media Producer</span>
+                {about.titleA}{" "}
+                <span className="gradient-text">{about.titleB}</span>
               </h2>
             </Reveal>
 
@@ -31,9 +33,7 @@ export function About() {
                   <Quote size={18} />
                 </span>
                 <p className="font-accent text-xl italic leading-snug text-text-primary sm:text-2xl">
-                  "A highly adaptable Computer and Network Engineering student
-                  with proven experience in creative media production and IT
-                  support."
+                  &ldquo;{about.quote}&rdquo;
                 </p>
               </div>
             </Reveal>

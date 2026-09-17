@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ArrowUpRight, Briefcase, Download } from "lucide-react";
-import { profile } from "../data";
+import { useCms } from "../cms/store";
 
 const links = [
   { label: "About", href: "#about" },
@@ -13,6 +13,7 @@ const links = [
 ];
 
 export function Navbar() {
+  const { profile } = useCms().content;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -68,7 +69,7 @@ export function Navbar() {
 
           <div className="hidden items-center gap-3 xl:flex">
             <a
-              href="/CV_Tegar_Wahid_Alfasah.pdf"
+              href={profile.cvUrl}
               download
               className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-4 py-2.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
             >
@@ -122,7 +123,7 @@ export function Navbar() {
                 </motion.a>
               ))}
               <motion.a
-                href="/CV_Tegar_Wahid_Alfasah.pdf"
+                href={profile.cvUrl}
                 download
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

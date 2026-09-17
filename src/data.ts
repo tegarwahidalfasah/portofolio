@@ -468,3 +468,27 @@ export const stats = [
   { value: "04", label: "Organisasi\nAktif" },
   { value: "02", label: "Institusi\nPendidikan" },
 ];
+
+/* ───────────────────────────────────────────────
+   Stub untuk komponen arsip (Guidelines, Lore)
+   Kedua komponen ini tidak dipakai di App saat ini.
+   ─────────────────────────────────────────────── */
+export type GuidelineSection = {
+  icon: string;
+  tone: string;
+  title: string;
+  rules: string[];
+};
+
+export const guidelines: GuidelineSection[] = [];
+
+export type LoreEntry = {
+  icon: string;
+  chapter: string;
+  title: string;
+  content: string;
+};
+
+export const lore: LoreEntry[] = [];
+
+export const hashtags: string[] = [];

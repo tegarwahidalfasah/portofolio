@@ -1,16 +1,9 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, ArrowUpRight, Send, CheckCircle } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { profile, platforms, contactPurposes } from "../data";
+import { useCms } from "../cms/store";
 import { InstagramIcon } from "./Icons";
 import { MailIcon } from "./PlatformIcons";
-
-const contactCards = [
-  { label: "Telepon / WhatsApp", value: profile.phone, href: profile.phoneHref, icon: Phone },
-  { label: "Instagram", value: profile.instagram, href: profile.instagramHref, icon: InstagramIcon },
-  { label: "Email", value: profile.email, href: `mailto:${profile.email}`, icon: MailIcon },
-  { label: "Lokasi", value: profile.location, href: "https://maps.google.com/?q=Subang+West+Java", icon: MapPin },
-];
 
 const platformIconMap: Record<string, typeof InstagramIcon> = {
   instagram: InstagramIcon,
@@ -18,6 +11,7 @@ const platformIconMap: Record<string, typeof InstagramIcon> = {
 };
 
 export function Contact() {
+  const { profile, platforms, contactPurposes, contactSection } = useCms().content;
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -25,6 +19,13 @@ export function Contact() {
     purpose: "",
     message: "",
   });
+
+  const contactCards = [
+    { label: "Telepon / WhatsApp", value: profile.phone, href: profile.phoneHref, icon: Phone },
+    { label: "Instagram", value: profile.instagram, href: profile.instagramHref, icon: InstagramIcon },
+    { label: "Email", value: profile.email, href: `mailto:${profile.email}`, icon: MailIcon },
+    { label: "Lokasi", value: profile.location, href: contactSection.mapUrl, icon: MapPin },
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,12 +46,11 @@ export function Contact() {
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-4xl font-bold leading-tight tracking-tight text-text-primary sm:text-5xl">
-            Let's Build Something{" "}
-            <span className="gradient-text">Extraordinary</span>
+            {contactSection.titleA}{" "}
+            <span className="gradient-text">{contactSection.titleB}</span>
           </h2>
           <p className="mt-3 max-w-lg text-text-secondary">
-            Have a project in mind or want to collaborate? I'm always open to new
-            opportunities. Jangan ragu untuk menghubungi saya.
+            {contactSection.description}
           </p>
         </Reveal>
 

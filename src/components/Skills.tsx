@@ -1,19 +1,10 @@
 import { useState, useEffect } from "react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { disciplines, programmingSkills, languages, interests } from "../data";
-
-const creativeSkills = [
-  { name: "Video Editing", percent: 95 },
-  { name: "Broadcast Management", percent: 90 },
-  { name: "Photography", percent: 88 },
-  { name: "Videography", percent: 90 },
-  { name: "Graphic Design", percent: 88 },
-  { name: "Live Streaming", percent: 85 },
-  { name: "IT Support", percent: 90 },
-  { name: "Content Creation", percent: 92 },
-];
+import { useCms } from "../cms/store";
 
 export function Skills() {
+  const { disciplines, programmingSkills, languages, interests, creativeSkills } =
+    useCms().content;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

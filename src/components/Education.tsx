@@ -1,8 +1,9 @@
 import { GraduationCap } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { education } from "../data";
+import { useCms } from "../cms/store";
 
 export function Education() {
+  const { education } = useCms().content;
   return (
     <section id="pendidikan" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">

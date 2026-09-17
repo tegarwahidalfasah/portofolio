@@ -1,41 +1,10 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-
-const faqs = [
-  {
-    question: "Berapa lama proses editing video?",
-    answer:
-      "Tergantung kompleksitas dan durasi video. Untuk video pendek (1-3 menit), biasanya 2-3 hari kerja. Video panjang (10+ menit) bisa memakan waktu 5-7 hari kerja. Revisi minor biasanya selesai dalam 1 hari.",
-  },
-  {
-    question: "Apakah bisa revisi hasil editing?",
-    answer:
-      "Tentu! Saya menyediakan 2x revisi gratis untuk setiap proyek. Revisi tambahan dikenakan biaya sesuai kesepakatan. Saya selalu berkomunikasi dengan klien di setiap tahap untuk memastikan hasil sesuai ekspektasi.",
-  },
-  {
-    question: "Bagaimana cara memesan jasa?",
-    answer:
-      "Anda bisa menghubungi saya melalui formulir kontak di website ini, email ke tegarwahidalfasah@gmail.com, atau DM Instagram @tegarwahidalfasah. Saya akan merespon dalam waktu 24 jam.",
-  },
-  {
-    question: "Apa yang perlu disiapkan sebelum memesan?",
-    answer:
-      "Untuk video editing: footage mentah, referensi style yang diinginkan, durasi target, dan brief singkat. Untuk desain: teks/konten, ukuran yang dibutuhkan, referensi visual, dan brand guidelines jika ada.",
-  },
-  {
-    question: "Apakah ada garansi?",
-    answer:
-      "Saya menjamin kualitas kerja profesional. Jika hasil tidak sesuai brief yang disepakati, saya akan melakukan revisi tanpa biaya tambahan. Kepuasan klien adalah prioritas utama saya.",
-  },
-  {
-    question: "Metode pembayaran apa yang diterima?",
-    answer:
-      "Saya menerima pembayaran via transfer bank (BCA, BRI, Mandiri), e-wallet (GoPay, OVO, DANA), dan pembayaran di muka 50% sebelum proyek dimulai, 50% setelah selesai.",
-  },
-];
+import { useCms } from "../cms/store";
 
 export function FAQ() {
+  const { faqs } = useCms().content;
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (

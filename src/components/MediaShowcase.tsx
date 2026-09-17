@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Play, X, Clock, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal, SectionLabel } from "./Reveal";
-import { mediaShowcase } from "../data";
-import type { MediaItem } from "../data";
+import { useCms } from "../cms/store";
+import type { MediaItem } from "../cms/defaults";
 
 function MediaCard({ item, onPlay }: { item: MediaItem; onPlay: () => void }) {
   return (
@@ -69,6 +69,7 @@ function MediaCard({ item, onPlay }: { item: MediaItem; onPlay: () => void }) {
 }
 
 export function MediaShowcase() {
+  const { mediaShowcase, mediaSection } = useCms().content;
   const [active, setActive] = useState<MediaItem | null>(null);
 
   return (
@@ -80,11 +81,10 @@ export function MediaShowcase() {
 
         <Reveal delay={0.05}>
           <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
-            Cuplikan <span className="gradient-text">stream</span> & showcase
+            {mediaSection.titleA} <span className="gradient-text">{mediaSection.titleB}</span> {mediaSection.titleC}
           </h2>
           <p className="mt-3 max-w-md text-text-secondary">
-            Tonton highlight stream Sora Wirya, sampel editing video, dan momen
-            seru bersama komunitas. Klik untuk memutar!
+            {mediaSection.description}
           </p>
         </Reveal>
 
@@ -103,22 +103,22 @@ export function MediaShowcase() {
         <Reveal delay={0.2}>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <a
-              href="https://youtube.com/@sorawirya"
+              href={mediaSection.youtubeUrl}
               target="_blank"
               rel="noreferrer"
               className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl"
             >
               <ExternalLink size={16} />
-              Lihat Semua di YouTube
+              {mediaSection.youtubeLabel}
             </a>
             <a
-              href="https://twitch.tv/sorawirya"
+              href={mediaSection.twitchUrl}
               target="_blank"
               rel="noreferrer"
               className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
             >
               <ExternalLink size={16} />
-              Live di Twitch
+              {mediaSection.twitchLabel}
             </a>
           </div>
         </Reveal>

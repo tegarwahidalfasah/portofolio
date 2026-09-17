@@ -1,10 +1,11 @@
 import { ArrowRight, Play } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { works } from "../data";
+import { useCms } from "../cms/store";
 
 const categories = ["Desain", "Foto", "Video", "Sosial Media"];
 
 export function CaseStudies() {
+  const { works } = useCms().content;
   return (
     <section className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">

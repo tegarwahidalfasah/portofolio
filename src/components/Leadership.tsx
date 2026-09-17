@@ -1,8 +1,9 @@
 import { Award, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { organizations } from "../data";
+import { useCms } from "../cms/store";
 
 export function Leadership() {
+  const { organizations } = useCms().content;
   return (
     <section id="organisasi" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">

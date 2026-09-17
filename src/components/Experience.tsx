@@ -1,7 +1,8 @@
 import { Reveal, SectionLabel } from "./Reveal";
-import { experience } from "../data";
+import { useCms } from "../cms/store";
 
 export function Experience() {
+  const { experience } = useCms().content;
   return (
     <section id="pengalaman" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
