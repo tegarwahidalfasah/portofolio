@@ -5,7 +5,7 @@ import { Reveal, SectionLabel } from "./Reveal";
 import { useCms } from "../cms/store";
 import type { MediaItem } from "../cms/defaults";
 
-function MediaCard({ item, onPlay, playLabel }: { item: MediaItem; onPlay: () => void; playLabel: string }) {
+function MediaCard({ item, onPlay, playLabel, playable, soonLabel }: { item: MediaItem; onPlay: () => void; playLabel: string; playable: boolean; soonLabel: string }) {
   return (
     <article className="glass-card glass-hover group relative overflow-hidden">
       {/* Thumbnail */}
@@ -18,16 +18,24 @@ function MediaCard({ item, onPlay, playLabel }: { item: MediaItem; onPlay: () =>
         />
         <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/70 via-transparent to-transparent" />
 
-        {/* Play button */}
-        <button
-          onClick={onPlay}
-          className="absolute inset-0 flex items-center justify-center"
-          aria-label={playLabel}
-        >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full border border-glass-border bg-white/80 dark:bg-slate-950/80 text-accent-600 shadow-xl backdrop-blur-xl transition-transform duration-300 group-hover:scale-110 group-hover:bg-white">
-            <Play size={22} fill="currentColor" />
-          </span>
-        </button>
+        {/* Play button / segera hadir */}
+        {playable ? (
+          <button
+            onClick={onPlay}
+            className="absolute inset-0 flex items-center justify-center"
+            aria-label={playLabel}
+          >
+            <span className="flex h-14 w-14 items-center justify-center rounded-full border border-glass-border bg-white/80 dark:bg-slate-950/80 text-accent-600 shadow-xl backdrop-blur-xl transition-transform duration-300 group-hover:scale-110 group-hover:bg-white">
+              <Play size={22} fill="currentColor" />
+            </span>
+          </button>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="rounded-full border border-glass-border bg-white/80 dark:bg-slate-950/80 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-text-secondary shadow-xl backdrop-blur-xl">
+              {soonLabel}
+            </span>
+          </div>
+        )}
 
         {/* Duration badge */}
         {item.duration && (
@@ -94,7 +102,7 @@ export function MediaShowcase() {
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {mediaShowcase.map((item, i) => (
               <Reveal key={item.title} delay={0.08 * i}>
-                <MediaCard item={item} onPlay={() => setActive(item)} playLabel={`${t.play} ${item.title}`} />
+                <MediaCard item={item} onPlay={() => setActive(item)} playLabel={`${t.play} ${item.title}`} playable={Boolean(item.embedUrl)} soonLabel={t.mediaSoon} />
               </Reveal>
             ))}
           </div>

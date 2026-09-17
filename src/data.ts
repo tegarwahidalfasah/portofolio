@@ -20,7 +20,7 @@ export const profile = {
   location: "Subang, 41213, West Java, Indonesia",
   locationShort: "Subang, West Java",
   phone: "+6285174353873",
-  phoneHref: "tel:+6285174353873",
+  phoneHref: "https://wa.me/6285174353873?text=Halo%20Tegar%21%20Saya%20melihat%20portofolio%20Anda%20dan%20tertarik%20bekerja%20sama.",
   email: "tegarwahidalfasah@gmail.com",
   instagram: "@tegarwahidalfasah",
   instagramHref: "https://instagram.com/tegarwahidalfasah",
@@ -387,7 +387,7 @@ export const mediaShowcase: MediaItem[] = [
     description:
       "Contoh hasil editing video multimedia untuk klien JEV. Menggunakan CapCut, OBS, dan FL Studio.",
     type: "video",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    embedUrl: "",
     thumbnail:
       "https://images.pexels.com/photos/2098989/pexels-photo-2098989.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
     duration: "03:22",
@@ -398,7 +398,7 @@ export const mediaShowcase: MediaItem[] = [
     description:
       "Konfigurasi broadcast live streaming dengan OBS Studio dan Streamlabs untuk produksi konten berkualitas tinggi.",
     type: "video",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    embedUrl: "",
     thumbnail:
       "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
     duration: "05:15",
@@ -409,7 +409,7 @@ export const mediaShowcase: MediaItem[] = [
     description:
       "Proses produksi konten kreatif untuk HG Adventure — dari konsep hingga publikasi di media sosial.",
     type: "video",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    embedUrl: "",
     thumbnail:
       "https://images.pexels.com/photos/382297/pexels-photo-382297.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
     duration: "04:30",

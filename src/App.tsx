@@ -20,6 +20,7 @@ import { ScrollProgress } from "./components/ScrollProgress";
 import { CmsProvider, useCms } from "./cms/store";
 import { ThemeProvider } from "./cms/theme";
 import { Admin } from "./cms/Admin";
+import { Analytics } from "@vercel/analytics/react";
 
 function isAdminRoute(): boolean {
   if (typeof window === "undefined") return false;
@@ -68,6 +69,7 @@ function Site() {
       <Footer />
       <FloatingBackToTop />
       <DraftBanner />
+      <Analytics />
     </div>
   );
 }

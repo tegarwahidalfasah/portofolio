@@ -95,3 +95,11 @@ website melihat perubahan:
   selalu gelap.
 - **Font**: hanya 1 (Inter) di seluruh website — tanpa serif,
   tanpa miring (italic), tanpa monospace.
+- **Favicon & gambar sosmed**: `public/favicon.svg` (logo TWA) dan
+  `public/og-image.jpg` (foto untuk preview link WhatsApp/Google).
+- **Statistik pengunjung**: otomatis via Vercel Analytics, lihat di
+  dashboard Vercel → project → Analytics (aktif setelah deploy).
+- **Kartu kontak Telepon/WA** membuka WhatsApp + pesan otomatis.
+  Nomor & pesan bisa diganti di CMS → Profil → Link telepon.
+- **Video showcase kosong** otomatis tampil "Segera Hadir" dan tidak
+  bisa diklik sampai URL embed diisi di CMS.

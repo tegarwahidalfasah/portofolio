@@ -423,7 +423,7 @@ export const defaultContent: CmsContent = {
     titleB: "stream",
     titleC: "& showcase",
     description:
-      "Tonton highlight stream Sora Wirya, sampel editing video, dan momen seru bersama komunitas. Klik untuk memutar!",
+      "Tonton sampel editing video, highlight produksi, dan momen seru bersama komunitas. Klik untuk memutar!",
     youtubeUrl: "https://youtube.com/@sorawirya",
     youtubeLabel: "Lihat Semua di YouTube",
     twitchUrl: "https://twitch.tv/sorawirya",
@@ -618,7 +618,7 @@ export const defaultContentEn: CmsContent = {
       description:
         "Sample multimedia video editing results for JEV clients. Using CapCut, OBS, and FL Studio.",
       type: "video",
-      embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      embedUrl: "",
       thumbnail:
         "https://images.pexels.com/photos/2098989/pexels-photo-2098989.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
       duration: "03:22",
@@ -629,7 +629,7 @@ export const defaultContentEn: CmsContent = {
       description:
         "Live streaming broadcast configuration with OBS Studio and Streamlabs for high-quality content production.",
       type: "video",
-      embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      embedUrl: "",
       thumbnail:
         "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
       duration: "05:15",
@@ -640,7 +640,7 @@ export const defaultContentEn: CmsContent = {
       description:
         "Creative content production process for HG Adventure — from concept to social media publication.",
       type: "video",
-      embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      embedUrl: "",
       thumbnail:
         "https://images.pexels.com/photos/382297/pexels-photo-382297.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=1000",
       duration: "04:30",
@@ -653,7 +653,7 @@ export const defaultContentEn: CmsContent = {
     titleB: "clips",
     titleC: "& showcase",
     description:
-      "Watch Sora Wirya's stream highlights, video editing samples, and fun moments with the community. Click to play!",
+      "Watch video editing samples, production highlights, and fun moments with the community. Click to play!",
     youtubeUrl: "https://youtube.com/@sorawirya",
     youtubeLabel: "View All on YouTube",
     twitchUrl: "https://twitch.tv/sorawirya",

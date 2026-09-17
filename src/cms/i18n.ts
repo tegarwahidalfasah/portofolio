@@ -83,6 +83,7 @@ const en = {
   mediaLabel: "Media & Highlights",
   play: "Play",
   close: "Close",
+  mediaSoon: "Coming Soon",
   // FAQ
   faqLabel: "FAQ",
   faqH1: "Frequently Asked",
@@ -179,6 +180,7 @@ const id: Strings = {
   mediaLabel: "Media & Sorotan",
   play: "Putar",
   close: "Tutup",
+  mediaSoon: "Segera Hadir",
   faqLabel: "FAQ",
   faqH1: "Pertanyaan yang Sering",
   faqH2: "Diajukan",
