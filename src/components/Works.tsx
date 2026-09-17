@@ -27,7 +27,7 @@ export function Works() {
           <Reveal delay={0.05}>
             <h2 className="max-w-xl font-display text-4xl font-bold leading-tight tracking-tight text-navy-900 sm:text-5xl">
               Cuplikan{" "}
-              <span className="font-accent font-normal italic text-brand-600">
+              <span className="font-accent font-normal text-brand-600">
                 bidang karya
               </span>{" "}
               saya

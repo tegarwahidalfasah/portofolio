@@ -33,7 +33,7 @@ export function Stats() {
               {/* Quote */}
               <div className="flex items-center gap-3 border-t border-glass-300/50 pt-6 md:col-span-1 md:border-t-0 md:border-l md:pl-6 md:pt-0">
                 <Quote size={28} className="shrink-0 text-accent-400" />
-                <p className="font-accent text-lg italic leading-snug text-text-secondary">
+                <p className="font-accent text-lg leading-snug text-text-secondary">
                   &ldquo;{statsQuote}&rdquo;
                 </p>
               </div>

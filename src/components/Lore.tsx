@@ -68,7 +68,7 @@ export function Lore() {
                 <h3 className="mt-6 font-display text-2xl font-bold text-text-primary">
                   Reference Sheet
                 </h3>
-                <p className="mt-2 font-accent text-lg italic text-text-secondary">
+                <p className="mt-2 font-accent text-lg text-text-secondary">
                   Tampak Depan, Samping & Belakang
                 </p>
                 <p className="mt-4 text-sm text-text-muted">

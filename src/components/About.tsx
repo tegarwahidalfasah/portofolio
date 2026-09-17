@@ -33,7 +33,7 @@ export function About() {
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/20">
                   <Quote size={18} />
                 </span>
-                <p className="font-accent text-xl italic leading-snug text-text-primary sm:text-2xl">
+                <p className="font-accent text-xl leading-snug text-text-primary sm:text-2xl">
                   &ldquo;{about.quote}&rdquo;
                 </p>
               </div>

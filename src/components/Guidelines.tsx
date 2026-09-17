@@ -90,7 +90,7 @@ export function Guidelines() {
         {/* Summary note */}
         <Reveal delay={0.2}>
           <div className="mt-10 overflow-hidden rounded-3xl border border-accent-500/20 bg-gradient-to-br from-accent-500/5 via-white/40 to-sky-400/5 p-8 text-center sm:p-10 backdrop-blur-xl">
-            <p className="font-accent text-xl italic text-text-primary sm:text-2xl">
+            <p className="font-accent text-xl text-text-primary sm:text-2xl">
               "Komunitas yang hebat dimulai dari saling menghargai. Mari berkarya
               bersama dengan positif!"
             </p>
