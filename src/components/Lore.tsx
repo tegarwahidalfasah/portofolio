@@ -1,6 +1,6 @@
 import { Compass, Route, Sparkles, Target } from "lucide-react";
 import { Reveal, SectionLabel } from "./Reveal";
-import { lore, referenceSheet, hashtags } from "../data";
+import { lore, hashtags } from "../data";
 
 const iconMap: Record<string, typeof Compass> = {
   compass: Compass,
@@ -13,62 +13,38 @@ export function Lore() {
   return (
     <section
       id="lore"
-      className="relative overflow-hidden bg-cream-50 py-24 sm:py-32"
+      className="relative px-5 py-16 sm:px-8"
     >
-      <span
-        aria-hidden
-        className="text-outline-navy pointer-events-none absolute -left-4 top-8 select-none font-display text-[14vw] font-bold leading-none tracking-tight opacity-50 lg:text-[11rem]"
-      >
-        LORE
-      </span>
-
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 02" title="Kisah Karakter" />
+          <SectionLabel index="// 04" title="Kisah Karakter" />
         </Reveal>
 
-        <div className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <Reveal delay={0.05}>
-            <h2 className="max-w-2xl font-display text-4xl font-bold leading-tight tracking-tight text-navy-900 sm:text-5xl">
-              Kisah di balik{" "}
-              <span className="font-accent font-normal italic text-brand-600">
-                Sora Wirya
-              </span>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="max-w-md text-navy-600">
-              Setiap karakter memiliki cerita. Kenali perjalanan Sora Wirya —
-              dari lahir di langit Subang hingga menjadi VTuber yang aktif
-              berkarya.
-            </p>
-          </Reveal>
-        </div>
-
-        {/* Timeline Lore */}
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {lore.map((entry, i) => {
             const Icon = iconMap[entry.icon] || Compass;
             return (
               <Reveal key={entry.chapter} delay={0.1 * i}>
-                <article className="card-hover group relative h-full overflow-hidden rounded-3xl border border-navy-900/10 bg-cream-100/80 p-7 hover:border-brand-500/60 hover:shadow-lg">
-                  <span className="pointer-events-none absolute -right-2 -top-4 select-none font-display text-7xl font-bold text-navy-900/5 transition-colors duration-500 group-hover:text-accent-500/15">
+                <article className="glass-card glass-hover group relative h-full overflow-hidden p-7">
+                  {/* Number */}
+                  <span className="pointer-events-none absolute -right-2 -top-4 select-none font-display text-6xl font-bold text-glass-200/50 transition-colors duration-500 group-hover:text-accent-400/20">
                     {String(i + 1).padStart(2, "0")}
                   </span>
 
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-500/15 text-brand-600 transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-white">
-                      <Icon size={20} />
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-navy-400">
-                      Bab {String(i + 1).padStart(2, "0")} — {entry.chapter}
-                    </span>
+                  {/* Icon */}
+                  <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500/10 to-sky-400/10 text-accent-600 transition-all duration-300 group-hover:from-accent-500 group-hover:to-sky-400 group-hover:text-white">
+                    <Icon size={20} />
                   </div>
 
-                  <h3 className="relative mt-5 font-display text-xl font-semibold leading-snug text-navy-900">
+                  {/* Chapter */}
+                  <span className="mt-5 block font-mono text-[10px] uppercase tracking-widest text-accent-500">
+                    Bab {String(i + 1).padStart(2, "0")} — {entry.chapter}
+                  </span>
+
+                  <h3 className="relative mt-2 font-display text-xl font-bold leading-snug text-text-primary">
                     {entry.title}
                   </h3>
-                  <p className="relative mt-3 text-sm leading-relaxed text-navy-600">
+                  <p className="relative mt-3 text-sm leading-relaxed text-text-secondary">
                     {entry.content}
                   </p>
                 </article>
@@ -77,58 +53,50 @@ export function Lore() {
           })}
         </div>
 
-        {/* Reference Sheet Section */}
+        {/* Reference sheet + Hashtags */}
         <Reveal delay={0.15}>
-          <div className="mt-14 overflow-hidden rounded-3xl border border-navy-900/10 bg-navy-900">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="relative flex items-center justify-center bg-gradient-to-br from-brand-500/20 to-accent-500/20 p-10 sm:p-14">
-                <div className="text-center">
-                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-brand-500/20 text-brand-400">
-                    <Sparkles size={32} />
-                  </div>
-                  <h3 className="mt-6 font-display text-2xl font-bold text-cream-50">
-                    {referenceSheet.title}
-                  </h3>
-                  <p className="mt-2 font-accent text-lg italic text-cream-100/60">
-                    {referenceSheet.subtitle}
-                  </p>
-                  <p className="mt-4 text-sm text-cream-100/50">
-                    {referenceSheet.description}
-                  </p>
-                  <div className="mt-5 flex flex-wrap justify-center gap-2">
-                    {referenceSheet.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-cream-100/15 px-3 py-1 text-xs text-cream-100/60"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+          <div className="mt-12 grid grid-cols-1 overflow-hidden rounded-3xl border border-glass-border bg-white/60 shadow-xl shadow-accent-500/5 backdrop-blur-xl lg:grid-cols-2">
+            {/* Reference sheet side */}
+            <div className="relative flex items-center justify-center p-10 sm:p-14">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 via-transparent to-sky-400/5" />
+              <div className="relative text-center">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-glass-border bg-white/80 shadow-xl backdrop-blur-xl">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-accent-400 to-sky-400 flex items-center justify-center">
+                    <Sparkles size={24} className="text-white" />
                   </div>
                 </div>
+                <h3 className="mt-6 font-display text-2xl font-bold text-text-primary">
+                  Reference Sheet
+                </h3>
+                <p className="mt-2 font-accent text-lg italic text-text-secondary">
+                  Tampak Depan, Samping & Belakang
+                </p>
+                <p className="mt-4 text-sm text-text-muted">
+                  Desain karakter Sora Wirya — referensi visual resmi untuk
+                  seniman dan kreator.
+                </p>
               </div>
+            </div>
 
-              {/* Hashtags */}
-              <div className="flex flex-col items-start justify-center p-10 sm:p-14">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-cream-100/40">
-                  Hashtag Resmi untuk Stream & Fanart
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  {hashtags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-300 transition-colors hover:bg-brand-500 hover:text-white"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <p className="mt-6 text-sm leading-relaxed text-cream-100/50">
-                  Gunakan hashtag resmi saat memposting fanart, clip, atau
-                  konten yang berhubungan dengan Sora Wirya. Bantu komunitas
-                  untuk menemukan dan mengapresiasi karya sesama kreator!
-                </p>
+            {/* Hashtags side */}
+            <div className="flex flex-col items-start justify-center border-t border-glass-300/50 p-10 sm:p-14 lg:border-t-0 lg:border-l">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
+                Hashtag Resmi Stream & Fanart
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {hashtags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-accent-500/20 bg-accent-500/5 px-4 py-2 text-sm font-medium text-accent-600 transition-all hover:border-accent-500/40 hover:bg-accent-500/10"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
+              <p className="mt-6 text-sm leading-relaxed text-text-secondary">
+                Gunakan hashtag resmi saat memposting fanart, clip, atau
+                konten yang berhubungan dengan Sora Wirya!
+              </p>
             </div>
           </div>
         </Reveal>

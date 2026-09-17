@@ -1,99 +1,125 @@
-import { Palette, Shapes, Clapperboard, FileText, Film, Radio, Smile, ArrowUpRight } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Reveal, SectionLabel } from "./Reveal";
 import { tools, disciplines } from "../data";
 
-const iconMap: Record<string, typeof Palette> = {
-  palette: Palette,
-  shapes: Shapes,
-  clapperboard: Clapperboard,
-  "file-text": FileText,
-  film: Film,
-  radio: Radio,
-  smile: Smile,
-};
+const skillData = [
+  { name: "UI / UX Design", percent: 95 },
+  { name: "Desain Grafis", percent: 90 },
+  { name: "Photography", percent: 88 },
+  { name: "Videography", percent: 85 },
+  { name: "Video Editing", percent: 90 },
+  { name: "Streaming / VTuber", percent: 80 },
+];
 
 export function Skills() {
-  return (
-    <section id="keahlian" className="grain relative overflow-hidden bg-navy-950 py-24 sm:py-32">
-      <div className="pointer-events-none absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-brand-500/10 blur-[120px]" />
+  const [visible, setVisible] = useState(false);
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    const el = document.getElementById("keahlian");
+    if (el) observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section id="keahlian" className="relative px-5 py-16 sm:px-8">
+      <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 03" title="Keahlian" tone="dark" />
+          <SectionLabel index="// 05" title="Skills & Expertise" />
         </Reveal>
 
-        <div className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <Reveal delay={0.05}>
-            <h2 className="max-w-xl font-display text-4xl font-bold leading-tight tracking-tight text-cream-50 sm:text-5xl">
-              Tools yang saya{" "}
-              <span className="font-accent font-normal italic text-brand-400">
-                kuasai
-              </span>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="max-w-md text-cream-100/60">
-              Perangkat lunak utama yang saya gunakan untuk menghasilkan karya
-              desain, foto, video, streaming VTuber, dan dokumen.
-            </p>
-          </Reveal>
-        </div>
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12">
+          {/* Skills with progress bars */}
+          <div className="lg:col-span-7">
+            <Reveal delay={0.05}>
+              <h2 className="font-display text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl">
+                Keahlian{" "}
+                <span className="gradient-text">kreatif</span>
+              </h2>
+            </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {tools.map((tool, i) => {
-            const Icon = iconMap[tool.icon] || Palette;
-            return (
-              <Reveal key={tool.name} delay={0.08 * i}>
-                <article className="card-hover group relative h-full overflow-hidden rounded-3xl border border-cream-100/10 bg-navy-900 p-7 hover:border-brand-500/50">
-                  <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-brand-500/10 blur-2xl transition-opacity duration-500 group-hover:bg-brand-500/20" />
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500/15 text-brand-400 transition-transform duration-500 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white">
-                    <Icon size={22} />
-                  </div>
-                  <h3 className="relative mt-6 font-display text-xl font-semibold text-cream-50">
-                    {tool.name}
-                  </h3>
-                  <p className="relative mt-3 text-sm leading-relaxed text-cream-100/55">
-                    {tool.description}
-                  </p>
-                  <div className="relative mt-5 flex flex-wrap gap-1.5">
-                    {tool.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-cream-100/10 px-2.5 py-1 font-mono text-[10px] text-cream-100/50"
-                      >
-                        {tag}
+            <div className="mt-8 space-y-6">
+              {skillData.map((skill, i) => (
+                <Reveal key={skill.name} delay={0.08 * i}>
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-display text-sm font-semibold text-text-primary">
+                        {skill.name}
                       </span>
-                    ))}
+                      <span className="font-mono text-xs font-medium text-text-muted">
+                        {skill.percent}%
+                      </span>
+                    </div>
+                    <div className="progress-bar mt-2.5">
+                      <div
+                        className="progress-bar-fill"
+                        style={{
+                          width: visible ? `${skill.percent}%` : "0%",
+                          transitionDelay: `${i * 0.1}s`,
+                        }}
+                      />
+                    </div>
                   </div>
-                </article>
-              </Reveal>
-            );
-          })}
-        </div>
-
-        {/* Disciplines */}
-        <Reveal delay={0.1}>
-          <div className="mt-12 flex flex-col items-start gap-6 rounded-3xl border border-cream-100/10 bg-navy-900/60 p-7 sm:flex-row sm:items-center sm:p-9">
-            <div className="flex items-center gap-3 shrink-0">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-500 text-white">
-                <ArrowUpRight size={18} />
-              </span>
-              <span className="font-display text-sm font-semibold uppercase tracking-widest text-cream-50">
-                Bidang Kreatif
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-2.5">
-              {disciplines.map((d) => (
-                <span
-                  key={d}
-                  className="rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-300 transition-colors hover:bg-brand-500 hover:text-white"
-                >
-                  {d}
-                </span>
+                </Reveal>
               ))}
             </div>
           </div>
-        </Reveal>
+
+          {/* Disciplines */}
+          <div className="lg:col-span-5">
+            <Reveal delay={0.1}>
+              <div className="glass-card-strong p-7">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
+                  Bidang Kreatif
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {disciplines.map((d) => (
+                    <span
+                      key={d}
+                      className="rounded-full border border-glass-300 bg-white/60 px-4 py-2 text-xs font-medium text-text-secondary backdrop-blur transition-all hover:border-accent-400 hover:bg-accent-500/10 hover:text-accent-600"
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Tools quick list */}
+            <Reveal delay={0.15}>
+              <div className="glass-card mt-6 p-7">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-accent-500">
+                  Tools Utama
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  {tools.slice(0, 6).map((tool) => (
+                    <div
+                      key={tool.name}
+                      className="flex items-center gap-2.5 rounded-xl border border-glass-300 bg-white/50 px-3 py-2.5"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent-500/10 to-sky-400/10 text-accent-500">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                      </span>
+                      <span className="text-xs font-semibold text-text-primary">
+                        {tool.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );

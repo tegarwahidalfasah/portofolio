@@ -1,32 +1,30 @@
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
+import { Stats } from "./components/Stats";
 import { About } from "./components/About";
 import { Lore } from "./components/Lore";
 import { Skills } from "./components/Skills";
-import { Works } from "./components/Works";
+import { CaseStudies } from "./components/CaseStudies";
 import { MediaShowcase } from "./components/MediaShowcase";
 import { Guidelines } from "./components/Guidelines";
-import { Education } from "./components/Education";
-import { Experience } from "./components/Experience";
-import { Organizations } from "./components/Organizations";
+import { TechStack } from "./components/TechStack";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-cream-50 font-body text-navy-900">
+    <div className="min-h-screen font-body text-text-primary">
       <Navbar />
       <main>
         <Hero />
+        <Stats />
+        <CaseStudies />
         <About />
         <Lore />
         <Skills />
-        <Works />
+        <TechStack />
         <MediaShowcase />
         <Guidelines />
-        <Education />
-        <Experience />
-        <Organizations />
         <Contact />
       </main>
       <Footer />

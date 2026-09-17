@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
 import { profile } from "../data";
 
 const links = [
-  { label: "Tentang", href: "#tentang" },
+  { label: "About", href: "#about" },
   { label: "Lore", href: "#lore" },
-  { label: "Keahlian", href: "#keahlian" },
   { label: "Karya", href: "#karya" },
   { label: "Media", href: "#media" },
   { label: "Guideline", href: "#guideline" },
@@ -36,17 +35,21 @@ export function Navbar() {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "border-b border-navy-900/10 bg-navy-950/90 backdrop-blur-xl"
+            ? "border-b border-glass-border bg-glass-50/70 backdrop-blur-xl"
             : "border-b border-transparent bg-transparent"
         }`}
       >
         <nav className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
           <a href="#top" className="group flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 font-display text-sm font-bold text-white">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-sky-400 font-display text-sm font-bold text-white shadow-lg shadow-accent-500/25">
               {profile.initials}
             </span>
-            <span className="font-display text-lg font-semibold text-cream-50 transition-colors">
+            <span className="font-display text-lg font-bold tracking-tight text-text-primary">
               {profile.shortName}
+            </span>
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-accent-500/20 bg-accent-500/5 px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-wider text-accent-600">
+              <Sparkles size={10} />
+              VTuber
             </span>
           </a>
 
@@ -56,7 +59,7 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-full px-4 py-2 font-display text-sm text-cream-100/70 transition-colors hover:bg-cream-100/10 hover:text-cream-50"
+                className="rounded-full px-4 py-2 font-display text-sm font-medium text-text-secondary transition-colors hover:bg-glass-200 hover:text-text-primary"
               >
                 {link.label}
               </a>
@@ -68,7 +71,7 @@ export function Navbar() {
               href={profile.youtubeHref}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 font-display text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+              className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-5 py-2.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl hover:shadow-accent-500/35"
             >
               Tonton Stream
               <ArrowUpRight
@@ -81,7 +84,7 @@ export function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setOpen(!open)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-cream-100/15 text-cream-50 lg:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-300 bg-glass-bg text-text-primary backdrop-blur-lg lg:hidden"
             aria-label="Toggle menu"
           >
             {open ? <X size={20} /> : <Menu size={20} />}
@@ -96,7 +99,7 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-navy-950/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 bg-bg-primary/90 backdrop-blur-xl lg:hidden"
           >
             <div className="flex h-full flex-col items-center justify-center gap-6">
               {links.map((link, i) => (
@@ -107,7 +110,7 @@ export function Navbar() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 }}
-                  className="font-display text-2xl font-semibold text-cream-50"
+                  className="font-display text-2xl font-bold text-text-primary"
                 >
                   {link.label}
                 </motion.a>
@@ -120,7 +123,7 @@ export function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="mt-4 flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 font-display text-base font-semibold text-white"
+                className="mt-4 flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-base font-semibold text-white shadow-lg shadow-accent-500/25"
               >
                 Tonton Stream
                 <ArrowUpRight size={18} />

@@ -496,7 +496,7 @@ export const contactPurposes: ContactOption[] = [
    ─────────────────────────────────────────────── */
 export const stats = [
   { value: "03", label: "Pengalaman Kerja" },
-  { value: "05", label: "Organisasi" },
+  { value: "40+", label: "Proyek Kreatif" },
+  { value: "05", label: "Organisasi Aktif" },
   { value: "02", label: "Institusi Pendidikan" },
-  { value: "09", label: "Bidang Kreatif" },
 ];

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, MapPin, Aperture, Mail, Tv } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MapPin, Aperture, Mail, Sparkles, Tv } from "lucide-react";
 import { profile, disciplines } from "../data";
 import { InstagramIcon } from "./Icons";
 import portrait from "../assets/portrait.jpg";
@@ -10,17 +10,19 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="grain relative flex min-h-screen flex-col overflow-hidden bg-navy-950 pt-[72px]"
+      className="relative min-h-screen overflow-hidden bg-bg-primary pt-[72px]"
     >
-      {/* ambient glows */}
-      <div className="pointer-events-none absolute -right-40 top-10 h-[520px] w-[520px] rounded-full bg-brand-500/15 blur-[140px]" />
-      <div className="pointer-events-none absolute -left-52 bottom-0 h-[440px] w-[440px] rounded-full bg-accent-500/20 blur-[130px]" />
-      {/* faint grid */}
+      {/* Background glow orbs */}
+      <div className="glow-orb h-[520px] w-[520px] -right-40 top-10 bg-accent-400/30" />
+      <div className="glow-orb h-[440px] w-[440px] -left-52 bottom-0 bg-sky-400/20" />
+      <div className="glow-orb h-[300px] w-[300px] left-1/3 bottom-1/3 bg-bg-tertiary/50" />
+
+      {/* Faint grid */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,.55) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.55) 1px, transparent 1px)",
+            "linear-gradient(rgba(15,23,42,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.6) 1px, transparent 1px)",
           backgroundSize: "72px 72px",
         }}
       />
@@ -32,10 +34,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease }}
-            className="inline-flex items-center gap-2.5 rounded-full border border-cream-100/15 bg-cream-100/5 px-4 py-1.5"
+            className="inline-flex items-center gap-2.5 rounded-full border border-accent-500/20 bg-white/60 px-4 py-1.5 backdrop-blur-xl"
           >
-            <span className="animate-pulse-dot h-2 w-2 rounded-full bg-accent-400" />
-            <span className="font-mono text-xs tracking-wide text-cream-100/80">
+            <span className="animate-pulse-dot h-2 w-2 rounded-full bg-green-500" />
+            <span className="font-mono text-xs tracking-wide text-text-secondary">
               VTuber • Terbuka untuk kolaborasi & proyek kreatif
             </span>
           </motion.div>
@@ -44,47 +46,53 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease }}
-            className="mt-6 font-display text-[13vw] font-bold leading-[0.95] tracking-tight text-cream-50 sm:text-6xl lg:text-[5.4rem] xl:text-[6.2rem]"
+            className="mt-6 hero-display"
           >
-            SORA WIRYA
+            SORA
             <br />
-            <span className="text-outline-blue">VISUAL STORYTELLER</span>
+            WIRYA
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.22, ease }}
-            className="mt-6 max-w-xl text-base leading-relaxed text-cream-100/70 sm:text-lg"
+            className="mt-5 font-display text-lg font-semibold tracking-tight text-text-primary sm:text-xl"
           >
-            <span className="font-accent text-2xl italic text-gradient">
-              {profile.tagline}
-            </span>
-            <br />
-            {profile.intro}
+            Digital Designer & Experience Creator
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.28, ease }}
+            className="mt-4 max-w-md text-base leading-relaxed text-text-secondary"
+          >
+            I design immersive VTuber experiences and visual content that blend
+            clarity, creativity, and innovation.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.34, ease }}
-            className="mt-9 flex flex-wrap items-center gap-4"
+            className="mt-8 flex flex-wrap items-center gap-4"
           >
             <a
               href="#karya"
-              className="group flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 font-display text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+              className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-7 py-3.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl hover:shadow-accent-500/35"
             >
-              Lihat Karya
+              View Work
               <ArrowDown
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-y-0.5"
               />
             </a>
             <a
-              href="#lore"
-              className="group flex items-center gap-2 rounded-full border border-cream-100/25 px-7 py-3.5 font-display text-sm font-semibold text-cream-50 transition-colors hover:border-accent-400 hover:text-accent-400"
+              href="#kontak"
+              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 hover:bg-white/80"
             >
-              Baca Lore
+              Download CV
               <ArrowUpRight
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -94,7 +102,7 @@ export function Hero() {
               href={profile.twitchHref}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-7 py-3.5 font-display text-sm font-semibold text-accent-300 transition-colors hover:border-accent-500 hover:text-accent-400"
+              className="group flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-6 py-3.5 font-display text-sm font-semibold text-accent-600 transition-all hover:border-accent-500/50 hover:bg-accent-500/15"
             >
               <Tv size={16} />
               Live Now
@@ -105,26 +113,26 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-cream-100/60"
+            className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-text-secondary"
           >
             <span className="flex items-center gap-2">
-              <MapPin size={15} className="text-brand-400" />
+              <MapPin size={15} className="text-accent-500" />
               {profile.locationShort}
             </span>
             <a
               href={profile.instagramHref}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 transition-colors hover:text-brand-400"
+              className="flex items-center gap-2 transition-colors hover:text-accent-600"
             >
-              <InstagramIcon size={15} className="text-brand-400" />
+              <InstagramIcon size={15} className="text-accent-500" />
               {profile.instagram}
             </a>
             <a
               href={`mailto:${profile.email}`}
-              className="flex items-center gap-2 transition-colors hover:text-brand-400"
+              className="flex items-center gap-2 transition-colors hover:text-accent-600"
             >
-              <Mail size={15} className="text-brand-400" />
+              <Mail size={15} className="text-accent-500" />
               Email
             </a>
           </motion.div>
@@ -136,46 +144,52 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.92, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2, ease }}
-            className="relative"
+            className="relative animate-float"
           >
-            {/* offset frame */}
-            <div className="absolute -inset-3 rounded-t-[220px] rounded-b-3xl border border-brand-500/40 sm:-inset-4" />
-            <div className="overflow-hidden rounded-t-[220px] rounded-b-3xl border border-cream-100/15 bg-navy-800">
+            {/* Portrait frame */}
+            <div className="overflow-hidden rounded-[2rem] border border-glass-border bg-white/40 shadow-2xl shadow-accent-500/10 backdrop-blur-xl">
               <img
                 src={portrait}
                 alt="Sora Wirya — VTuber & Content Creator"
                 className="aspect-[4/5] w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/55 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/40 via-transparent to-transparent" />
             </div>
 
-            {/* floating chip: role */}
-            <div className="animate-float-slow absolute -left-4 top-10 flex items-center gap-2.5 rounded-2xl border border-cream-100/15 bg-navy-900/90 px-4 py-3 shadow-2xl backdrop-blur sm:-left-10">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500/15 text-brand-400">
+            {/* Floating chip: role */}
+            <div className="animate-float-slow absolute -left-6 top-12 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-10">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25">
                 <Aperture size={18} />
               </span>
               <div>
-                <p className="font-display text-xs font-semibold text-cream-50">
+                <p className="font-display text-xs font-bold text-text-primary">
                   VTuber Creator
                 </p>
-                <p className="font-mono text-[10px] text-cream-100/50">
+                <p className="font-mono text-[10px] text-text-muted">
                   Stream · Design · Video
                 </p>
               </div>
             </div>
 
-            {/* floating chip: location */}
-            <div className="animate-float-slower absolute -bottom-5 -right-2 flex items-center gap-2.5 rounded-2xl border border-cream-100/15 bg-navy-900/90 px-4 py-3 shadow-2xl backdrop-blur sm:-right-6">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-500/15 text-accent-400">
-                <MapPin size={18} />
+            {/* Floating chip: available */}
+            <div className="animate-float absolute -bottom-4 -right-2 flex items-center gap-2.5 rounded-2xl border border-glass-border bg-white/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-6">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25">
+                <Sparkles size={18} />
               </span>
               <div>
-                <p className="font-display text-xs font-semibold text-cream-50">
-                  Based in
+                <p className="font-display text-xs font-bold text-text-primary">
+                  Available
                 </p>
-                <p className="font-mono text-[10px] text-cream-100/50">
-                  Subang, Jawa Barat
+                <p className="font-mono text-[10px] text-text-muted">
+                  for freelance
                 </p>
+              </div>
+            </div>
+
+            {/* Small badge */}
+            <div className="absolute -top-3 -right-3 flex h-12 w-12 items-center justify-center rounded-full border border-glass-border bg-white/80 shadow-lg backdrop-blur-xl">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-accent-400 to-sky-400 flex items-center justify-center">
+                <Sparkles size={14} className="text-white" />
               </div>
             </div>
           </motion.div>
@@ -183,14 +197,14 @@ export function Hero() {
       </div>
 
       {/* Marquee */}
-      <div className="marquee-mask relative border-t border-cream-100/10 bg-navy-900/60 py-4">
+      <div className="marquee-mask relative border-t border-glass-300/50 bg-glass-50/40 py-4 backdrop-blur-sm">
         <div className="flex w-max animate-marquee gap-0">
           {[0, 1].map((dup) => (
             <div key={dup} className="flex shrink-0 items-center">
               {disciplines.map((item) => (
                 <span
                   key={`${dup}-${item}`}
-                  className="flex items-center font-display text-sm font-medium uppercase tracking-[0.2em] text-cream-100/45"
+                  className="flex items-center font-display text-sm font-medium uppercase tracking-[0.15em] text-text-muted"
                 >
                   <span className="px-7">{item}</span>
                   <span className="text-accent-400">✦</span>
