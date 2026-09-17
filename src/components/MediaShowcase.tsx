@@ -3,9 +3,9 @@ import { Play, X, Clock, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal, SectionLabel } from "./Reveal";
 import { useCms } from "../cms/store";
-import type { MediaItem } from "../cms/defaults";
+import type { CmsMediaItem } from "../cms/defaults";
 
-function MediaCard({ item, onPlay }: { item: MediaItem; onPlay: () => void }) {
+function MediaCard({ item, onPlay }: { item: CmsMediaItem; onPlay: () => void }) {
   return (
     <article className="glass-card glass-hover group relative overflow-hidden">
       {/* Thumbnail */}
@@ -70,7 +70,7 @@ function MediaCard({ item, onPlay }: { item: MediaItem; onPlay: () => void }) {
 
 export function MediaShowcase() {
   const { mediaShowcase, mediaSection } = useCms().content;
-  const [active, setActive] = useState<MediaItem | null>(null);
+  const [active, setActive] = useState<CmsMediaItem | null>(null);
 
   return (
     <section id="media" className="relative px-5 py-16 sm:px-8">
@@ -155,14 +155,24 @@ export function MediaShowcase() {
                 </button>
               </div>
 
-              <div className="video-embed">
-                <iframe
-                  src={active.embedUrl}
-                  title={active.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
+              {active.embedUrl ? (
+                <div className="video-embed">
+                  <iframe
+                    src={active.embedUrl}
+                    title={active.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              ) : active.videoUrl ? (
+                <video
+                  src={active.videoUrl}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="max-h-[70vh] w-full bg-black"
                 />
-              </div>
+              ) : null}
 
               <div className="p-5">
                 <p className="text-sm text-text-secondary">{active.description}</p>

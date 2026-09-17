@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { useCms } from "./store";
 import { mergeContent, type CmsContent } from "./defaults";
+import { getCloudSettings, saveCloudSettings } from "./upload";
 import {
   Area,
   Card,
@@ -39,6 +40,7 @@ import {
   Sel,
   StrList,
   Text,
+  UploadField,
 } from "./fields";
 
 /* ═══════════ Auth (sederhana, sisi browser) ═══════════ */
@@ -525,9 +527,13 @@ function TabProfil({
       </Card>
 
       <Card title="Foto & CV" desc="Foto profil dan file CV yang bisa diunduh pengunjung.">
-        <Field label="URL foto profil (opsional)" hint="Kosongkan untuk memakai foto bawaan. Isi dengan URL gambar (https://…) untuk mengganti.">
-          <Text value={p.photoUrl} onChange={(v) => set({ photoUrl: v })} placeholder="https://…" />
-        </Field>
+        <UploadField
+          label="Foto profil (opsional)"
+          hint="Kosongkan untuk memakai foto bawaan. Upload foto baru atau tempel URL gambar."
+          accept="image/*"
+          value={p.photoUrl}
+          onChange={(v) => set({ photoUrl: v })}
+        />
         <Field label="URL file CV" hint="Tautan tombol 'Download CV'. Upload PDF ke repo (folder public/) lalu isi mis. /CV_Tegar_Wahid_Alfasah.pdf">
           <Text value={p.cvUrl} onChange={(v) => set({ cvUrl: v })} />
         </Field>
@@ -763,7 +769,7 @@ function TabKarya({
         desc="Kartu horizontal di section Featured Case Studies. Gambar diisi URL (https://…) — bisa dari Pexels/Unsplash atau file di repo."
         items={doc.works}
         onChange={(v) => update((d) => { d.works = v; })}
-        createItem={() => ({ title: "", client: "", category: "", image: "", type: "image" as const })}
+        createItem={() => ({ title: "", client: "", category: "", image: "", type: "image" as const, videoUrl: "" })}
         addLabel="Tambah karya"
         itemTitle={(w) => w.title || "(baru)"}
         renderItem={(w, set) => (
@@ -774,10 +780,20 @@ function TabKarya({
               <Field label="Kategori"><Text value={w.category} onChange={(v) => set({ category: v })} placeholder="cth. Video Editing · Broadcast" /></Field>
               <Field label="Tipe"><Sel value={w.type} onChange={(v) => set({ type: v as "image" | "video" })} options={workTypeOpts} /></Field>
             </Grid>
-            <Field label="URL gambar"><Text value={w.image} onChange={(v) => set({ image: v })} placeholder="https://…" /></Field>
-            {w.image && (
-              <img src={w.image} alt="" className="h-28 w-full rounded-xl border border-white/10 object-cover" loading="lazy" />
-            )}
+            <UploadField
+              label="Foto / thumbnail karya"
+              hint="Upload foto hasil kerja kamu, atau tempel URL gambar (Pexels/Unsplash/dll)."
+              accept="image/*"
+              value={w.image}
+              onChange={(v) => set({ image: v })}
+            />
+            <UploadField
+              label="Video karya (opsional)"
+              hint="Upload video hasil kerja (mp4/webm, maks 100MB). Kartu karya bisa diklik pengunjung untuk memutar video."
+              accept="video/*"
+              value={w.videoUrl ?? ""}
+              onChange={(v) => set({ videoUrl: v })}
+            />
           </>
         )}
       />
@@ -799,10 +815,10 @@ function TabKarya({
 
       <ListEditor
         title="Showcase video"
-        desc="embedUrl memakai format embed YouTube, mis. https://www.youtube.com/embed/VIDEO_ID"
+        desc="Isi URL embed YouTube ATAU upload file video langsung (mp4/webm). Format embed: https://www.youtube.com/embed/VIDEO_ID"
         items={doc.mediaShowcase}
         onChange={(v) => update((d) => { d.mediaShowcase = v; })}
-        createItem={() => ({ title: "", description: "", type: "video" as const, embedUrl: "", thumbnail: "", duration: "", tags: [] })}
+        createItem={() => ({ title: "", description: "", type: "video" as const, embedUrl: "", thumbnail: "", duration: "", tags: [], videoUrl: "" })}
         addLabel="Tambah video"
         itemTitle={(m) => m.title || "(baru)"}
         renderItem={(m, set) => (
@@ -811,10 +827,20 @@ function TabKarya({
               <Field label="Judul"><Text value={m.title} onChange={(v) => set({ title: v })} /></Field>
               <Field label="Tipe"><Sel value={m.type} onChange={(v) => set({ type: v as "youtube" | "twitch" | "video" })} options={mediaTypeOpts} /></Field>
               <Field label="URL embed"><Text value={m.embedUrl} onChange={(v) => set({ embedUrl: v })} placeholder="https://www.youtube.com/embed/…" /></Field>
-              <Field label="URL thumbnail"><Text value={m.thumbnail} onChange={(v) => set({ thumbnail: v })} placeholder="https://…" /></Field>
+              <UploadField label="Thumbnail" hint="Upload gambar atau biarkan otomatis dari video." accept="image/*" value={m.thumbnail} onChange={(v) => set({ thumbnail: v })} />
               <Field label="Durasi (opsional)"><Text value={m.duration ?? ""} onChange={(v) => set({ duration: v })} placeholder="cth. 03:22" /></Field>
             </Grid>
             <Field label="Deskripsi"><Area value={m.description} onChange={(v) => set({ description: v })} rows={2} /></Field>
+            <UploadField
+              label="File video (upload, alternatif embed YouTube)"
+              hint="Upload video (mp4/webm, maks 100MB) bila tidak memakai YouTube. Thumbnail otomatis diisi bila masih kosong."
+              accept="video/*"
+              value={m.videoUrl ?? ""}
+              onChange={(v) => set({ videoUrl: v })}
+              onUploadedExtra={(r) => {
+                if (!m.thumbnail && r.thumbnailUrl) set({ thumbnail: r.thumbnailUrl });
+              }}
+            />
             <StrList label="Tag" items={m.tags} onChange={(v) => set({ tags: v })} />
           </>
         )}
@@ -980,6 +1006,7 @@ function TabPengaturan({
   const cms = useCms();
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
+  const [cloud, setCloud] = useState(getCloudSettings);
 
   const changePassword = () => {
     if (pass1.length < 6) {
@@ -1000,8 +1027,62 @@ function TabPengaturan({
     showToast("Password berhasil diganti.");
   };
 
+  const saveCloud = () => {
+    if (!cloud.cloudName || !cloud.preset) {
+      showToast("Cloud name dan Upload preset wajib diisi.");
+      return;
+    }
+    saveCloudSettings(cloud);
+    showToast("Pengaturan Cloudinary tersimpan. Tombol upload kini aktif.");
+  };
+
   return (
     <>
+      <Card
+        title="Upload foto & video (Cloudinary gratis)"
+        desc="Sambungkan akun Cloudinary gratis agar tombol Upload di tab Profil, Karya & Media berfungsi. Kuota gratis ±25GB."
+      >
+        <Grid>
+          <Field label="Cloud name">
+            <Text value={cloud.cloudName} onChange={(v) => setCloud({ ...cloud, cloudName: v })} placeholder="cth. dxy123abc" />
+          </Field>
+          <Field label="Upload preset (unsigned)">
+            <Text value={cloud.preset} onChange={(v) => setCloud({ ...cloud, preset: v })} placeholder="cth. portofolio" />
+          </Field>
+          <Field label="Folder (opsional)">
+            <Text value={cloud.folder} onChange={(v) => setCloud({ ...cloud, folder: v })} placeholder="cth. portofolio" />
+          </Field>
+        </Grid>
+        <div>
+          <button
+            onClick={saveCloud}
+            className="flex items-center gap-1.5 rounded-xl bg-indigo-500/20 px-4 py-2.5 font-display text-xs font-semibold text-indigo-100 transition-colors hover:bg-indigo-500/30"
+          >
+            <Check size={14} /> Simpan pengaturan Cloudinary
+          </button>
+        </div>
+        <ol className="space-y-2.5 text-sm leading-relaxed text-slate-300">
+          {[
+            "Daftar gratis di cloudinary.com, lalu catat Cloud name di Dashboard.",
+            "Klik ikon Settings → tab Upload → Upload presets → Add upload preset.",
+            "Ubah Signing Mode menjadi Unsigned, lalu Save dan catat Preset name.",
+            "Isi kedua nilai itu di atas, klik Simpan — tombol Upload langsung aktif.",
+          ].map((s, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 font-mono text-[11px] font-bold text-indigo-200">
+                {i + 1}
+              </span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="flex items-start gap-2 text-[11px] leading-relaxed text-slate-500">
+          <Info size={13} className="mt-0.5 shrink-0" />
+          Batas paket gratis: maks 100MB per file video. File tersimpan aman di
+          Cloudinary dan URL-nya otomatis masuk ke draft CMS.
+        </p>
+      </Card>
+
       <Card
         title="Cara menerbitkan ke publik"
         desc="Penting: tombol Simpan hanya menyimpan draft di browser ini. Agar pengunjung website melihat perubahan, ikuti langkah berikut."
