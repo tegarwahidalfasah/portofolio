@@ -93,5 +93,5 @@ website melihat perubahan:
 - **Mode gelap/terang**: tombol matahari/bulan di navbar.
   Default mengikuti sistem HP/laptop pengunjung. Halaman `/admin`
   selalu gelap.
-- **Font**: hanya 2 font web (Inter + Instrument Serif). Font mono
-  memakai font bawaan sistem agar loading tetap ringan.
+- **Font**: hanya 2 (Inter + Instrument Serif). Semua label kecil
+  (`font-mono`) sengaja memakai Inter agar tidak ada typeface ketiga.
