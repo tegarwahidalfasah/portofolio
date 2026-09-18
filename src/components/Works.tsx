@@ -45,9 +45,10 @@ export function Works() {
           <div className="mt-14 grid grid-cols-1 gap-5 lg:h-[660px] lg:grid-cols-3 lg:grid-rows-3">
             {order.map((workIndex, layoutIndex) => {
               const work = works[workIndex];
+              if (!work) return null;
               return (
                 <article
-                  key={work.title}
+                  key={work.title + workIndex}
                   className={`card-hover group relative overflow-hidden rounded-3xl border border-navy-900/10 bg-navy-900 shadow-sm hover:shadow-xl ${layout[layoutIndex]} ${heights[layoutIndex]} lg:h-auto`}
                 >
                   <img

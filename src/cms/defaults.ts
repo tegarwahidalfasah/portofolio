@@ -373,6 +373,7 @@ export const defaultContent: CmsContent = {
       image:
         "https://images.pexels.com/photos/12757209/pexels-photo-12757209.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "video",
+      link: "",
     },
     {
       title: "Konfigurasi Broadcast & Audio",
@@ -381,6 +382,7 @@ export const defaultContent: CmsContent = {
       image:
         "https://images.pexels.com/photos/36920917/pexels-photo-36920917.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "video",
+      link: "",
     },
     {
       title: "Strategi Konten Kreatif",
@@ -389,6 +391,7 @@ export const defaultContent: CmsContent = {
       image:
         "https://images.pexels.com/photos/31681666/pexels-photo-31681666.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800",
       type: "image",
+      link: "",
     },
     {
       title: "Aset Desain Digital & Pemasaran",
@@ -397,6 +400,7 @@ export const defaultContent: CmsContent = {
       image:
         "https://images.pexels.com/photos/29546725/pexels-photo-29546725.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "image",
+      link: "",
     },
     {
       title: "Dokumentasi Teknis",
@@ -405,6 +409,7 @@ export const defaultContent: CmsContent = {
       image:
         "https://images.pexels.com/photos/34037222/pexels-photo-34037222.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "image",
+      link: "",
     },
     {
       title: "Proyek Desain Multimedia",
@@ -413,6 +418,7 @@ export const defaultContent: CmsContent = {
       image:
         "https://images.pexels.com/photos/3850210/pexels-photo-3850210.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "image",
+      link: "",
     },
   ],
 

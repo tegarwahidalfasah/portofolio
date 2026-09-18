@@ -50,17 +50,20 @@ website melihat perubahan:
      ```
 3. Tunggu Vercel selesai deploy (±1 menit). Selesai!
 
-## 4. Gambar & file
+## 4. Gambar, Video & Media Sosial (TikTok, YouTube, Instagram)
 
-- **Gambar karya / thumbnail video**: isi dengan URL gambar
-  (`https://…`), mis. dari Pexels/Unsplash, atau path file di repo
-  (mis. `/foto-saya.jpg` jika file ditaruh di `public/`).
-- **Foto profil**: kosongkan kolom *URL foto profil* untuk memakai foto
-  bawaan (`src/assets/portrait.jpg`), atau isi URL gambar pengganti.
-- **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom
-  *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`.
-- **Video showcase**: pakai URL embed YouTube,
-  mis. `https://www.youtube.com/embed/VIDEO_ID`.
+- **Link karya dari media sosial (menu Karya)**:
+  Pada tab **Karya & Media**, setiap item karya memiliki kolom **Link Karya / Sosial Media**. Anda bisa langsung menempelkan (paste) link langsung:
+  - **TikTok (tt)**: mis. `https://www.tiktok.com/@username/video/1234567890` atau link foto TikTok.
+  - **YouTube (yt)**: mis. `https://youtu.be/VIDEO_ID`, `https://www.youtube.com/watch?v=VIDEO_ID`, atau YouTube Shorts `https://www.youtube.com/shorts/VIDEO_ID`.
+  - **Instagram (ig)**: mis. `https://www.instagram.com/reel/CODE/` atau `https://www.instagram.com/p/CODE/`.
+  - **Video file langsung**: file `.mp4` atau `.webm`.
+  Sistem akan otomatis mendeteksi platform sosmed, menampilkan badge, dan ketika diklik di website akan membuka pemutar/lightbox interaktif beserta tombol langsung ke media sosial tersebut.
+- **Thumbnail YouTube otomatis**: Jika Anda mengisi link karya dari YouTube dan mengosongkan kolom *URL gambar*, sistem akan otomatis mengambil dan menampilkan thumbnail dari YouTube! Ada juga tombol cepat *⚡ Gunakan thumbnail YouTube* di CMS.
+- **Gambar karya manual / file lokal**: isi dengan URL gambar (`https://…`), mis. dari Pexels/Unsplash, atau file di repo (mis. `/foto-saya.jpg` jika ditaruh di folder `public/`).
+- **Showcase video**: kolom URL video mendukung format link biasa dari YouTube, TikTok, Instagram, atau Twitch — otomatis dikonversi ke format embed.
+- **Foto profil**: kosongkan kolom *URL foto profil* untuk memakai foto bawaan (`src/assets/portrait.jpg`), atau isi URL gambar pengganti.
+- **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`.
 
 ## 5. Reset / darurat
 
