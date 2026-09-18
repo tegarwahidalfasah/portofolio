@@ -262,6 +262,8 @@ function Panel({ onLogout }: { onLogout: () => void }) {
     cms.clearDraft();
     setDocs(cms.baseDocs);
     setDirty(false);
+    // Tanpa ini indikator ukuran terus menampilkan angka draft yang sudah dihapus.
+    setDraftBytes(0);
     showToast("Draft dihapus.");
   };
 
