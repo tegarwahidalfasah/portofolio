@@ -62,6 +62,11 @@ export async function run() {
     ok("password salah -> 401", r.status === 401);
     ok("password salah -> tanpa Set-Cookie", !r.headers.get("set-cookie"));
 
+    // ── password default lama yang masih ada di riwayat git publik ──
+    r = await post("password=admin123");
+    ok("'admin123' (default lama) ditolak", r.status === 401);
+    ok("'admin123' tidak memberi cookie", !r.headers.get("set-cookie"));
+
     // ── password benar ──
     r = await post(`password=${encodeURIComponent(PASSWORD)}`);
     const sc = r.headers.get("set-cookie") || "";

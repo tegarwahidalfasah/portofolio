@@ -156,6 +156,15 @@ Detail pengaman di `api/admin.ts`:
 - Batas 8 percobaan / 15 menit per IP (disimpan di memori instance
   fungsi, jadi ikut ter-reset saat instance dingin — perlambatan,
   bukan jaminan; perlindungan utamanya password kuat + biaya PBKDF2).
+- **Header keamanan** di setiap respons (`vercel.json`): `nosniff`,
+  `Referrer-Policy`, `X-Frame-Options: DENY`, `frame-ancestors 'none'`,
+  HSTS, `Permissions-Policy`. Artinya situs dan halaman login tidak bisa
+  dibingkai di dalam situs orang lain (clickjacking).
+- Halaman login & error memakai **CSP ketat** (`default-src 'none'`),
+  karena halaman itu seluruhnya dibuat `api/admin.ts` tanpa script maupun
+  gambar. Halaman admin sendiri memakai CSP longgar (bundle singlefile +
+  gambar dari URL apa pun yang kamu tempel), tapi tetap `frame-ancestors
+  'none'`.
 - Link **Admin** di footer dihapus supaya URL-nya tidak diiklankan.
 
 Uji lokal gerbang yang sama persis (`ADMIN_PASSWORD` di sini cuma
@@ -183,6 +192,26 @@ ADMIN_PASSWORD="coba-dulu-123" npm run admin:check
 
 Kalau `/admin` menampilkan *"Admin belum dikonfigurasi"*, artinya langkah
 1–3 belum selesai.
+
+### Jangan pakai `admin123`
+
+Versi lama CMS memakai password default `admin123`. Kode itu **sudah
+dibuang** dan gerbang sekarang menolak `admin123` (ada tesnya di
+`tests/gate.test.mjs`), tapi stringnya **masih terbaca di riwayat git**
+repo ini — 11 commit pada `CMS.md` dan `src/cms/Admin.tsx` lama, dan
+reponya publik.
+
+Konsekuensinya:
+
+- `admin123` **tidak lagi berfungsi** sebagai password. Tidak ada risiko
+  orang masuk memakainya.
+- Tapi jangan pernah memakai `admin123` sebagai password baru, dan jangan
+  memakainya di akun lain. Anggap string itu sudah diketahui publik.
+- Menghapusnya dari riwayat butuh penulisan ulang riwayat git
+  (semua SHA berubah + force-push), dan itu pun tidak sepenuhnya bersih
+  karena GitHub masih menyimpan commit lama serta fork orang lain.
+  Selama password aslinya kuat, ini tidak memberi manfaat keamanan —
+  hanya kerapian.
 
 ## 8. Bahasa, tema & font
 
