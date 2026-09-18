@@ -99,15 +99,22 @@ function verifyPassword(input: string): boolean {
 
 /* ═══════════ Sesi (cookie bertanda tangan) ═══════════ */
 
+let secretCache: Buffer | null = null;
+
 function sessionSecret(): Buffer {
+  if (secretCache) return secretCache;
   const s = process.env.ADMIN_SESSION_SECRET;
-  if (s && s.length >= 16) return Buffer.from(s);
+  if (s && s.length >= 16) {
+    secretCache = Buffer.from(s);
+    return secretCache;
+  }
   // Turunan deterministik dari material password supaya tetap jalan
   // dengan satu env var. Ganti ADMIN_SESSION_SECRET bila ingin
   // membatalkan semua sesi sekaligus.
   const cfg = passConfig();
   const base = cfg ? (cfg.kind === "pbkdf2" ? cfg.hash : cfg.value) : "unset";
-  return createHmac("sha256", "cms-admin-session").update(base).digest();
+  secretCache = createHmac("sha256", "cms-admin-session").update(base).digest();
+  return secretCache;
 }
 
 function sign(exp: number): string {
@@ -284,10 +291,17 @@ function redirect(res: Res, to: string, setCookie?: string): void {
 }
 
 /** Baca HTML admin hasil build. ADMIN_HTML override dipakai untuk tes lokal. */
+let htmlCache: string | null = null;
+
 function adminHtml(): string | null {
+  // Dibaca sekali lalu disimpan: di Lambda filesystem tidak berubah,
+  // jadi membaca ulang 380 KB tiap request hanya memperlambat.
+  // Kegagalan TIDAK di-cache, supaya build yang menyusul tetap terbaca.
+  if (htmlCache) return htmlCache;
   const file = process.env.ADMIN_HTML || join(process.cwd(), "dist-admin", "admin.html");
   try {
-    return readFileSync(file, "utf8");
+    htmlCache = readFileSync(file, "utf8");
+    return htmlCache;
   } catch {
     return null;
   }
