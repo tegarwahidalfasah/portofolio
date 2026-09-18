@@ -91,8 +91,9 @@ website melihat perubahan:
   *Hapus draft*.
 - **Import**: kalau punya file `cms-content.json` lama, bisa dimuat
   kembali lewat tombol *Import dari file*.
-- **Lupa password**: buat hash baru dengan `npm run hash-pass`, tempel
-  ke `ADMIN_PASSWORD_HASH` di Vercel, lalu Redeploy. Draft tidak hilang
+- **Lupa password**: buat hash baru lewat `/hash-password.html` di situs
+  ini (atau `npm run hash-pass` kalau punya Node.js), tempel ke
+  `ADMIN_PASSWORD_HASH` di Vercel, lalu Redeploy. Draft tidak hilang
   karena tersimpan di key localStorage yang berbeda.
 - **Ingin semua sesi langsung keluar**: ganti nilai
   `ADMIN_SESSION_SECRET` di Vercel → Redeploy. Cookie lama jadi tidak sah.
@@ -188,13 +189,24 @@ ADMIN_PASSWORD="coba-dulu-123" npm run admin:check
 
 ## 7. Setup keamanan di Vercel (wajib sekali)
 
-1. Di komputer: `npm run hash-pass`, masukkan password baru
-   (minimal 10 karakter). Salin baris `pbkdf2$…` yang dihasilkan.
+1. Buat hash password. **Pilih salah satu** — hasilnya sama persis:
+
+   **A. Dari HP/browser (paling mudah, tanpa install apa pun)**
+   Buka `https://<alamat-situs-kamu>/hash-password.html`, isi password
+   baru (minimal 10 karakter) dua kali, tekan **Buat hash**, lalu
+   **Salin nilai**. Halaman itu menghitung sepenuhnya di perangkatmu —
+   tidak ada yang dikirim ke internet.
+
+   **B. Dari komputer yang punya Node.js**
+   Jalankan `npm run hash-pass`, masukkan password baru, salin baris
+   `pbkdf2$…` yang dicetak.
+
 2. Vercel → project → **Settings → Environment Variables** →
    **Add**:
    - Key `ADMIN_PASSWORD_HASH`, Value = baris `pbkdf2$…` tadi.
    - (Opsional) Key `ADMIN_SESSION_SECRET`, Value = nilai acak yang
-     juga dicetak script. Menggantinya membatalkan semua sesi.
+     juga disediakan alat/script di atas. Menggantinya membatalkan
+     semua sesi.
    - Environment: centang **Production** (dan Preview kalau mau).
 3. **Deployments → titik tiga → Redeploy** agar env var terbaca.
 4. Buka `/admin` — harus muncul form login. Setelah masuk, kamu langsung
