@@ -45,7 +45,13 @@ try {
   process.env.ADMIN_HTML = join(process.cwd(), "dist-admin", "admin.html");
 
   let failed = 0;
-  for (const suite of ["./gate.test.mjs", "./store.test.mjs", "./admin-ui.test.mjs"]) {
+  const suites = [
+    "./gate.test.mjs",
+    "./admin-html-path.test.mjs",
+    "./store.test.mjs",
+    "./admin-ui.test.mjs",
+  ];
+  for (const suite of suites) {
     const { run } = await import(suite);
     const r = await run();
     failed += r.fail;

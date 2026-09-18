@@ -25,7 +25,7 @@ import {
   timingSafeEqual,
 } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 
 /* ── Tipe minimal req/res Vercel Node runtime ── */
 type Req = {
@@ -316,18 +316,47 @@ function redirect(res: Res, to: string, setCookie?: string): void {
 /** Baca HTML admin hasil build. ADMIN_HTML override dipakai untuk tes lokal. */
 let htmlCache: string | null = null;
 
+/** Lokasi yang dicoba pada panggilan terakhir yang gagal — untuk pesan error. */
+let triedPaths: string[] = [];
+
+/**
+ * Daftar lokasi yang mungkin memuat admin.html.
+ *
+ * Vercel menempatkan berkas fungsi di /var/task dan umumnya menjalankan
+ * proses dari sana, tapi cwd bisa berbeda antar runtime/versi. Daripada
+ * bergantung pada satu asumsi yang tidak bisa diuji dari luar, dicoba
+ * beberapa lokasi yang masuk akal.
+ */
+function candidatePaths(): string[] {
+  const rel = join("dist-admin", "admin.html");
+  const list: string[] = [];
+  const push = (p: string | undefined) => {
+    if (p && !list.includes(p)) list.push(p);
+  };
+  push(process.env.ADMIN_HTML);
+  push(join(process.cwd(), rel));
+  push(process.env.LAMBDA_TASK_ROOT && join(process.env.LAMBDA_TASK_ROOT, rel));
+  push(join("/var/task", rel));
+  const parent = dirname(process.cwd());
+  if (parent !== process.cwd()) push(join(parent, rel));
+  return list;
+}
+
 function adminHtml(): string | null {
   // Dibaca sekali lalu disimpan: di Lambda filesystem tidak berubah,
   // jadi membaca ulang 380 KB tiap request hanya memperlambat.
   // Kegagalan TIDAK di-cache, supaya build yang menyusul tetap terbaca.
   if (htmlCache) return htmlCache;
-  const file = process.env.ADMIN_HTML || join(process.cwd(), "dist-admin", "admin.html");
-  try {
-    htmlCache = readFileSync(file, "utf8");
-    return htmlCache;
-  } catch {
-    return null;
+  triedPaths = candidatePaths();
+  for (const file of triedPaths) {
+    try {
+      htmlCache = readFileSync(file, "utf8");
+      return htmlCache;
+    } catch {
+      // lanjut ke lokasi berikutnya
+    }
   }
+  return null;
 }
 
 async function readForm(req: Req): Promise<string> {
@@ -425,7 +454,10 @@ export default async function handler(req: Req, res: Res): Promise<void> {
         "Build admin belum ada. Pastikan perintah build menjalankan " +
           "<code>npm run build</code> (situs + admin) dan " +
           "<code>dist-admin/admin.html</code> terdaftar di " +
-          "<code>functions.includeFiles</code> pada vercel.json."
+          "<code>functions.includeFiles</code> pada vercel.json." +
+          "<br><br>Lokasi yang sudah dicoba:<br><code>" +
+          triedPaths.join("</code><br><code>") +
+          "</code>"
       )
     );
   }
