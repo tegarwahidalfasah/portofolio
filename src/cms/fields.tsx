@@ -1,11 +1,125 @@
 /* ───────────────────────────────────────────────
    CMS — Komponen field form untuk halaman admin.
    ─────────────────────────────────────────────── */
-import type { ReactNode } from "react";
-import { ChevronUp, ChevronDown, Trash2, Plus } from "lucide-react";
+import { useRef, useState, type ReactNode, type ChangeEvent } from "react";
+import { ChevronUp, ChevronDown, Trash2, Plus, Upload, X } from "lucide-react";
 
 export const inputCls =
   "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all focus:border-indigo-400/60 focus:bg-white/[0.07] focus:ring-2 focus:ring-indigo-500/20";
+
+/** Kompresi gambar lokal (HTML5 Canvas) agar ukuran file ringan (< 150KB) sebelum disimpan */
+export function compressImage(file: File, maxWidth = 1200, quality = 0.82): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(e.target?.result as string);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/** Field input URL gambar + tombol upload dari perangkat lokal (laptop/HP) */
+export function ImageInput({
+  value,
+  onChange,
+  placeholder = "https://… atau pilih file gambar",
+  hint,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  hint?: string;
+}) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setLoading(true);
+      const dataUrl = await compressImage(file);
+      onChange(dataUrl);
+    } catch {
+      alert("Gagal memproses gambar.");
+    } finally {
+      setLoading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-2">
+        <input
+          type="text"
+          className={inputCls}
+          value={value ?? ""}
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+        />
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          disabled={loading}
+          title="Pilih gambar dari perangkat lokal"
+          className="flex shrink-0 items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
+        >
+          <Upload size={14} />
+          <span className="hidden sm:inline">{loading ? "Memproses…" : "Pilih File"}</span>
+        </button>
+        {value && (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            title="Hapus gambar"
+            className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 transition-colors hover:border-rose-400/50 hover:text-rose-300"
+          >
+            <X size={15} />
+          </button>
+        )}
+      </div>
+      {hint && <span className="block text-[11px] leading-relaxed text-slate-500">{hint}</span>}
+      {value && (
+        <div className="relative mt-2 inline-block overflow-hidden rounded-xl border border-white/10 bg-slate-950">
+          <img
+            src={value}
+            alt=""
+            className="h-24 w-auto max-w-xs object-cover"
+            loading="lazy"
+          />
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function Card({
   title,

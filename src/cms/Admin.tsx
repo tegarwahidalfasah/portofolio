@@ -49,6 +49,7 @@ import {
   Sel,
   StrList,
   Text,
+  ImageInput,
 } from "./fields";
 
 /* ═══════════ Auth (sederhana, sisi browser) ═══════════ */
@@ -555,8 +556,8 @@ function TabProfil({
       </Card>
 
       <Card title="Foto & CV" desc="Foto profil dan file CV yang bisa diunduh pengunjung.">
-        <Field label="URL foto profil (opsional)" hint="Kosongkan untuk memakai foto bawaan. Isi dengan URL gambar (https://…) untuk mengganti.">
-          <Text value={p.photoUrl} onChange={(v) => set({ photoUrl: v })} placeholder="https://…" />
+        <Field label="Foto profil (opsional)" hint="Kosongkan untuk memakai foto bawaan. Isi URL gambar atau unggah file foto dari perangkat.">
+          <ImageInput value={p.photoUrl} onChange={(v) => set({ photoUrl: v })} placeholder="https://… atau pilih file foto" />
         </Field>
         <Field label="URL file CV" hint="Tautan tombol 'Download CV'. Upload PDF ke repo (folder public/) lalu isi mis. /CV_Tegar_Wahid_Alfasah.pdf">
           <Text value={p.cvUrl} onChange={(v) => set({ cvUrl: v })} />
@@ -920,15 +921,28 @@ function TabKarya({
                 )}
               </div>
 
+              {/* Deskripsi Karya */}
+              <Field
+                label="Deskripsi karya (opsional)"
+                hint="Jelaskan peran Anda, alat yang digunakan (cth. CapCut, OBS, FL Studio), proses editing, atau hasil/engagement yang dicapai."
+              >
+                <Area
+                  value={w.description ?? ""}
+                  onChange={(v) => set({ description: v })}
+                  placeholder="cth. Video editing vertikal untuk TikTok dan Reels dengan motion graphics dan sound design dinamis..."
+                  rows={2}
+                />
+              </Field>
+
               {/* URL Gambar / Thumbnail */}
               <Field
                 label="URL Gambar / Thumbnail Karya"
-                hint="Bisa URL gambar dari Pexels/Unsplash atau file di repo (/foto.jpg). Jika link karya dari YouTube dan kolom ini kosong, thumbnail akan otomatis diambil dari YouTube."
+                hint="Bisa URL gambar dari Pexels/Unsplash, upload dari perangkat, atau otomatis dari thumbnail YouTube jika link dari YouTube."
               >
-                <Text
+                <ImageInput
                   value={w.image}
                   onChange={(v) => set({ image: v })}
-                  placeholder="https://… (atau kosongkan untuk thumbnail YouTube otomatis)"
+                  placeholder="https://… atau pilih file (kosongkan untuk thumbnail YouTube otomatis)"
                 />
               </Field>
 
@@ -1069,9 +1083,9 @@ function TabKarya({
 
               <Field
                 label="URL Thumbnail"
-                hint="Bisa kosong jika video dari YouTube (thumbnail akan otomatis dimuat)."
+                hint="Bisa kosong jika video dari YouTube (thumbnail akan otomatis dimuat), atau pilih file gambar dari perangkat."
               >
-                <Text value={m.thumbnail} onChange={(v) => set({ thumbnail: v })} placeholder="https://…" />
+                <ImageInput value={m.thumbnail} onChange={(v) => set({ thumbnail: v })} placeholder="https://… atau pilih file gambar" />
               </Field>
 
               <Field label="Deskripsi"><Area value={m.description} onChange={(v) => set({ description: v })} rows={2} /></Field>

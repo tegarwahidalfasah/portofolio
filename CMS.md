@@ -59,10 +59,12 @@ website melihat perubahan:
   - **Instagram (ig)**: mis. `https://www.instagram.com/reel/CODE/` atau `https://www.instagram.com/p/CODE/`.
   - **Video file langsung**: file `.mp4` atau `.webm`.
   Sistem akan otomatis mendeteksi platform sosmed, menampilkan badge, dan ketika diklik di website akan membuka pemutar/lightbox interaktif beserta tombol langsung ke media sosial tersebut.
+- **Deskripsi karya**: Anda bisa menuliskan deskripsi singkat mengenai peran, alat editing yang digunakan (CapCut, Premiere, FL Studio, dll.), dan hasil karya tersebut. Deskripsi ini akan tampil rapi di popup lightbox saat kartu diklik oleh calon klien.
 - **Thumbnail YouTube otomatis**: Jika Anda mengisi link karya dari YouTube dan mengosongkan kolom *URL gambar*, sistem akan otomatis mengambil dan menampilkan thumbnail dari YouTube! Ada juga tombol cepat *⚡ Gunakan thumbnail YouTube* di CMS.
-- **Gambar karya manual / file lokal**: isi dengan URL gambar (`https://…`), mis. dari Pexels/Unsplash, atau file di repo (mis. `/foto-saya.jpg` jika ditaruh di folder `public/`).
+- **Unggah foto langsung dari perangkat (laptop/HP)**: Kolom gambar karya, thumbnail video, dan foto profil kini memiliki tombol **Pilih File** yang otomatis mengompresi dan memasukkan gambar tanpa perlu mengunggah ke hosting pihak ketiga.
+- **Link Google Drive & Dropbox**: Jika Anda memasukkan link foto dari Google Drive (`drive.google.com/file/d/...`) atau Dropbox, sistem akan otomatis mengonversinya menjadi URL gambar langsung.
 - **Showcase video**: kolom URL video mendukung format link biasa dari YouTube, TikTok, Instagram, atau Twitch — otomatis dikonversi ke format embed.
-- **Foto profil**: kosongkan kolom *URL foto profil* untuk memakai foto bawaan (`src/assets/portrait.jpg`), atau isi URL gambar pengganti.
+- **Foto profil**: kosongkan kolom *URL foto profil* untuk memakai foto bawaan (`src/assets/portrait.jpg`), isi URL gambar pengganti, atau gunakan tombol *Pilih File*.
 - **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`.
 
 ## 5. Reset / darurat

@@ -142,6 +142,21 @@ export function parseTwitch(url?: string | null): ParsedTwitch | null {
   };
 }
 
+export function cleanImageUrl(url?: string | null): string {
+  if (!url) return "";
+  const clean = url.trim();
+  const gdrive = clean.match(
+    /(?:drive\.google\.com\/(?:file\/d\/|open\?id=))([a-zA-Z0-9_-]+)/i
+  );
+  if (gdrive) {
+    return `https://drive.google.com/uc?export=view&id=${gdrive[1]}`;
+  }
+  if (clean.includes("dropbox.com") && clean.includes("dl=0")) {
+    return clean.replace("dl=0", "raw=1");
+  }
+  return clean;
+}
+
 export function isDirectVideo(url?: string | null): boolean {
   if (!url) return false;
   const clean = url.trim().toLowerCase();
@@ -154,11 +169,13 @@ export function isDirectVideo(url?: string | null): boolean {
 
 export function isDirectImage(url?: string | null): boolean {
   if (!url) return false;
-  const clean = url.trim();
+  const clean = cleanImageUrl(url);
   return (
     /\.(jpg|jpeg|png|webp|gif|svg|avif|bmp)(\?.*)?$/i.test(clean) ||
     clean.includes("images.pexels.com") ||
     clean.includes("images.unsplash.com") ||
+    clean.includes("drive.google.com/uc") ||
+    clean.includes("dropbox.com") ||
     clean.startsWith("/") ||
     clean.startsWith("data:image/")
   );
@@ -197,7 +214,7 @@ export function resolveWorkMedia(work: {
   type?: "image" | "video";
 }): ResolvedMedia {
   const link = (work.link || "").trim();
-  const rawImage = (work.image || "").trim();
+  const rawImage = cleanImageUrl(work.image);
 
   // 1. Cek dari link karya terlebih dahulu
   const ytFromLink = parseYouTube(link);

@@ -374,6 +374,8 @@ export const defaultContent: CmsContent = {
         "https://images.pexels.com/photos/12757209/pexels-photo-12757209.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "video",
       link: "",
+      description:
+        "Produksi dan editing video multimedia profesional untuk klien JEV. Meliputi color grading sinematik, audio mixing, dan motion graphics untuk YouTube dan media sosial.",
     },
     {
       title: "Konfigurasi Broadcast & Audio",
@@ -383,6 +385,8 @@ export const defaultContent: CmsContent = {
         "https://images.pexels.com/photos/36920917/pexels-photo-36920917.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "video",
       link: "",
+      description:
+        "Pengaturan teknis siaran langsung multi-kamera menggunakan OBS Studio dan FL Studio untuk menghasilkan streaming berkualitas tinggi tanpa latensi.",
     },
     {
       title: "Strategi Konten Kreatif",
@@ -392,6 +396,8 @@ export const defaultContent: CmsContent = {
         "https://images.pexels.com/photos/31681666/pexels-photo-31681666.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800",
       type: "image",
       link: "",
+      description:
+        "Konseptualisasi konten visual, pemotretan outdoor, dan editing video reels untuk promosi paket petualangan alam terbuka HG Adventure.",
     },
     {
       title: "Aset Desain Digital & Pemasaran",
@@ -401,6 +407,8 @@ export const defaultContent: CmsContent = {
         "https://images.pexels.com/photos/29546725/pexels-photo-29546725.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "image",
       link: "",
+      description:
+        "Pembuatan materi promosi digital, feed media sosial Instagram, poster promosi, dan banner pemasaran untuk kampanye pariwisata.",
     },
     {
       title: "Dokumentasi Teknis",
@@ -410,6 +418,8 @@ export const defaultContent: CmsContent = {
         "https://images.pexels.com/photos/34037222/pexels-photo-34037222.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "image",
       link: "",
+      description:
+        "Dokumentasi sistem IT, panduan operasional jaringan, dan rekaman tutorial teknis untuk staf The Lodge Maribaya.",
     },
     {
       title: "Proyek Desain Multimedia",
@@ -419,6 +429,8 @@ export const defaultContent: CmsContent = {
         "https://images.pexels.com/photos/3850210/pexels-photo-3850210.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
       type: "image",
       link: "",
+      description:
+        "Perancangan visual branding, materi presentasi interaktif, dan video dokumentasi kegiatan kejuruan SMK Bina Wisata Lembang.",
     },
   ],
 

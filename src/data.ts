@@ -316,6 +316,7 @@ export type Work = {
   image: string;
   type: "image" | "video";
   link?: string;
+  description?: string;
 };
 
 export const works: Work[] = [
@@ -327,6 +328,8 @@ export const works: Work[] = [
       "https://images.pexels.com/photos/12757209/pexels-photo-12757209.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     type: "video",
     link: "",
+    description:
+      "Professional multimedia video editing for JEV clients. Includes cinematic color grading, audio balancing, and dynamic motion graphics tailored for YouTube and social media.",
   },
   {
     title: "Broadcast Configuration & Audio",
@@ -336,6 +339,8 @@ export const works: Work[] = [
       "https://images.pexels.com/photos/36920917/pexels-photo-36920917.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     type: "video",
     link: "",
+    description:
+      "Multi-camera live streaming configuration using OBS Studio and FL Studio for zero-latency, high-definition broadcast audio and video output.",
   },
   {
     title: "Creative Content Strategy",
@@ -345,6 +350,8 @@ export const works: Work[] = [
       "https://images.pexels.com/photos/31681666/pexels-photo-31681666.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800",
     type: "image",
     link: "",
+    description:
+      "Visual content strategy, outdoor adventure photography, and short-form reels editing to boost brand engagement for outdoor exploration campaigns.",
   },
   {
     title: "Digital Design & Marketing Assets",
@@ -354,6 +361,8 @@ export const works: Work[] = [
       "https://images.pexels.com/photos/29546725/pexels-photo-29546725.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     type: "image",
     link: "",
+    description:
+      "Digital promotional materials, Instagram feed carousels, marketing posters, and social media banners created using Figma, Photoshop, and Canva.",
   },
   {
     title: "Technical Documentation",
@@ -363,6 +372,8 @@ export const works: Work[] = [
       "https://images.pexels.com/photos/34037222/pexels-photo-34037222.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     type: "image",
     link: "",
+    description:
+      "Comprehensive IT system documentation, network operational guidelines, and video tutorials for hospitality infrastructure.",
   },
   {
     title: "Multimedia Design Projects",
@@ -372,6 +383,8 @@ export const works: Work[] = [
       "https://images.pexels.com/photos/3850210/pexels-photo-3850210.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     type: "image",
     link: "",
+    description:
+      "Visual branding design, interactive presentation materials, and documentary video covering vocational school educational activities.",
   },
 ];
 
