@@ -49,6 +49,7 @@ try {
     "./gate.test.mjs",
     "./admin-html-path.test.mjs",
     "./hash-script.test.mjs",
+    "./hash-page.test.mjs",
     "./store.test.mjs",
     "./admin-ui.test.mjs",
   ];
