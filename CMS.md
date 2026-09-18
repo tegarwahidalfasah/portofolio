@@ -165,7 +165,17 @@ Detail pengaman di `api/admin.ts`:
   gambar. Halaman admin sendiri memakai CSP longgar (bundle singlefile +
   gambar dari URL apa pun yang kamu tempel), tapi tetap `frame-ancestors
   'none'`.
-- Link **Admin** di footer dihapus supaya URL-nya tidak diiklankan.
+- Link **Admin** di footer situs dihapus, jadi tidak ada tautan yang
+  mengajak orang ke sana.
+
+  Catatan jujur: bundle publik masih memuat **dua** sebutan `/admin` yang
+  jinak — (a) banner "pratinjau draft" yang hanya dirender kalau browser
+  itu punya draft belum terbit (praktisnya cuma browser kamu), dan
+  (b) pemeriksaan `isAdminPath()` yang menahan agar judul tab tidak
+  ditimpa saat kamu berada di `/admin`. Keduanya **tidak** memuat kode CMS
+  dan **tidak** memberi akses apa pun. Yang menjaga halaman admin adalah
+  gerbang server di atas, bukan kerahasiaan URL-nya — orang yang tahu
+  alamat `/admin` tetap hanya mendapat form login.
 
 Uji lokal gerbang yang sama persis (`ADMIN_PASSWORD` di sini cuma
 kemudahan: script menurunkannya jadi hash dulu, jadi yang teruji tetap
