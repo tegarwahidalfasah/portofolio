@@ -43,9 +43,9 @@ itu sendiri), berguna kalau sedang offline.
    Kedua bahasa disimpan terpisah — ubah di dua-duanya agar konsisten.
 2. Pilih tab sesuai bagian yang mau diubah (Profil, Hero, Riwayat,
    Skill, Karya, Layanan, FAQ, Kontak).
-2. Ubah teks / tambah / hapus / susun ulang item.
-3. Klik **Simpan** (menyimpan draft di browser ini).
-4. Klik **Pratinjau** untuk melihat hasilnya.
+3. Ubah teks / tambah / hapus / susun ulang item.
+4. Klik **Simpan** (menyimpan draft di browser ini).
+5. Klik **Pratinjau** untuk melihat hasilnya.
 
 Selama ada draft, muncul badge kecil *"Pratinjau draft CMS"*
 di kiri bawah website — badge itu **hanya terlihat di browser kamu**,
