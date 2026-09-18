@@ -29,6 +29,40 @@ const LANG_KEY = "portfolio-lang-v1";
 export type Docs = Record<Lang, CmsContent>;
 export type PartialDocs = { id?: Partial<CmsContent>; en?: Partial<CmsContent> };
 
+/** Hasil simpan draft. `bytes` = ukuran JSON yang dicoba ditulis. */
+export type SaveResult =
+  | { ok: true; bytes: number }
+  | { ok: false; reason: "quota" | "unavailable"; bytes: number };
+
+/**
+ * Batas aman localStorage. Kuota browser umumnya ~5 MB per origin dan
+ * dipakai bersama key lain, jadi kita peringatkan lebih awal.
+ */
+export const DRAFT_SOFT_LIMIT = 3_500_000;
+export const DRAFT_HARD_LIMIT = 4_800_000;
+
+/** Ukuran byte UTF-8 sebenarnya (bukan jumlah karakter). */
+export function byteSize(text: string): number {
+  if (typeof Blob !== "undefined") {
+    try {
+      return new Blob([text]).size;
+    } catch {
+      /* lingkungan tanpa Blob — pakai pendekatan di bawah */
+    }
+  }
+  try {
+    return new TextEncoder().encode(text).length;
+  } catch {
+    return text.length;
+  }
+}
+
+export function formatBytes(n: number): string {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(0)} KB`;
+  return `${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+
 /** Baca payload published/draft (format baru {id,en} atau lama 1 bahasa). */
 export function extractDocsPayload(
   json: unknown
@@ -90,7 +124,12 @@ type CmsState = {
   hasDraft: boolean;
   hasPublished: boolean;
   publishedAt: string | null;
-  saveDraft: (d: Docs) => void;
+  /**
+   * Simpan draft. Mengembalikan hasil — PENTING: kegagalan (mis. kuota
+   * localStorage penuh) TIDAK lagi ditelan diam-diam, karena dulu
+   * pengguna melihat toast "tersimpan" padahal datanya hilang.
+   */
+  saveDraft: (d: Docs) => SaveResult;
   clearDraft: () => void;
 };
 
@@ -156,15 +195,26 @@ export function CmsProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const saveDraft = useCallback((d: Docs) => {
+  const saveDraft = useCallback((d: Docs): SaveResult => {
+    const payload = JSON.stringify({
+      version: 2,
+      updatedAt: new Date().toISOString(),
+      content: d,
+    });
+    const bytes = byteSize(payload);
     try {
-      localStorage.setItem(
-        DRAFT_KEY,
-        JSON.stringify({ version: 2, updatedAt: new Date().toISOString(), content: d })
-      );
+      localStorage.setItem(DRAFT_KEY, payload);
       setDraft(d);
-    } catch {
-      /* storage penuh / mode privat — abaikan */
+      return { ok: true, bytes };
+    } catch (err) {
+      // Dulu error ini ditelan, sehingga UI tetap bilang "tersimpan"
+      // padahal draft tidak pernah masuk localStorage.
+      const name = err instanceof Error ? err.name : "";
+      return {
+        ok: false,
+        reason: /quota/i.test(name) ? "quota" : "unavailable",
+        bytes,
+      };
     }
   }, []);
 

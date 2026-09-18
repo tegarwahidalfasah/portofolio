@@ -93,10 +93,6 @@ export function Footer() {
             <p className="font-mono">
               {t.ftBuilt}
             </p>
-            <span className="text-glass-300">•</span>
-            <a href="/admin" className="font-mono transition-colors hover:text-accent-600">
-              Admin
-            </a>
           </div>
         </div>
       </div>

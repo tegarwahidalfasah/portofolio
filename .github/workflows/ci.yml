@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Typecheck, build & test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      # `npm test` menjalankan build (situs + admin) lalu seluruh suite tes.
+      # Build harus jalan lebih dulu karena tests/run.mjs membaca
+      # dist-admin/admin.html untuk menguji gerbang admin.
+      - name: Build & test
+        run: npm test
+
+      - name: Pastikan bundle publik bebas kode CMS
+        run: |
+          set -e
+          for s in "CMS Admin" "Unduh JSON" "Hapus draft" "admin-main"; do
+            if grep -qF -- "$s" dist/index.html; then
+              echo "::error::Kode CMS bocor ke bundle publik: '$s'"
+              exit 1
+            fi
+            echo "ok: '$s' tidak ada di dist/index.html"
+          done
+
+      - name: Pastikan admin punya noindex
+        run: grep -q 'name="robots" content="noindex, nofollow"' dist-admin/admin.html

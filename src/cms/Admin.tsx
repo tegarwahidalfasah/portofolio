@@ -19,7 +19,6 @@ import {
   Download,
   Upload,
   RotateCcw,
-  Lock,
   LogOut,
   Check,
   Menu,
@@ -28,7 +27,16 @@ import {
   Info,
   Play,
 } from "lucide-react";
-import { useCms, extractDocsPayload, type Docs, type Lang } from "./store";
+import {
+  useCms,
+  extractDocsPayload,
+  byteSize,
+  formatBytes,
+  DRAFT_SOFT_LIMIT,
+  DRAFT_HARD_LIMIT,
+  type Docs,
+  type Lang,
+} from "./store";
 import { mergeContent, type CmsContent, type Work, type MediaItem } from "./defaults";
 import {
   resolveWorkMedia,
@@ -52,26 +60,7 @@ import {
   ImageInput,
 } from "./fields";
 
-/* ═══════════ Auth (sederhana, sisi browser) ═══════════ */
-const PASS_KEY = "portfolio-cms-pass-v1";
-const AUTH_KEY = "portfolio-cms-auth-v1";
-const DEFAULT_PASS = "admin123";
-
-function getPassword(): string {
-  try {
-    return localStorage.getItem(PASS_KEY) || DEFAULT_PASS;
-  } catch {
-    return DEFAULT_PASS;
-  }
-}
-
-function isAuthed(): boolean {
-  try {
-    return localStorage.getItem(AUTH_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
+/* Akses halaman ini dijaga di server (api/admin.ts), bukan di browser. */
 
 /* ═══════════ Pilihan dropdown ═══════════ */
 const workTypeOpts = [
@@ -138,95 +127,17 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
-/* ═══════════ Halaman utama admin ═══════════ */
+/* ═══════════ Halaman utama admin ═══════════
+   Tidak ada gerbang password di sini: siapa pun yang menerima HTML ini
+   sudah lolos verifikasi password di server (api/admin.ts). File ini
+   tidak pernah disajikan sebagai file statis.
+   ═══════════ */
 export function Admin() {
-  const [authed, setAuthed] = useState(isAuthed);
-
   useEffect(() => {
     document.title = "CMS Admin — Portofolio";
   }, []);
 
-  if (!authed) return <Gate onOk={() => setAuthed(true)} />;
-  return (
-    <Panel
-      onLogout={() => {
-        try {
-          localStorage.removeItem(AUTH_KEY);
-        } catch {
-          /* abaikan */
-        }
-        setAuthed(false);
-      }}
-    />
-  );
-}
-
-/* ── Gerbang password ── */
-function Gate({ onOk }: { onOk: () => void }) {
-  const [pass, setPass] = useState("");
-  const [error, setError] = useState("");
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (pass === getPassword()) {
-      try {
-        localStorage.setItem(AUTH_KEY, "1");
-      } catch {
-        /* abaikan */
-      }
-      onOk();
-    } else {
-      setError("Password salah. Coba lagi.");
-    }
-  };
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-5">
-      <form
-        onSubmit={submit}
-        className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/[0.04] p-8"
-      >
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-sky-400 text-white shadow-lg shadow-indigo-500/30">
-          <Lock size={22} />
-        </div>
-        <h1 className="mt-5 text-center font-display text-xl font-bold text-white">
-          CMS Admin
-        </h1>
-        <p className="mt-1 text-center text-sm text-slate-400">
-          Masukkan password untuk mengelola isi website.
-        </p>
-        <input
-          type="password"
-          autoFocus
-          value={pass}
-          onChange={(e) => {
-            setPass(e.target.value);
-            setError("");
-          }}
-          placeholder="Password"
-          className="mt-6 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20"
-        />
-        {error && <p className="mt-2 text-center text-xs text-rose-300">{error}</p>}
-        <button
-          type="submit"
-          className="mt-4 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 px-4 py-3 font-display text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-xl"
-        >
-          Masuk
-        </button>
-        <p className="mt-4 text-center text-[11px] leading-relaxed text-slate-500">
-          Password bawaan: <span className="font-mono text-slate-300">admin123</span>
-          <br />
-          (ganti di tab Pengaturan setelah masuk)
-        </p>
-        <a
-          href="/"
-          className="mt-3 block text-center text-xs text-slate-400 underline-offset-4 hover:text-white hover:underline"
-        >
-          ← Kembali ke website
-        </a>
-      </form>
-    </div>
-  );
+  return <Panel onLogout={() => window.location.assign("/admin?keluar=1")} />;
 }
 
 /* ── Panel admin ── */
@@ -237,7 +148,9 @@ function Panel({ onLogout }: { onLogout: () => void }) {
   const doc = docs ? docs[cmsLang] : null;
   const [tab, setTab] = useState<TabId>("profil");
   const [dirty, setDirty] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
+  /** Ukuran draft terakhir yang berhasil disimpan (0 = belum pernah). */
+  const [draftBytes, setDraftBytes] = useState(0);
+  const [toast, setToast] = useState<{ msg: string; tone: "ok" | "err" } | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -247,13 +160,23 @@ function Panel({ onLogout }: { onLogout: () => void }) {
     if (!cms.loading && docs === null) {
       setDocs(cms.docs);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaust-deps
   }, [cms.loading]);
 
-  const showToast = (msg: string) => {
-    setToast(msg);
+  // Tampilkan ukuran draft yang sudah ada sejak halaman dibuka, supaya
+  // peringatan kuota terlihat SEBELUM pengguna menekan Simpan.
+  useEffect(() => {
+    if (!cms.loading && cms.hasDraft && draftBytes === 0) {
+      setDraftBytes(byteSize(JSON.stringify(cms.docs)));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cms.loading, cms.hasDraft]);
+
+  const showToast = (msg: string, tone: "ok" | "err" = "ok") => {
+    setToast({ msg, tone });
     if (toastTimer.current) clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(null), 3000);
+    // Pesan gagal bertahan lebih lama supaya tidak terlewat.
+    toastTimer.current = setTimeout(() => setToast(null), tone === "err" ? 9000 : 3000);
   };
 
   const update = (fn: (d: CmsContent) => void) => {
@@ -268,9 +191,25 @@ function Panel({ onLogout }: { onLogout: () => void }) {
 
   const handleSave = () => {
     if (!docs) return;
-    cms.saveDraft(docs);
+    const res = cms.saveDraft(docs);
+    if (!res.ok) {
+      // Jangan sentuh `dirty`: perubahan masih ada di editor dan belum aman.
+      showToast(
+        res.reason === "quota"
+          ? `GAGAL menyimpan: penyimpanan browser penuh (draft ${formatBytes(res.bytes)}). ` +
+              "Hapus beberapa gambar besar atau Hapus draft, lalu coba lagi. " +
+              "Perubahanmu masih ada di layar — jangan reload."
+          : "GAGAL menyimpan: browser menolak menulis penyimpanan (mode privat?). " +
+              "Perubahanmu masih ada di layar — segera Unduh JSON sebagai cadangan.",
+        "err"
+      );
+      return;
+    }
+    setDraftBytes(res.bytes);
     setDirty(false);
-    showToast("Draft tersimpan di browser ini. Klik Pratinjau untuk melihat.");
+    showToast(
+      `Draft tersimpan di browser ini (${formatBytes(res.bytes)}). Klik Pratinjau untuk melihat.`
+    );
   };
 
   const handlePreview = () => {
@@ -323,6 +262,8 @@ function Panel({ onLogout }: { onLogout: () => void }) {
     cms.clearDraft();
     setDocs(cms.baseDocs);
     setDirty(false);
+    // Tanpa ini indikator ukuran terus menampilkan angka draft yang sudah dihapus.
+    setDraftBytes(0);
     showToast("Draft dihapus.");
   };
 
@@ -390,6 +331,21 @@ function Panel({ onLogout }: { onLogout: () => void }) {
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            {draftBytes > 0 && (
+              <span
+                title={`Ukuran draft yang tersimpan di browser ini. Batas aman ${formatBytes(DRAFT_SOFT_LIMIT)}.`}
+                className={`hidden items-center gap-1.5 rounded-xl border px-3 py-2.5 font-mono text-[11px] sm:flex ${
+                  draftBytes > DRAFT_HARD_LIMIT
+                    ? "border-rose-400/40 bg-rose-500/10 text-rose-200"
+                    : draftBytes > DRAFT_SOFT_LIMIT
+                      ? "border-amber-400/40 bg-amber-500/10 text-amber-200"
+                      : "border-white/10 bg-white/5 text-slate-400"
+                }`}
+              >
+                <Info size={12} />
+                {formatBytes(draftBytes)}
+              </span>
+            )}
             <button
               onClick={handleSave}
               disabled={!dirty}
@@ -475,7 +431,6 @@ function Panel({ onLogout }: { onLogout: () => void }) {
               onImport={() => fileRef.current?.click()}
               onReset={handleReset}
               onDownload={handleDownload}
-              showToast={showToast}
             />
           )}
         </main>
@@ -491,11 +446,29 @@ function Panel({ onLogout }: { onLogout: () => void }) {
 
       {/* ── Toast ── */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 z-50 flex max-w-[90vw] -translate-x-1/2 items-center gap-2.5 rounded-2xl border border-white/15 bg-slate-900/95 px-5 py-3 shadow-2xl backdrop-blur-xl">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">
-            <Check size={14} />
+        <div
+          role={toast.tone === "err" ? "alert" : "status"}
+          className={`fixed bottom-6 left-1/2 z-50 flex max-w-[90vw] -translate-x-1/2 items-start gap-2.5 rounded-2xl border px-5 py-3 shadow-2xl backdrop-blur-xl ${
+            toast.tone === "err"
+              ? "border-rose-400/40 bg-rose-950/95"
+              : "border-white/15 bg-slate-900/95"
+          }`}
+        >
+          <span
+            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
+              toast.tone === "err" ? "bg-rose-500/25 text-rose-200" : "bg-emerald-500/20 text-emerald-300"
+            }`}
+          >
+            {toast.tone === "err" ? <X size={14} /> : <Check size={14} />}
           </span>
-          <p className="text-sm text-slate-200">{toast}</p>
+          <p className="text-sm leading-relaxed text-slate-200">{toast.msg}</p>
+          <button
+            onClick={() => setToast(null)}
+            aria-label="Tutup"
+            className="-mr-1 shrink-0 rounded-lg p-1 text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <X size={14} />
+          </button>
         </div>
       )}
     </div>
@@ -1245,35 +1218,12 @@ function TabPengaturan({
   onImport,
   onReset,
   onDownload,
-  showToast,
 }: {
   onImport: () => void;
   onReset: () => void;
   onDownload: () => void;
-  showToast: (msg: string) => void;
 }) {
   const cms = useCms();
-  const [pass1, setPass1] = useState("");
-  const [pass2, setPass2] = useState("");
-
-  const changePassword = () => {
-    if (pass1.length < 6) {
-      showToast("Password minimal 6 karakter.");
-      return;
-    }
-    if (pass1 !== pass2) {
-      showToast("Konfirmasi password tidak sama.");
-      return;
-    }
-    try {
-      localStorage.setItem(PASS_KEY, pass1);
-    } catch {
-      /* abaikan */
-    }
-    setPass1("");
-    setPass2("");
-    showToast("Password berhasil diganti.");
-  };
 
   return (
     <>
@@ -1337,40 +1287,51 @@ function TabPengaturan({
         </button>
       </Card>
 
-      <Card title="Ganti password admin">
-        <Grid>
-          <Field label="Password baru (min. 6 karakter)">
-            <input
-              type="password"
-              value={pass1}
-              onChange={(e) => setPass1(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:border-indigo-400/60"
-              placeholder="••••••"
-            />
-          </Field>
-          <Field label="Konfirmasi password baru">
-            <input
-              type="password"
-              value={pass2}
-              onChange={(e) => setPass2(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:border-indigo-400/60"
-              placeholder="••••••"
-            />
-          </Field>
-        </Grid>
-        <div>
-          <button
-            onClick={changePassword}
-            className="flex items-center gap-1.5 rounded-xl bg-indigo-500/20 px-4 py-2.5 font-display text-xs font-semibold text-indigo-100 transition-colors hover:bg-indigo-500/30"
+      <Card
+        title="Password & akses admin"
+        desc="Password admin disimpan di server (environment variable Vercel), bukan di browser — jadi tidak bisa diganti dari halaman ini."
+      >
+        <ol className="space-y-3 text-sm leading-relaxed text-slate-300">
+          {[
+            <>
+              Di komputer, jalankan{" "}
+              <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[12px] text-slate-100">
+                npm run hash-pass
+              </code>{" "}
+              lalu masukkan password baru (minimal 10 karakter).
+            </>,
+            "Salin baris pbkdf2$… yang dihasilkan.",
+            <>
+              Buka Vercel → project → <b>Settings → Environment Variables</b> →
+              edit <code className="font-mono text-slate-100">ADMIN_PASSWORD_HASH</code> →
+              tempel nilainya → Save.
+            </>,
+            <>
+              Klik <b>Deployments → … → Redeploy</b> agar password baru berlaku.
+            </>,
+          ].map((s, i) => (
+            <li key={i} className="flex gap-3">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 font-mono text-[11px] text-slate-200">
+                {i + 1}
+              </span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ol>
+        <div className="mt-2">
+          <a
+            href="/admin?keluar=1"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 px-4 py-2.5 font-display text-xs font-semibold text-slate-200 transition-colors hover:bg-white/5"
           >
-            <Lock size={14} /> Simpan password baru
-          </button>
+            <LogOut size={14} /> Keluar dari sesi ini
+          </a>
         </div>
         <p className="flex items-start gap-2 text-[11px] leading-relaxed text-slate-500">
           <Info size={13} className="mt-0.5 shrink-0" />
-          Password ini hanya pengaman dasar di browser (bukan keamanan server).
-          Untuk keamanan serius, jangan simpan data sensitif di website dan gunakan
-          password unik.
+          Halaman ini hanya bisa dibuka setelah password diverifikasi di server
+          (<span className="font-mono text-slate-300">api/admin.ts</span>). Kodenya
+          tidak pernah dikirim ke pengunjung yang belum masuk, dan sesinya berupa
+          cookie httpOnly bertanda tangan yang berlaku 12 jam.
         </p>
       </Card>
     </>

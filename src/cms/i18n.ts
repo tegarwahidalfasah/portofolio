@@ -117,7 +117,7 @@ const en = {
   ftRights: "All rights reserved.",
   ftBuilt: "Designed & built with creativity",
   ftTop: "Back to top",
-  bannerPreview: "CMS draft preview — Open Admin →",
+  bannerPreview: "CMS draft preview",
 };
 
 export type Strings = typeof en;
@@ -218,7 +218,7 @@ const id: Strings = {
   ftRights: "Seluruh hak cipta dilindungi.",
   ftBuilt: "Dirancang & dibangun dengan kreativitas",
   ftTop: "Kembali ke atas",
-  bannerPreview: "Pratinjau draft CMS — Buka Admin →",
+  bannerPreview: "Pratinjau draft CMS",
 };
 
 export const strings: Record<Lang, Strings> = { id, en };

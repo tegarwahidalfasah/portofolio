@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { Stats } from "./components/Stats";
@@ -19,18 +18,16 @@ import { FloatingBackToTop } from "./components/FloatingBackToTop";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { CmsProvider, useCms } from "./cms/store";
 import { ThemeProvider } from "./cms/theme";
-import { Admin } from "./cms/Admin";
 import { Analytics } from "@vercel/analytics/react";
 
-function isAdminRoute(): boolean {
-  if (typeof window === "undefined") return false;
-  const path = window.location.pathname.replace(/\/+$/, "") || "/";
-  if (path === "/admin") return true;
-  const hash = window.location.hash.replace(/^#\/?/, "").split("?")[0];
-  return hash === "admin" || hash.startsWith("admin/");
-}
+/* ───────────────────────────────────────────────
+   Bundle ini HANYA berisi website publik. Halaman admin
+   dibuild terpisah (vite.config.admin.ts → dist-admin/admin.html)
+   dan cuma dikirim oleh api/admin.ts setelah password cocok,
+   jadi tidak ada satu baris pun kode CMS di sini.
+   ─────────────────────────────────────────────── */
 
-/** Banner kecil penanda mode pratinjau draft (hanya terlihat di browser admin). */
+/** Banner kecil penanda mode pratinjau draft (hanya terlihat di browser yang punya draft). */
 function DraftBanner() {
   const { hasDraft, t } = useCms();
   if (!hasDraft) return null;
@@ -40,7 +37,7 @@ function DraftBanner() {
       className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full border border-indigo-400/30 bg-slate-950/90 px-4 py-2.5 font-mono text-[11px] font-medium text-indigo-200 shadow-2xl backdrop-blur-xl transition-all hover:bg-slate-900"
     >
       <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400" />
-      {t.bannerPreview}
+      {t.bannerPreview} — Buka Admin →
     </a>
   );
 }
@@ -75,21 +72,11 @@ function Site() {
 }
 
 export default function App() {
-  const [admin, setAdmin] = useState<boolean>(() => isAdminRoute());
-
-  useEffect(() => {
-    const onNav = () => setAdmin(isAdminRoute());
-    window.addEventListener("popstate", onNav);
-    window.addEventListener("hashchange", onNav);
-    return () => {
-      window.removeEventListener("popstate", onNav);
-      window.removeEventListener("hashchange", onNav);
-    };
-  }, []);
-
   return (
     <CmsProvider>
-      <ThemeProvider>{admin ? <Admin /> : <Site />}</ThemeProvider>
+      <ThemeProvider>
+        <Site />
+      </ThemeProvider>
     </CmsProvider>
   );
 }
