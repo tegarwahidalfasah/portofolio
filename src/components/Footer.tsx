@@ -10,6 +10,7 @@ export function Footer() {
     { label: t.navAbout, href: "#about" },
     { label: t.navEducation, href: "#pendidikan" },
     { label: t.navExperience, href: "#pengalaman" },
+    { label: t.navWorks, href: "#karya" },
     { label: t.navSkills, href: "#skills" },
     { label: t.navServices, href: "#layanan" },
     { label: t.navFaq, href: "#faq" },

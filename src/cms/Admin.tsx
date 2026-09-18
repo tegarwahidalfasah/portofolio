@@ -26,9 +26,19 @@ import {
   X,
   ExternalLink,
   Info,
+  Play,
 } from "lucide-react";
 import { useCms, extractDocsPayload, type Docs, type Lang } from "./store";
-import { mergeContent, type CmsContent } from "./defaults";
+import { mergeContent, type CmsContent, type Work, type MediaItem } from "./defaults";
+import {
+  resolveWorkMedia,
+  parseYouTube,
+  parseTikTok,
+  parseInstagram,
+  convertToEmbedUrl,
+  PlatformMediaIcon,
+  PlatformPill,
+} from "../utils/mediaEmbed";
 import {
   Area,
   Card,
@@ -39,6 +49,7 @@ import {
   Sel,
   StrList,
   Text,
+  ImageInput,
 } from "./fields";
 
 /* ═══════════ Auth (sederhana, sisi browser) ═══════════ */
@@ -64,13 +75,15 @@ function isAuthed(): boolean {
 
 /* ═══════════ Pilihan dropdown ═══════════ */
 const workTypeOpts = [
-  { value: "image", label: "Gambar" },
   { value: "video", label: "Video" },
+  { value: "image", label: "Gambar / Foto" },
 ];
 const mediaTypeOpts = [
-  { value: "youtube", label: "YouTube" },
+  { value: "youtube", label: "YouTube (yt)" },
+  { value: "tiktok", label: "TikTok (tt)" },
+  { value: "instagram", label: "Instagram (ig)" },
   { value: "twitch", label: "Twitch" },
-  { value: "video", label: "Video" },
+  { value: "video", label: "Video Langsung / File" },
 ];
 const toolIconOpts = [
   "film",
@@ -543,8 +556,8 @@ function TabProfil({
       </Card>
 
       <Card title="Foto & CV" desc="Foto profil dan file CV yang bisa diunduh pengunjung.">
-        <Field label="URL foto profil (opsional)" hint="Kosongkan untuk memakai foto bawaan. Isi dengan URL gambar (https://…) untuk mengganti.">
-          <Text value={p.photoUrl} onChange={(v) => set({ photoUrl: v })} placeholder="https://…" />
+        <Field label="Foto profil (opsional)" hint="Kosongkan untuk memakai foto bawaan. Isi URL gambar atau unggah file foto dari perangkat.">
+          <ImageInput value={p.photoUrl} onChange={(v) => set({ photoUrl: v })} placeholder="https://… atau pilih file foto" />
         </Field>
         <Field label="URL file CV" hint="Tautan tombol 'Download CV'. Upload PDF ke repo (folder public/) lalu isi mis. /CV_Tegar_Wahid_Alfasah.pdf">
           <Text value={p.cvUrl} onChange={(v) => set({ cvUrl: v })} />
@@ -767,6 +780,7 @@ function TabSkill({
 }
 
 /* ═══════════ Tab: Karya & Media ═══════════ */
+/* ═══════════ Tab: Karya & Media ═══════════ */
 function TabKarya({
   doc,
   update,
@@ -777,27 +791,207 @@ function TabKarya({
   return (
     <>
       <ListEditor
-        title="Karya (Case Studies)"
-        desc="Kartu horizontal di section Featured Case Studies. Gambar diisi URL (https://…) — bisa dari Pexels/Unsplash atau file di repo."
+        title="Karya (Case Studies / Portofolio)"
+        desc="Kelola kartu karya di section Featured Case Studies. Anda bisa langsung memasukkan foto atau video dari sosial media seperti TikTok (tt), YouTube (yt), Instagram (ig), file video (.mp4), atau foto gambar."
         items={doc.works}
         onChange={(v) => update((d) => { d.works = v; })}
-        createItem={() => ({ title: "", client: "", category: "", image: "", type: "image" as const })}
-        addLabel="Tambah karya"
-        itemTitle={(w) => w.title || "(baru)"}
-        renderItem={(w, set) => (
-          <>
-            <Grid>
-              <Field label="Judul"><Text value={w.title} onChange={(v) => set({ title: v })} /></Field>
-              <Field label="Klien"><Text value={w.client} onChange={(v) => set({ client: v })} /></Field>
-              <Field label="Kategori"><Text value={w.category} onChange={(v) => set({ category: v })} placeholder="cth. Video Editing · Broadcast" /></Field>
-              <Field label="Tipe"><Sel value={w.type} onChange={(v) => set({ type: v as "image" | "video" })} options={workTypeOpts} /></Field>
-            </Grid>
-            <Field label="URL gambar"><Text value={w.image} onChange={(v) => set({ image: v })} placeholder="https://…" /></Field>
-            {w.image && (
-              <img src={w.image} alt="" className="h-28 w-full rounded-xl border border-white/10 object-cover" loading="lazy" />
-            )}
-          </>
-        )}
+        createItem={() => ({
+          title: "",
+          client: "",
+          category: "Video Editing",
+          image: "",
+          type: "video" as const,
+          link: "",
+        })}
+        addLabel="Tambah karya baru"
+        itemTitle={(w) => w.title || "(karya baru)"}
+        renderItem={(w, set) => {
+          const media = resolveWorkMedia(w);
+          const ytLink = parseYouTube(w.link);
+
+          return (
+            <>
+              <Grid>
+                <Field label="Judul karya">
+                  <Text
+                    value={w.title}
+                    onChange={(v) => set({ title: v })}
+                    placeholder="cth. Multimedia Content Production"
+                  />
+                </Field>
+                <Field label="Klien / Brand">
+                  <Text
+                    value={w.client}
+                    onChange={(v) => set({ client: v })}
+                    placeholder="cth. JEV / Klien Pribadi"
+                  />
+                </Field>
+                <Field label="Kategori">
+                  <Text
+                    value={w.category}
+                    onChange={(v) => set({ category: v })}
+                    placeholder="cth. Video Editing · Broadcast"
+                  />
+                </Field>
+                <Field label="Tipe media">
+                  <Sel
+                    value={w.type}
+                    onChange={(v) => set({ type: v as "image" | "video" })}
+                    options={workTypeOpts}
+                  />
+                </Field>
+              </Grid>
+
+              {/* Input Link Karya dari Sosial Media */}
+              <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-4 space-y-3">
+                <Field
+                  label="Link Karya / Sosial Media (TikTok, YouTube, Instagram, dll.)"
+                  hint="Masukkan link video/postingan langsung dari TikTok (tt), YouTube (yt), Instagram (ig), atau URL karya lainnya."
+                >
+                  <Text
+                    value={w.link ?? ""}
+                    onChange={(v) => {
+                      const trimmed = v.trim();
+                      const yt = parseYouTube(trimmed);
+                      const tt = parseTikTok(trimmed);
+                      const ig = parseInstagram(trimmed);
+
+                      const next: Partial<Work> = { link: v };
+
+                      // Jika user paste YouTube dan gambar kosong, otomatis pasang thumbnail YouTube
+                      if (yt && !w.image) {
+                        next.image = yt.thumbnailUrl;
+                        next.type = "video";
+                      } else if (tt && w.type === "image") {
+                        next.type = "video";
+                      } else if (ig && ig.isReel && w.type === "image") {
+                        next.type = "video";
+                      }
+
+                      set(next);
+                    }}
+                    placeholder="cth. https://www.tiktok.com/@user/video/... atau https://youtu.be/... atau https://instagram.com/reel/..."
+                  />
+                </Field>
+
+                {/* Status deteksi platform otomatis */}
+                {w.link && (
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400">Platform:</span>
+                      <PlatformPill platform={media.platform} />
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* Tombol ambil thumbnail YouTube */}
+                      {ytLink && w.image !== ytLink.thumbnailUrl && (
+                        <button
+                          type="button"
+                          onClick={() => set({ image: ytLink.thumbnailUrl })}
+                          className="rounded-lg bg-red-500/20 px-2.5 py-1 font-mono text-[11px] font-semibold text-red-300 hover:bg-red-500/30 transition-colors"
+                        >
+                          ⚡ Gunakan thumbnail YouTube
+                        </button>
+                      )}
+
+                      {/* Tombol switch tipe ke Video jika terdeteksi video */}
+                      {media.isVideo && w.type === "image" && (
+                        <button
+                          type="button"
+                          onClick={() => set({ type: "video" })}
+                          className="rounded-lg bg-indigo-500/20 px-2.5 py-1 font-mono text-[11px] font-semibold text-indigo-300 hover:bg-indigo-500/30 transition-colors"
+                        >
+                          ⚡ Ubah tipe ke Video
+                        </button>
+                      )}
+
+                      {/* Tombol tes link */}
+                      {media.directUrl && (
+                        <a
+                          href={media.directUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-[11px] font-medium text-slate-300 hover:bg-white/10 transition-colors"
+                        >
+                          <ExternalLink size={11} /> Tes buka link ↗
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Deskripsi Karya */}
+              <Field
+                label="Deskripsi karya (opsional)"
+                hint="Jelaskan peran Anda, alat yang digunakan (cth. CapCut, OBS, FL Studio), proses editing, atau hasil/engagement yang dicapai."
+              >
+                <Area
+                  value={w.description ?? ""}
+                  onChange={(v) => set({ description: v })}
+                  placeholder="cth. Video editing vertikal untuk TikTok dan Reels dengan motion graphics dan sound design dinamis..."
+                  rows={2}
+                />
+              </Field>
+
+              {/* URL Gambar / Thumbnail */}
+              <Field
+                label="URL Gambar / Thumbnail Karya"
+                hint="Bisa URL gambar dari Pexels/Unsplash, upload dari perangkat, atau otomatis dari thumbnail YouTube jika link dari YouTube."
+              >
+                <ImageInput
+                  value={w.image}
+                  onChange={(v) => set({ image: v })}
+                  placeholder="https://… atau pilih file (kosongkan untuk thumbnail YouTube otomatis)"
+                />
+              </Field>
+
+              {/* Pratinjau Visual Kartu */}
+              <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-3 space-y-2">
+                <div className="flex items-center justify-between text-xs text-slate-400">
+                  <span className="font-mono text-[11px]">Pratinjau Kartu di Website:</span>
+                  <PlatformPill platform={media.platform} />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded-xl bg-slate-950 border border-white/10">
+                    {media.thumbnailUrl ? (
+                      <img
+                        src={media.thumbnailUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-slate-500">
+                        <PlatformMediaIcon platform={media.platform} size={22} />
+                      </div>
+                    )}
+                    {media.isVideo && (
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-slate-950">
+                          <Play size={10} fill="currentColor" />
+                        </span>
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h4 className="truncate font-display text-sm font-bold text-white">
+                      {w.title || "(Belum ada judul)"}
+                    </h4>
+                    <p className="truncate text-xs text-slate-400">
+                      {w.client || "-"} · {w.category || "-"}
+                    </p>
+                    <p className="mt-1 truncate font-mono text-[10px] text-indigo-300">
+                      {w.link ? w.link : "(Link karya belum diisi)"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          );
+        }}
       />
 
       <Card title="Section media" desc="Judul dan tombol di section showcase video.">
@@ -816,26 +1010,89 @@ function TabKarya({
       </Card>
 
       <ListEditor
-        title="Showcase video"
-        desc="embedUrl memakai format embed YouTube, mis. https://www.youtube.com/embed/VIDEO_ID"
+        title="Showcase Video & Media"
+        desc="embedUrl mendukung link dari YouTube, TikTok, Instagram, Twitch, atau file video langsung. Link biasa otomatis dikonversi ke format embed."
         items={doc.mediaShowcase}
         onChange={(v) => update((d) => { d.mediaShowcase = v; })}
-        createItem={() => ({ title: "", description: "", type: "video" as const, embedUrl: "", thumbnail: "", duration: "", tags: [] })}
-        addLabel="Tambah video"
-        itemTitle={(m) => m.title || "(baru)"}
-        renderItem={(m, set) => (
-          <>
-            <Grid>
-              <Field label="Judul"><Text value={m.title} onChange={(v) => set({ title: v })} /></Field>
-              <Field label="Tipe"><Sel value={m.type} onChange={(v) => set({ type: v as "youtube" | "twitch" | "video" })} options={mediaTypeOpts} /></Field>
-              <Field label="URL embed"><Text value={m.embedUrl} onChange={(v) => set({ embedUrl: v })} placeholder="https://www.youtube.com/embed/…" /></Field>
-              <Field label="URL thumbnail"><Text value={m.thumbnail} onChange={(v) => set({ thumbnail: v })} placeholder="https://…" /></Field>
-              <Field label="Durasi (opsional)"><Text value={m.duration ?? ""} onChange={(v) => set({ duration: v })} placeholder="cth. 03:22" /></Field>
-            </Grid>
-            <Field label="Deskripsi"><Area value={m.description} onChange={(v) => set({ description: v })} rows={2} /></Field>
-            <StrList label="Tag" items={m.tags} onChange={(v) => set({ tags: v })} />
-          </>
-        )}
+        createItem={() => ({
+          title: "",
+          description: "",
+          type: "youtube" as const,
+          embedUrl: "",
+          thumbnail: "",
+          duration: "",
+          tags: [],
+        })}
+        addLabel="Tambah video showcase"
+        itemTitle={(m) => m.title || "(video baru)"}
+        renderItem={(m, set) => {
+          const yt = parseYouTube(m.embedUrl);
+
+          return (
+            <>
+              <Grid>
+                <Field label="Judul"><Text value={m.title} onChange={(v) => set({ title: v })} /></Field>
+                <Field label="Tipe platform"><Sel value={m.type} onChange={(v) => set({ type: v as any })} options={mediaTypeOpts} /></Field>
+                <Field label="Durasi (opsional)"><Text value={m.duration ?? ""} onChange={(v) => set({ duration: v })} placeholder="cth. 03:22" /></Field>
+              </Grid>
+
+              <Field
+                label="URL Video / Link Sosmed (YouTube, TikTok, Instagram)"
+                hint="Bisa link langsung biasa (cth. https://youtu.be/..., https://tiktok.com/@.../video/..., https://instagram.com/reel/...) — otomatis diubah ke format embed!"
+              >
+                <Text
+                  value={m.embedUrl}
+                  onChange={(v) => {
+                    const converted = convertToEmbedUrl(v);
+                    if (converted) {
+                      const updates: Partial<MediaItem> = {
+                        embedUrl: converted.embedUrl,
+                        type: converted.type,
+                      };
+                      if (converted.type === "youtube" && !m.thumbnail) {
+                        const ytInfo = parseYouTube(v);
+                        if (ytInfo) updates.thumbnail = ytInfo.thumbnailUrl;
+                      }
+                      set(updates);
+                    } else {
+                      set({ embedUrl: v });
+                    }
+                  }}
+                  placeholder="https://www.youtube.com/watch?v=… atau https://tiktok.com/@… atau https://instagram.com/reel/…"
+                />
+              </Field>
+
+              {/* Status & helper thumbnail YouTube */}
+              {m.embedUrl && (
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-400">Platform:</span>
+                    <PlatformPill platform={m.type as any} />
+                  </div>
+                  {yt && !m.thumbnail && (
+                    <button
+                      type="button"
+                      onClick={() => set({ thumbnail: yt.thumbnailUrl })}
+                      className="rounded-lg bg-red-500/20 px-2.5 py-1 font-mono text-[11px] font-semibold text-red-300 hover:bg-red-500/30 transition-colors"
+                    >
+                      ⚡ Gunakan thumbnail YouTube
+                    </button>
+                  )}
+                </div>
+              )}
+
+              <Field
+                label="URL Thumbnail"
+                hint="Bisa kosong jika video dari YouTube (thumbnail akan otomatis dimuat), atau pilih file gambar dari perangkat."
+              >
+                <ImageInput value={m.thumbnail} onChange={(v) => set({ thumbnail: v })} placeholder="https://… atau pilih file gambar" />
+              </Field>
+
+              <Field label="Deskripsi"><Area value={m.description} onChange={(v) => set({ description: v })} rows={2} /></Field>
+              <StrList label="Tag" items={m.tags} onChange={(v) => set({ tags: v })} />
+            </>
+          );
+        }}
       />
     </>
   );
