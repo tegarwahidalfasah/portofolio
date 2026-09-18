@@ -271,7 +271,28 @@ function errorPage(title: string, body: string): string {
 </body></html>`;
 }
 
-function send(res: Res, status: number, html: string, extra?: Record<string, string>): void {
+/* Halaman login & error dibuat seluruhnya oleh fungsi ini: tanpa script,
+   tanpa gambar, hanya inline <style> dan satu form. Bisa dikunci rapat,
+   sekaligus mencegah halaman login dibingkai (clickjacking). */
+const CSP_GATE = [
+  "default-src 'none'",
+  "style-src 'unsafe-inline'",
+  "form-action 'self'",
+  "base-uri 'none'",
+  "frame-ancestors 'none'",
+].join("; ");
+
+/* HTML admin dihasilkan vite-plugin-singlefile (semua JS/CSS inline) dan bisa
+   memuat gambar dari URL apa pun yang ditempel pengguna, jadi CSP-nya sengaja
+   longgar. Halaman ini sudah berada di belakang password. */
+const CSP_ADMIN = "base-uri 'self'; frame-ancestors 'none'";
+
+function send(
+  res: Res,
+  status: number,
+  html: string,
+  csp: string = CSP_GATE
+): void {
   res.statusCode = status;
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   // Wajib: HTML admin tidak boleh disalin CDN lalu disajikan ke orang lain.
@@ -279,7 +300,8 @@ function send(res: Res, status: number, html: string, extra?: Record<string, str
   res.setHeader("Vary", "Cookie");
   res.setHeader("X-Robots-Tag", "noindex, nofollow");
   res.setHeader("X-Content-Type-Options", "nosniff");
-  for (const [k, v] of Object.entries(extra ?? {})) res.setHeader(k, v);
+  res.setHeader("Referrer-Policy", "no-referrer");
+  res.setHeader("Content-Security-Policy", csp);
   res.end(html);
 }
 
@@ -413,7 +435,7 @@ export default async function handler(req: Req, res: Res): Promise<void> {
     "</head>",
     `<meta name="cms-auth" content="${nonce}"></head>`
   );
-  return send(res, 200, stamped);
+  return send(res, 200, stamped, CSP_ADMIN);
 }
 
 /* Diekspor untuk pengujian lokal (scripts/serve-admin.mjs). */
