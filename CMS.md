@@ -11,13 +11,31 @@ Buka di browser:
 https://portofolio-rosy-psi-76.vercel.app/admin
 ```
 
-Atau klik link kecil **Admin** di bagian paling bawah website (footer).
+Masukkan password admin kamu. Halaman ini **tertutup untuk orang lain**:
+password diperiksa di **server** (`api/admin.ts`), bukan di browser, jadi
+tidak bisa dilewati lewat DevTools.
 
-- Password bawaan: `admin123`
-- Setelah masuk, segera ganti password di tab **Pengaturan**.
+- Bisa dibuka dari HP maupun laptop — tidak perlu install apa pun.
+- Setelah masuk, sesi berlaku **12 jam** (cookie httpOnly bertanda tangan).
+- Salah password **8x** dalam 15 menit → dikunci sementara.
+- Link admin **sengaja tidak dipasang di footer**, jadi URL-nya tidak
+  diiklankan ke pengunjung.
+- Salah password? Halaman login yang muncul, bukan isi admin.
 
-> Catatan: password ini pengaman dasar di browser, bukan keamanan
-> level server. Jangan simpan data sensitif di website.
+> **Wajib sekali di awal:** set environment variable `ADMIN_PASSWORD_HASH`
+> di Vercel. Tanpa itu `/admin` menampilkan *"Admin belum dikonfigurasi"*
+> (status 503) — memang sengaja tertutup, bukan terbuka.
+> Lihat bagian **7. Setup keamanan di Vercel**.
+
+### Alternatif: edit dari komputer (tanpa internet)
+
+```bash
+npm install     # cukup sekali di awal
+npm run cms     # membuka http://localhost:5174/admin.html
+```
+
+Jalur lokal ini tidak pakai password (hanya bisa diakses dari komputer
+itu sendiri), berguna kalau sedang offline.
 
 ## 2. Cara mengedit konten
 
@@ -73,9 +91,11 @@ website melihat perubahan:
   *Hapus draft*.
 - **Import**: kalau punya file `cms-content.json` lama, bisa dimuat
   kembali lewat tombol *Import dari file*.
-- **Lupa password**: buka DevTools browser → Application →
-  Local Storage → hapus key `portfolio-cms-pass-v1`, lalu login lagi
-  dengan `admin123`.
+- **Lupa password**: buat hash baru dengan `npm run hash-pass`, tempel
+  ke `ADMIN_PASSWORD_HASH` di Vercel, lalu Redeploy. Draft tidak hilang
+  karena tersimpan di key localStorage yang berbeda.
+- **Ingin semua sesi langsung keluar**: ganti nilai
+  `ADMIN_SESSION_SECRET` di Vercel → Redeploy. Cookie lama jadi tidak sah.
 
 ## 6. Cara kerja (untuk developer)
 
@@ -86,10 +106,65 @@ website melihat perubahan:
   (default ← published ← draft) dan menyediakan hook `useCms()`.
 - Seluruh komponen membaca dari `useCms().content`, bukan lagi
   import langsung dari `src/data.ts`.
-- `vercel.json` me-rewrite `/admin` ke `index.html` agar routing
-  sisi klien berfungsi di Vercel.
 
-## 7. Bahasa, tema & font
+### Kenapa admin tidak bisa diakses publik
+
+Dua lapis, dan keduanya di sisi server/build — bukan di browser:
+
+1. **Admin dibuild terpisah.** `npm run build` menjalankan dua build:
+   `vite.config.ts` → `dist/index.html` (situs publik) dan
+   `vite.config.admin.ts` → `dist-admin/admin.html` (admin).
+   Bundle publik **tidak memuat satu baris pun kode CMS**, jadi
+   tidak ada yang bisa diintip dari View Source.
+2. **`/admin` dijaga serverless function.** `vercel.json` me-rewrite
+   `/admin` → `/api/admin`. `api/admin.ts` memeriksa cookie sesi;
+   hanya kalau sah ia membaca `dist-admin/admin.html` (dibawa lewat
+   `functions.includeFiles`) dan mengirimnya. Kalau tidak, yang
+   dikirim cuma form login.
+
+Detail pengaman di `api/admin.ts`:
+
+- Password dibaca dari env var `ADMIN_PASSWORD_HASH`
+  (format `pbkdf2$<iterasi>$<saltHex>$<hashHex>`, PBKDF2-SHA256
+  210.000 iterasi) dengan pembanding waktu-konstan. Fallback
+  `ADMIN_PASSWORD` (teks polos) tersedia tapi tidak disarankan.
+- **Fail-closed**: kalau tidak ada env var password → 503, bukan terbuka.
+- Sesi = cookie `cms_admin`, `HttpOnly; Secure; SameSite=Lax`, isinya
+  `<exp>.<HMAC-SHA256>` dengan masa berlaku 12 jam. Tidak bisa
+  dipalsukan maupun dinyalakan lewat DevTools.
+- Respons admin ber-`Cache-Control: no-store, private` + `Vary: Cookie`
+  supaya tidak disalin CDN lalu disajikan ke orang lain, dan
+  `X-Robots-Tag: noindex`.
+- Batas 8 percobaan / 15 menit per IP (disimpan di memori instance
+  fungsi, jadi ikut ter-reset saat instance dingin — perlambatan,
+  bukan jaminan; perlindungan utamanya password kuat + biaya PBKDF2).
+- Link **Admin** di footer dihapus supaya URL-nya tidak diiklankan.
+
+Uji lokal gerbang yang sama persis:
+
+```bash
+ADMIN_PASSWORD="coba-dulu-123" npm run admin:check
+# buka http://localhost:5199/admin
+```
+
+## 7. Setup keamanan di Vercel (wajib sekali)
+
+1. Di komputer: `npm run hash-pass`, masukkan password baru
+   (minimal 10 karakter). Salin baris `pbkdf2$…` yang dihasilkan.
+2. Vercel → project → **Settings → Environment Variables** →
+   **Add**:
+   - Key `ADMIN_PASSWORD_HASH`, Value = baris `pbkdf2$…` tadi.
+   - (Opsional) Key `ADMIN_SESSION_SECRET`, Value = nilai acak yang
+     juga dicetak script. Menggantinya membatalkan semua sesi.
+   - Environment: centang **Production** (dan Preview kalau mau).
+3. **Deployments → titik tiga → Redeploy** agar env var terbaca.
+4. Buka `/admin` — harus muncul form login. Setelah masuk, kamu langsung
+   melihat CMS.
+
+Kalau `/admin` menampilkan *"Admin belum dikonfigurasi"*, artinya langkah
+1–3 belum selesai.
+
+## 8. Bahasa, tema & font
 
 - **Translate ID/EN**: pengunjung mengganti bahasa lewat tombol
   ID/EN di navbar (tersimpan otomatis di browser). Konten kedua

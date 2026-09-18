@@ -5,8 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "cms": "vite --config vite.config.admin.ts --open /admin.html",
+    "build": "vite build && vite build --config vite.config.admin.ts",
+    "build:site": "vite build",
+    "build:admin": "vite build --config vite.config.admin.ts",
+    "preview": "vite preview",
+    "hash-pass": "node scripts/hash-password.mjs",
+    "admin:check": "node scripts/serve-admin.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

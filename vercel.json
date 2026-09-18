@@ -1,4 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [{ "source": "/admin", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/admin", "destination": "/api/admin" }],
+  "functions": {
+    "api/admin.ts": {
+      "includeFiles": "dist-admin/admin.html",
+      "memory": 256,
+      "maxDuration": 10
+    }
+  }
 }
