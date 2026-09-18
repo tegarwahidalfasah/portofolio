@@ -97,6 +97,23 @@ website melihat perubahan:
 - **Ingin semua sesi langsung keluar**: ganti nilai
   `ADMIN_SESSION_SECRET` di Vercel → Redeploy. Cookie lama jadi tidak sah.
 
+### Penyimpanan browser penuh
+
+Draft disimpan di `localStorage` browser, yang kuotanya ±5 MB per
+alamat web. Gambar yang diunggah lewat *Pilih File* disimpan sebagai
+base64 di dalam draft, jadi banyak foto besar bisa memenuhi kuota.
+
+- Di bar atas admin ada penanda **ukuran draft**. Abu-abu = aman,
+  kuning = lewat 3,5 MB (batas aman), merah = lewat 4,8 MB.
+- Kalau penyimpanan penuh, **Simpan gagal dan diberitahu** lewat pesan
+  merah: *"GAGAL menyimpan: penyimpanan browser penuh…"*. Status tetap
+  **● Belum disimpan** dan isianmu tidak dihapus — **jangan reload**.
+  Segera klik **Unduh JSON** sebagai cadangan, lalu hapus beberapa
+  gambar besar atau *Hapus draft* dan coba lagi.
+- Cara paling hemat kuota: pakai **URL gambar** (Pexels/Unsplash/Drive)
+  alih-alih mengunggah file, dan biarkan thumbnail YouTube kosong agar
+  diambil otomatis.
+
 ## 6. Cara kerja (untuk developer)
 
 - `src/data.ts` = nilai default (bawaan kode).
@@ -126,8 +143,9 @@ Detail pengaman di `api/admin.ts`:
 
 - Password dibaca dari env var `ADMIN_PASSWORD_HASH`
   (format `pbkdf2$<iterasi>$<saltHex>$<hashHex>`, PBKDF2-SHA256
-  210.000 iterasi) dengan pembanding waktu-konstan. Fallback
-  `ADMIN_PASSWORD` (teks polos) tersedia tapi tidak disarankan.
+  210.000 iterasi) dengan pembanding waktu-konstan. **Hanya hash yang
+  diterima** — env var `ADMIN_PASSWORD` (teks polos) sudah tidak
+  didukung lagi, supaya password tidak pernah tersimpan polos.
 - **Fail-closed**: kalau tidak ada env var password → 503, bukan terbuka.
 - Sesi = cookie `cms_admin`, `HttpOnly; Secure; SameSite=Lax`, isinya
   `<exp>.<HMAC-SHA256>` dengan masa berlaku 12 jam. Tidak bisa
@@ -140,7 +158,9 @@ Detail pengaman di `api/admin.ts`:
   bukan jaminan; perlindungan utamanya password kuat + biaya PBKDF2).
 - Link **Admin** di footer dihapus supaya URL-nya tidak diiklankan.
 
-Uji lokal gerbang yang sama persis:
+Uji lokal gerbang yang sama persis (`ADMIN_PASSWORD` di sini cuma
+kemudahan: script menurunkannya jadi hash dulu, jadi yang teruji tetap
+jalur produksi):
 
 ```bash
 ADMIN_PASSWORD="coba-dulu-123" npm run admin:check

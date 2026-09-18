@@ -19,6 +19,24 @@ if (!process.env.ADMIN_PASSWORD_HASH && !process.env.ADMIN_PASSWORD) {
   process.exit(1);
 }
 
+// ADMIN_PASSWORD hanya kemudahan untuk tes lokal. Function-nya sendiri
+// sudah tidak menerima teks polos, jadi kita turunkan hash-nya di sini
+// supaya yang diuji persis jalur produksi.
+if (!process.env.ADMIN_PASSWORD_HASH && process.env.ADMIN_PASSWORD) {
+  const { pbkdf2Sync, randomBytes } = await import("node:crypto");
+  const iterations = 210_000;
+  const salt = randomBytes(16).toString("hex");
+  const hash = pbkdf2Sync(
+    process.env.ADMIN_PASSWORD,
+    Buffer.from(salt, "hex"),
+    iterations,
+    32,
+    "sha256"
+  ).toString("hex");
+  process.env.ADMIN_PASSWORD_HASH = `pbkdf2$${iterations}$${salt}$${hash}`;
+  console.log("ADMIN_PASSWORD diturunkan jadi hash (lokal saja).");
+}
+
 const adminFile = join(process.cwd(), "dist-admin", "admin.html");
 if (!existsSync(adminFile)) {
   console.log("dist-admin/admin.html belum ada — membangun admin dulu…");

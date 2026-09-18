@@ -27,7 +27,16 @@ import {
   Info,
   Play,
 } from "lucide-react";
-import { useCms, extractDocsPayload, type Docs, type Lang } from "./store";
+import {
+  useCms,
+  extractDocsPayload,
+  byteSize,
+  formatBytes,
+  DRAFT_SOFT_LIMIT,
+  DRAFT_HARD_LIMIT,
+  type Docs,
+  type Lang,
+} from "./store";
 import { mergeContent, type CmsContent, type Work, type MediaItem } from "./defaults";
 import {
   resolveWorkMedia,
@@ -139,7 +148,9 @@ function Panel({ onLogout }: { onLogout: () => void }) {
   const doc = docs ? docs[cmsLang] : null;
   const [tab, setTab] = useState<TabId>("profil");
   const [dirty, setDirty] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
+  /** Ukuran draft terakhir yang berhasil disimpan (0 = belum pernah). */
+  const [draftBytes, setDraftBytes] = useState(0);
+  const [toast, setToast] = useState<{ msg: string; tone: "ok" | "err" } | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -149,13 +160,23 @@ function Panel({ onLogout }: { onLogout: () => void }) {
     if (!cms.loading && docs === null) {
       setDocs(cms.docs);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaust-deps
   }, [cms.loading]);
 
-  const showToast = (msg: string) => {
-    setToast(msg);
+  // Tampilkan ukuran draft yang sudah ada sejak halaman dibuka, supaya
+  // peringatan kuota terlihat SEBELUM pengguna menekan Simpan.
+  useEffect(() => {
+    if (!cms.loading && cms.hasDraft && draftBytes === 0) {
+      setDraftBytes(byteSize(JSON.stringify(cms.docs)));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cms.loading, cms.hasDraft]);
+
+  const showToast = (msg: string, tone: "ok" | "err" = "ok") => {
+    setToast({ msg, tone });
     if (toastTimer.current) clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(null), 3000);
+    // Pesan gagal bertahan lebih lama supaya tidak terlewat.
+    toastTimer.current = setTimeout(() => setToast(null), tone === "err" ? 9000 : 3000);
   };
 
   const update = (fn: (d: CmsContent) => void) => {
@@ -170,9 +191,25 @@ function Panel({ onLogout }: { onLogout: () => void }) {
 
   const handleSave = () => {
     if (!docs) return;
-    cms.saveDraft(docs);
+    const res = cms.saveDraft(docs);
+    if (!res.ok) {
+      // Jangan sentuh `dirty`: perubahan masih ada di editor dan belum aman.
+      showToast(
+        res.reason === "quota"
+          ? `GAGAL menyimpan: penyimpanan browser penuh (draft ${formatBytes(res.bytes)}). ` +
+              "Hapus beberapa gambar besar atau Hapus draft, lalu coba lagi. " +
+              "Perubahanmu masih ada di layar — jangan reload."
+          : "GAGAL menyimpan: browser menolak menulis penyimpanan (mode privat?). " +
+              "Perubahanmu masih ada di layar — segera Unduh JSON sebagai cadangan.",
+        "err"
+      );
+      return;
+    }
+    setDraftBytes(res.bytes);
     setDirty(false);
-    showToast("Draft tersimpan di browser ini. Klik Pratinjau untuk melihat.");
+    showToast(
+      `Draft tersimpan di browser ini (${formatBytes(res.bytes)}). Klik Pratinjau untuk melihat.`
+    );
   };
 
   const handlePreview = () => {
@@ -292,6 +329,21 @@ function Panel({ onLogout }: { onLogout: () => void }) {
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            {draftBytes > 0 && (
+              <span
+                title={`Ukuran draft yang tersimpan di browser ini. Batas aman ${formatBytes(DRAFT_SOFT_LIMIT)}.`}
+                className={`hidden items-center gap-1.5 rounded-xl border px-3 py-2.5 font-mono text-[11px] sm:flex ${
+                  draftBytes > DRAFT_HARD_LIMIT
+                    ? "border-rose-400/40 bg-rose-500/10 text-rose-200"
+                    : draftBytes > DRAFT_SOFT_LIMIT
+                      ? "border-amber-400/40 bg-amber-500/10 text-amber-200"
+                      : "border-white/10 bg-white/5 text-slate-400"
+                }`}
+              >
+                <Info size={12} />
+                {formatBytes(draftBytes)}
+              </span>
+            )}
             <button
               onClick={handleSave}
               disabled={!dirty}
@@ -392,11 +444,29 @@ function Panel({ onLogout }: { onLogout: () => void }) {
 
       {/* ── Toast ── */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 z-50 flex max-w-[90vw] -translate-x-1/2 items-center gap-2.5 rounded-2xl border border-white/15 bg-slate-900/95 px-5 py-3 shadow-2xl backdrop-blur-xl">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">
-            <Check size={14} />
+        <div
+          role={toast.tone === "err" ? "alert" : "status"}
+          className={`fixed bottom-6 left-1/2 z-50 flex max-w-[90vw] -translate-x-1/2 items-start gap-2.5 rounded-2xl border px-5 py-3 shadow-2xl backdrop-blur-xl ${
+            toast.tone === "err"
+              ? "border-rose-400/40 bg-rose-950/95"
+              : "border-white/15 bg-slate-900/95"
+          }`}
+        >
+          <span
+            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
+              toast.tone === "err" ? "bg-rose-500/25 text-rose-200" : "bg-emerald-500/20 text-emerald-300"
+            }`}
+          >
+            {toast.tone === "err" ? <X size={14} /> : <Check size={14} />}
           </span>
-          <p className="text-sm text-slate-200">{toast}</p>
+          <p className="text-sm leading-relaxed text-slate-200">{toast.msg}</p>
+          <button
+            onClick={() => setToast(null)}
+            aria-label="Tutup"
+            className="-mr-1 shrink-0 rounded-lg p-1 text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <X size={14} />
+          </button>
         </div>
       )}
     </div>

@@ -47,11 +47,15 @@ const ADMIN_PATH = "/admin";
 
 /* ═══════════ Konfigurasi password ═══════════ */
 
-type PassConfig =
-  | { kind: "pbkdf2"; iterations: number; salt: string; hash: string }
-  | { kind: "plain"; value: string };
+type PassConfig = { kind: "pbkdf2"; iterations: number; salt: string; hash: string };
 
-/** ADMIN_PASSWORD_HASH berbentuk `pbkdf2$<iterasi>$<saltHex>$<hashHex>`. */
+/**
+ * ADMIN_PASSWORD_HASH berbentuk `pbkdf2$<iterasi>$<saltHex>$<hashHex>`.
+ *
+ * Hanya hash yang diterima. Fallback `ADMIN_PASSWORD` (teks polos) yang
+ * dulu ada sudah dihapus: menyimpan password polos di env var berarti
+ * sekali env itu bocor, passwordnya langsung terbaca.
+ */
 function passConfig(): PassConfig | null {
   const raw = process.env.ADMIN_PASSWORD_HASH;
   if (raw) {
@@ -65,13 +69,11 @@ function passConfig(): PassConfig | null {
     console.error("ADMIN_PASSWORD_HASH tidak valid — jalankan: npm run hash-pass");
     return null;
   }
-  const plain = process.env.ADMIN_PASSWORD;
-  if (plain) {
-    console.warn(
-      "Memakai ADMIN_PASSWORD (teks polos). Lebih aman: npm run hash-pass " +
-        "lalu simpan hasilnya ke ADMIN_PASSWORD_HASH."
+  if (process.env.ADMIN_PASSWORD) {
+    console.error(
+      "ADMIN_PASSWORD (teks polos) sudah tidak didukung. Jalankan " +
+        "`npm run hash-pass` lalu simpan hasilnya ke ADMIN_PASSWORD_HASH."
     );
-    return { kind: "plain", value: plain };
   }
   return null;
 }
@@ -86,7 +88,6 @@ function constantTimeEqual(a: string, b: string): boolean {
 function verifyPassword(input: string): boolean {
   const cfg = passConfig();
   if (!cfg) return false;
-  if (cfg.kind === "plain") return constantTimeEqual(input, cfg.value);
   const derived = pbkdf2Sync(
     input,
     Buffer.from(cfg.salt, "hex"),
@@ -112,7 +113,7 @@ function sessionSecret(): Buffer {
   // dengan satu env var. Ganti ADMIN_SESSION_SECRET bila ingin
   // membatalkan semua sesi sekaligus.
   const cfg = passConfig();
-  const base = cfg ? (cfg.kind === "pbkdf2" ? cfg.hash : cfg.value) : "unset";
+  const base = cfg ? cfg.hash : "unset";
   secretCache = createHmac("sha256", "cms-admin-session").update(base).digest();
   return secretCache;
 }
