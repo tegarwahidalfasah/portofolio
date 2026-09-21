@@ -54,11 +54,23 @@ export async function run() {
   ok("indikator ukuran draft MUNCUL saat ada draft", !!indicator());
   ok("indikator menampilkan ukuran", /\d+(\.\d+)?\s*(B|KB|MB)/.test(indicator()?.textContent ?? ""));
 
+  // Tombol sinkron bahasa (bar atas) & kartu sinkron di Pengaturan.
+  const syncBtn = byText("Sinkron");
+  ok("tombol Sinkron ada di bar atas", !!syncBtn);
+  ok("awal: sinkron AKTIF (default)", syncBtn?.textContent.includes("AKTIF") ?? false);
+
   const tabBtn = byText("Pengaturan");
   ok("tab Pengaturan ada", !!tabBtn);
   await act(async () => {
     tabBtn.click();
   });
+
+  const copyAllBtn = byText("Salin semua ID");
+  ok("tombol Salin semua ID → EN ada", !!copyAllBtn);
+  await act(async () => {
+    syncBtn?.click(); // matikan sinkron
+  });
+  ok("klik -> sinkron jadi NONAKTIF", syncBtn?.textContent.includes("NONAKTIF") ?? false);
 
   const resetBtn = byText("Hapus draft");
   ok("tombol Hapus draft ada", !!resetBtn);

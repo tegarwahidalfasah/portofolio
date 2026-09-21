@@ -26,6 +26,8 @@ import {
   ExternalLink,
   Info,
   Play,
+  Link2,
+  Copy,
 } from "lucide-react";
 import {
   useCms,
@@ -38,6 +40,7 @@ import {
   type Lang,
 } from "./store";
 import { mergeContent, type CmsContent, type Work, type MediaItem } from "./defaults";
+import { applyToDocs, copyDocs } from "./sync";
 import {
   resolveWorkMedia,
   parseYouTube,
@@ -145,6 +148,14 @@ function Panel({ onLogout }: { onLogout: () => void }) {
   const cms = useCms();
   const [docs, setDocs] = useState<Docs | null>(null);
   const [cmsLang, setCmsLang] = useState<Lang>("id");
+  /** "Sinkron" aktif → setiap edit ikut disalin ke bahasa lain. */
+  const [sync, setSync] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("portfolio-cms-sync-v1") !== "off";
+    } catch {
+      return true;
+    }
+  });
   const doc = docs ? docs[cmsLang] : null;
   const [tab, setTab] = useState<TabId>("profil");
   const [dirty, setDirty] = useState(false);
@@ -182,11 +193,30 @@ function Panel({ onLogout }: { onLogout: () => void }) {
   const update = (fn: (d: CmsContent) => void) => {
     setDocs((prev) => {
       if (!prev) return prev;
-      const next = structuredClone(prev);
-      fn(next[cmsLang]);
-      return next;
+      // "Sinkron" aktif → mutasi pada bahasa aktif ikut dicerminkan ke
+      // bahasa lain (pakai diff). Mati → hanya bahasa aktif yang berubah.
+      const synced = sync ? applyToDocs(prev, cmsLang, fn) : structuredClone(prev);
+      if (!sync) fn(synced[cmsLang]);
+      return synced;
     });
     setDirty(true);
+  };
+
+  const toggleSync = () => {
+    setSync((s) => {
+      const next = !s;
+      try {
+        localStorage.setItem("portfolio-cms-sync-v1", next ? "on" : "off");
+      } catch {
+        /* abaikan */
+      }
+      return next;
+    });
+    showToast(
+      sync
+        ? "Sinkron dimatikan — edit tiap bahasa terpisah."
+        : "Sinkron aktif — setiap edit ikut tersalin ke bahasa lain."
+    );
   };
 
   const handleSave = () => {
@@ -267,6 +297,22 @@ function Panel({ onLogout }: { onLogout: () => void }) {
     showToast("Draft dihapus.");
   };
 
+  /** Salin SELURUH isi bahasa aktif ke bahasa lain (menimpa). */
+  const handleCopyAll = () => {
+    if (!docs) return;
+    const target = cmsLang === "id" ? "en" : "id";
+    const label = cmsLang === "id" ? "ID → EN" : "EN → ID";
+    if (
+      !window.confirm(
+        `Salin SELURUH isi bahasa ${cmsLang.toUpperCase()} ke ${target.toUpperCase()}?\n\nIsi bahasa ${target.toUpperCase()} yang sekarang akan DITIMPA seluruhnya. Lanjutkan?`
+      )
+    )
+      return;
+    setDocs(copyDocs(docs, cmsLang, target));
+    setDirty(true);
+    showToast(`Seluruh isi ${label} disalin. Jangan lupa Simpan.`);
+  };
+
   if (cms.loading || !docs || !doc) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950">
@@ -330,6 +376,23 @@ function Panel({ onLogout }: { onLogout: () => void }) {
               </button>
             ))}
           </div>
+          <button
+            onClick={toggleSync}
+            title={
+              sync
+                ? "Sinkron AKTIF — ID & EN sedang terhubung: apa yang kamu ketik di satu bahasa otomatis tersalin ke bahasa lain di kolom yang sama."
+                : "Sinkron NONAKTIF — klik untuk mengaktifkan: edit satu bahasa, kolom yang sama di bahasa lain ikut terisi."
+            }
+            aria-pressed={sync}
+            className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-wider transition-all ${
+              sync
+                ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
+                : "border-white/10 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            <Link2 size={14} className={sync ? "" : "opacity-50"} />
+            {sync ? "Sinkron AKTIF" : "Sinkron NONAKTIF"}
+          </button>
           <div className="flex flex-wrap items-center gap-2">
             {draftBytes > 0 && (
               <span
@@ -431,6 +494,8 @@ function Panel({ onLogout }: { onLogout: () => void }) {
               onImport={() => fileRef.current?.click()}
               onReset={handleReset}
               onDownload={handleDownload}
+              onCopyAll={handleCopyAll}
+              cmsLang={cmsLang}
             />
           )}
         </main>
@@ -1218,15 +1283,53 @@ function TabPengaturan({
   onImport,
   onReset,
   onDownload,
+  onCopyAll,
+  cmsLang,
 }: {
   onImport: () => void;
   onReset: () => void;
   onDownload: () => void;
+  onCopyAll: () => void;
+  cmsLang: Lang;
 }) {
   const cms = useCms();
 
   return (
     <>
+      <Card
+        title="Sinkron bahasa (ID ↔ EN)"
+        desc="Mengisi dua bahasa satu per satu itu melelahkan. Di sini kamu bisa menyalin isi satu bahasa ke bahasa lain sekaligus. Untuk sinkron otomatis tiap kali mengetik, aktifkan tombol “Sinkron” di bar atas."
+      >
+        <div className="space-y-4">
+          <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 text-sm leading-relaxed text-slate-300">
+            <p>
+              Bahasa yang sekarang <b className="text-white">aktif</b> adalah{" "}
+              <span className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[12px] font-bold text-white">
+                {cmsLang === "id" ? "🇮🇩 Indonesia" : "🇬🇧 English"}
+              </span>
+              . Tombol di bawah akan menyalin <b>seluruh</b> isinya ke bahasa
+              satunya dan <b className="text-rose-300">menimpa</b> isi lama di
+              sana.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={onCopyAll}
+              className="flex items-center gap-1.5 rounded-xl bg-indigo-500/20 px-4 py-2.5 font-display text-xs font-semibold text-indigo-100 transition-colors hover:bg-indigo-500/30"
+            >
+              <Copy size={14} />{" "}
+              {cmsLang === "id" ? "Salin semua ID → EN" : "Salin semua EN → ID"}
+            </button>
+          </div>
+          <p className="flex items-start gap-2 text-[11px] leading-relaxed text-slate-500">
+            <Info size={13} className="mt-0.5 shrink-0" />
+            Sinkron tiap-mengetik disediakan tombol “Sinkron AKTIF” di bar atas.
+            Salin-semua di sini berguna untuk menyamakan dua bahasa yang sudah
+            telanjur berbeda, atau saat mematikan sinkron sementara.
+          </p>
+        </div>
+      </Card>
+
       <Card
         title="Cara menerbitkan ke publik"
         desc="Penting: tombol Simpan hanya menyimpan draft di browser ini. Agar pengunjung website melihat perubahan, ikuti langkah berikut."
