@@ -40,7 +40,6 @@ itu sendiri), berguna kalau sedang offline.
 ## 2. Cara mengedit konten
 
 1. Pilih **bahasa yang mau diedit** (tombol 🇮🇩 ID / 🇬🇧 EN di bar atas).
-   Kedua bahasa disimpan terpisah — ubah di dua-duanya agar konsisten.
 2. Pilih tab sesuai bagian yang mau diubah (Profil, Hero, Riwayat,
    Skill, Karya, Layanan, FAQ, Kontak).
 3. Ubah teks / tambah / hapus / susun ulang item.
@@ -50,6 +49,26 @@ itu sendiri), berguna kalau sedang offline.
 Selama ada draft, muncul badge kecil *"Pratinjau draft CMS"*
 di kiri bawah website — badge itu **hanya terlihat di browser kamu**,
 tidak terlihat oleh pengunjung lain.
+
+### Sinkron bahasa Indonesianya ↔ Inggris (baru)
+
+Tidak perlu lagi mengisi dua bahasa satu per satu. Ada dua cara:
+
+- **Sinkron otomatis saat mengetik** (default AKTIF): tombol
+  **Sinkron AKTIF** di bar atas (ikon rantai) membuat apa pun yang kamu
+  ketik/edit di satu bahasa **otomatis tersalin ke bahasa lain di kolom
+  yang sama** — termasuk menambah, menghapus, dan mengurutkan item.
+  Tekan tombolnya untuk mematikan (jadi **Sinkron NONAKTIF**) kalau mau
+  mengedit tiap bahasa secara terpisah.
+- **Salin semua sekaligus**: buka tab **Pengaturan → Sinkron bahasa
+  (ID ↔ EN) → Salin semua ID → EN** (atau sebaliknya). Ini menyalin
+  **seluruh** isi satu bahasa ke bahasa lain. Cocok dipakai sekali di
+  awal untuk menyamakan dua bahasa yang telanjur berbeda, lalu biarkan
+  sinkron otomatis yang menjaga keduanya tetap sama saat diedit.
+
+> Catatan: sinkron menyalin nilai apa adanya antar bahasa pada kolom yang
+> sama. Setelah menyalin, terjemahan Inggris-nya bisa kamu rapikan sendiri
+> lewat tombol Sinkron NONAKTIF bila perlu.
 
 ## 3. Cara menerbitkan agar dilihat pengunjung
 
@@ -81,9 +100,9 @@ website melihat perubahan:
 - **Thumbnail YouTube otomatis**: Jika Anda mengisi link karya dari YouTube dan mengosongkan kolom *URL gambar*, sistem akan otomatis mengambil dan menampilkan thumbnail dari YouTube! Ada juga tombol cepat *⚡ Gunakan thumbnail YouTube* di CMS.
 - **Unggah foto langsung dari perangkat (laptop/HP)**: Kolom gambar karya, thumbnail video, dan foto profil kini memiliki tombol **Pilih File** yang otomatis mengompresi dan memasukkan gambar tanpa perlu mengunggah ke hosting pihak ketiga.
 - **Link Google Drive & Dropbox**: Jika Anda memasukkan link foto dari Google Drive (`drive.google.com/file/d/...`) atau Dropbox, sistem akan otomatis mengonversinya menjadi URL gambar langsung.
-- **Showcase video**: kolom URL video mendukung format link biasa dari YouTube, TikTok, Instagram, atau Twitch — otomatis dikonversi ke format embed.
+- **Showcase video**: kolom URL video mendukung format link biasa dari YouTube, TikTok, Instagram, atau Twitch — otomatis dikonversi ke format embed. Untuk Twitch, gunakan link video (`twitch.tv/videos/ID`) — pemutar akan menyesuaikan domain situs secara otomatis. Link kanal Twitch tanpa ID video tidak bisa di-embed.
 - **Foto profil**: kosongkan kolom *URL foto profil* untuk memakai foto bawaan (`src/assets/portrait.jpg`), isi URL gambar pengganti, atau gunakan tombol *Pilih File*.
-- **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`.
+- **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`. **Biarkan kolom kosong untuk menyembunyikan semua tombol "Download CV"** (berguna bila file PDF belum di-upload — kalau tidak, tombol akan menuju halaman 404).
 
 ## 5. Reset / darurat
 
@@ -124,6 +143,10 @@ base64 di dalam draft, jadi banyak foto besar bisa memenuhi kuota.
   (default ← published ← draft) dan menyediakan hook `useCms()`.
 - Seluruh komponen membaca dari `useCms().content`, bukan lagi
   import langsung dari `src/data.ts`.
+- `src/cms/sync.ts` = utilitas sinkron bahasa (dif pang dari mutasi satu
+  bahasa lalu dicerminkan ke bahasa lain); dipakai tombol Sinkron dan
+  Salin semua.
+- Preferensi sinkron tersimpan di `localStorage[portfolio-cms-sync-v1]`.
 
 ### Kenapa admin tidak bisa diakses publik
 

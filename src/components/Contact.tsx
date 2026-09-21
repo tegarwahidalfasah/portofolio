@@ -42,7 +42,7 @@ export function Contact() {
     <section id="kontak" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 09" title={t.ctLabel} />
+          <SectionLabel index="// 12" title={t.ctLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>

@@ -34,14 +34,16 @@ export function Footer() {
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-text-muted">
               {footer.tagline}
             </p>
-            <a
-              href={profile.cvUrl}
-              download
-              className="mt-4 inline-flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 px-5 py-2.5 font-display text-xs font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
-            >
-              <Download size={14} />
-              {t.downloadFullCv}
-            </a>
+            {Boolean(profile.cvUrl && profile.cvUrl.trim()) && (
+              <a
+                href={profile.cvUrl}
+                download
+                className="mt-4 inline-flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 px-5 py-2.5 font-display text-xs font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400"
+              >
+                <Download size={14} />
+                {t.downloadFullCv}
+              </a>
+            )}
           </div>
 
           {/* Nav */}

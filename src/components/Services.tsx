@@ -17,7 +17,7 @@ export function Services() {
     <section id="layanan" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 08" title={t.svcLabel} />
+          <SectionLabel index="// 07" title={t.svcLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>

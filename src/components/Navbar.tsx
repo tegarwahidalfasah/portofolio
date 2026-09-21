@@ -85,7 +85,7 @@ export function Navbar() {
             </span>
             <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-accent-500/20 bg-accent-500/5 px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-wider text-accent-600">
               <Briefcase size={10} />
-              Video Editor
+              {profile.roles?.[1] ?? profile.tagline}
             </span>
           </a>
 
@@ -111,14 +111,16 @@ export function Navbar() {
             >
               {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
             </button>
-            <a
-              href={profile.cvUrl}
-              download
-              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-4 py-2.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 dark:bg-slate-950/60"
-            >
-              <Download size={14} />
-              CV
-            </a>
+            {Boolean(profile.cvUrl && profile.cvUrl.trim()) && (
+              <a
+                href={profile.cvUrl}
+                download
+                className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-4 py-2.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 dark:bg-slate-950/60"
+              >
+                <Download size={14} />
+                CV
+              </a>
+            )}
             <a
               href="#kontak"
               className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-accent-500 to-accent-600 px-5 py-2.5 font-display text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all hover:shadow-xl hover:shadow-accent-500/35"
@@ -181,17 +183,19 @@ export function Navbar() {
               >
                 <LangSwitch lang={lang} setLang={setLang} />
               </motion.div>
-              <motion.a
-                href={profile.cvUrl}
-                download
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-base font-semibold text-text-primary dark:bg-slate-950/60"
-              >
-                <Download size={18} />
-                {t.downloadCv}
-              </motion.a>
+              {Boolean(profile.cvUrl && profile.cvUrl.trim()) && (
+                <motion.a
+                  href={profile.cvUrl}
+                  download
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 px-7 py-3.5 font-display text-base font-semibold text-text-primary dark:bg-slate-950/60"
+                >
+                  <Download size={18} />
+                  {t.downloadCv}
+                </motion.a>
+              )}
               <motion.a
                 href="#kontak"
                 onClick={() => setOpen(false)}

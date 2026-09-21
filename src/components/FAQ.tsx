@@ -12,7 +12,7 @@ export function FAQ() {
     <section id="faq" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-4xl">
         <Reveal>
-          <SectionLabel index="// 10" title={t.faqLabel} />
+          <SectionLabel index="// 11" title={t.faqLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>

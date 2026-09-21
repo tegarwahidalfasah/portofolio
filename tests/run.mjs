@@ -39,9 +39,18 @@ try {
     outfile: join(outDir, "gate.mjs"),
     logLevel: "error",
   });
+  await build({
+    entryPoints: ["src/cms/sync.ts"],
+    bundle: true,
+    format: "esm",
+    platform: "node",
+    outfile: join(outDir, "sync.mjs"),
+    logLevel: "error",
+  });
 
   process.env.TEST_UI_BUNDLE = join(outDir, "ui.mjs");
   process.env.TEST_GATE_BUNDLE = join(outDir, "gate.mjs");
+  process.env.TEST_SYNC_BUNDLE = join(outDir, "sync.mjs");
   process.env.ADMIN_HTML = join(process.cwd(), "dist-admin", "admin.html");
 
   let failed = 0;
@@ -53,6 +62,7 @@ try {
     "./hash-page-dom.test.mjs",
     "./store.test.mjs",
     "./admin-ui.test.mjs",
+    "./sync.test.mjs",
   ];
   for (const suite of suites) {
     const { run } = await import(suite);
