@@ -123,7 +123,7 @@ export function CaseStudies() {
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <div className="flex items-center justify-between">
-            <SectionLabel index="// 02" title={t.csLabel} />
+            <SectionLabel index="// 04" title={t.csLabel} />
             <div className="flex items-center gap-2">
               <button
                 onClick={handleScrollLeft}

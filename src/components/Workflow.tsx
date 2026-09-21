@@ -18,7 +18,7 @@ export function Workflow() {
     <section id="workflow" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 09" title={t.wfLabel} />
+          <SectionLabel index="// 08" title={t.wfLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>

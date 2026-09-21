@@ -301,7 +301,12 @@ export function resolveWorkMedia(work: {
 /**
  * Konversi otomatis link input biasa ke format embed (mis. untuk Showcase video)
  */
-export function convertToEmbedUrl(url: string): { embedUrl: string; type: "youtube" | "tiktok" | "instagram" | "video" } | null {
+export function convertToEmbedUrl(
+  url: string
+): {
+  embedUrl: string;
+  type: "youtube" | "tiktok" | "instagram" | "twitch" | "video";
+} | null {
   if (!url) return null;
   const clean = url.trim();
   const yt = parseYouTube(clean);
@@ -316,10 +321,30 @@ export function convertToEmbedUrl(url: string): { embedUrl: string; type: "youtu
   if (ig && ig.embedUrl) {
     return { embedUrl: ig.embedUrl, type: "instagram" };
   }
+  const tw = parseTwitch(clean);
+  if (tw && tw.videoId) {
+    return {
+      embedUrl: twitchEmbedUrl(tw.videoId),
+      type: "twitch",
+    };
+  }
   if (isDirectVideo(clean)) {
     return { embedUrl: clean, type: "video" };
   }
   return null;
+}
+
+/**
+ * URL pemutar Twitch. `parent` WAJIB cocok dengan domain situs, kalau tidak
+ * Twitch menolak memuat. Diambil dari hostname saat berjalan; fallback
+ * "localhost" untuk lingkungan pengembangan.
+ */
+export function twitchEmbedUrl(videoId: string): string {
+  const host =
+    typeof window !== "undefined" && window.location.hostname
+      ? window.location.hostname
+      : "localhost";
+  return `https://player.twitch.tv/?video=${videoId}&parent=${host}`;
 }
 
 /**

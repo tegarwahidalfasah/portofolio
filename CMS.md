@@ -100,9 +100,9 @@ website melihat perubahan:
 - **Thumbnail YouTube otomatis**: Jika Anda mengisi link karya dari YouTube dan mengosongkan kolom *URL gambar*, sistem akan otomatis mengambil dan menampilkan thumbnail dari YouTube! Ada juga tombol cepat *⚡ Gunakan thumbnail YouTube* di CMS.
 - **Unggah foto langsung dari perangkat (laptop/HP)**: Kolom gambar karya, thumbnail video, dan foto profil kini memiliki tombol **Pilih File** yang otomatis mengompresi dan memasukkan gambar tanpa perlu mengunggah ke hosting pihak ketiga.
 - **Link Google Drive & Dropbox**: Jika Anda memasukkan link foto dari Google Drive (`drive.google.com/file/d/...`) atau Dropbox, sistem akan otomatis mengonversinya menjadi URL gambar langsung.
-- **Showcase video**: kolom URL video mendukung format link biasa dari YouTube, TikTok, Instagram, atau Twitch — otomatis dikonversi ke format embed.
+- **Showcase video**: kolom URL video mendukung format link biasa dari YouTube, TikTok, Instagram, atau Twitch — otomatis dikonversi ke format embed. Untuk Twitch, gunakan link video (`twitch.tv/videos/ID`) — pemutar akan menyesuaikan domain situs secara otomatis. Link kanal Twitch tanpa ID video tidak bisa di-embed.
 - **Foto profil**: kosongkan kolom *URL foto profil* untuk memakai foto bawaan (`src/assets/portrait.jpg`), isi URL gambar pengganti, atau gunakan tombol *Pilih File*.
-- **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`.
+- **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`. **Biarkan kolom kosong untuk menyembunyikan semua tombol "Download CV"** (berguna bila file PDF belum di-upload — kalau tidak, tombol akan menuju halaman 404).
 
 ## 5. Reset / darurat
 

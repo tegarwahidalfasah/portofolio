@@ -90,14 +90,16 @@ export function Hero() {
                 className="transition-transform duration-300 group-hover:translate-y-0.5"
               />
             </a>
-            <a
-              href={profile.cvUrl}
-              download
-              className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 hover:bg-white/80 dark:hover:bg-slate-900/80"
-            >
-              <Download size={16} />
-              {t.downloadCv}
-            </a>
+            {Boolean(profile.cvUrl && profile.cvUrl.trim()) && (
+              <a
+                href={profile.cvUrl}
+                download
+                className="group flex items-center gap-2 rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 px-7 py-3.5 font-display text-sm font-semibold text-text-primary backdrop-blur-xl transition-all hover:border-accent-400 hover:bg-white/80 dark:hover:bg-slate-900/80"
+              >
+                <Download size={16} />
+                {t.downloadCv}
+              </a>
+            )}
             <a
               href="#kontak"
               className="group flex items-center gap-2 rounded-full border border-accent-500/30 bg-accent-500/10 px-7 py-3.5 font-display text-sm font-semibold text-accent-600 transition-all hover:border-accent-500/50 hover:bg-accent-500/15"
@@ -168,10 +170,10 @@ export function Hero() {
               </span>
               <div>
                 <p className="font-display text-xs font-bold text-text-primary">
-                  Video Editor
+                  {profile.roles?.[1] ?? "Video Editor"}
                 </p>
                 <p className="font-mono text-[10px] text-text-muted">
-                  Premiere · After Effects · CapCut
+                  {profile.roles?.slice(2, 5).join(" · ") || "Premiere · After Effects · CapCut"}
                 </p>
               </div>
             </div>

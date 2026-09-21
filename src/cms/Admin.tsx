@@ -597,9 +597,17 @@ function TabProfil({
         <Field label="Foto profil (opsional)" hint="Kosongkan untuk memakai foto bawaan. Isi URL gambar atau unggah file foto dari perangkat.">
           <ImageInput value={p.photoUrl} onChange={(v) => set({ photoUrl: v })} placeholder="https://… atau pilih file foto" />
         </Field>
-        <Field label="URL file CV" hint="Tautan tombol 'Download CV'. Upload PDF ke repo (folder public/) lalu isi mis. /CV_Tegar_Wahid_Alfasah.pdf">
+        <Field label="URL file CV" hint="Tautan tombol 'Download CV'. Upload PDF ke repo (folder public/) lalu isi mis. /CV_Tegar_Wahid_Alfasah.pdf. Kosongkan untuk menyembunyikan tombol CV.">
           <Text value={p.cvUrl} onChange={(v) => set({ cvUrl: v })} />
         </Field>
+        {p.cvUrl && p.cvUrl.trim() !== "" && (
+          <p className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-xs leading-relaxed text-amber-200">
+            ⚠️ Pastikan file <code className="font-mono text-amber-100">{p.cvUrl}</code>{" "}
+            benar-benar sudah di-upload ke folder <code className="font-mono text-amber-100">public/</code>{" "}
+            repo — kalau belum, tombol &quot;Download CV&quot; akan 404 saat diklik pengunjung.
+            Kosongkan kolom ini untuk menyembunyikan tombol CV.
+          </p>
+        )}
       </Card>
     </>
   );

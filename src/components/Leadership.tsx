@@ -9,7 +9,7 @@ export function Leadership() {
     <section id="organisasi" className="relative px-5 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionLabel index="// 07" title={t.leadLabel} />
+          <SectionLabel index="// 09" title={t.leadLabel} />
         </Reveal>
 
         <Reveal delay={0.05}>
