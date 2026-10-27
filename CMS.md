@@ -102,7 +102,12 @@ website melihat perubahan:
 - **Link Google Drive & Dropbox**: Jika Anda memasukkan link foto dari Google Drive (`drive.google.com/file/d/...`) atau Dropbox, sistem akan otomatis mengonversinya menjadi URL gambar langsung.
 - **Showcase video**: kolom URL video mendukung format link biasa dari YouTube, TikTok, Instagram, atau Twitch — otomatis dikonversi ke format embed. Untuk Twitch, gunakan link video (`twitch.tv/videos/ID`) — pemutar akan menyesuaikan domain situs secara otomatis. Link kanal Twitch tanpa ID video tidak bisa di-embed.
 - **Foto profil**: kosongkan kolom *URL foto profil* untuk memakai foto bawaan (`src/assets/portrait.jpg`), isi URL gambar pengganti, atau gunakan tombol *Pilih File*.
-- **File CV**: upload PDF ke folder `public/` di repo, lalu isi kolom *URL file CV* dengan mis. `/CV_Tegar_Wahid_Alfasah.pdf`. **Biarkan kolom kosong untuk menyembunyikan semua tombol "Download CV"** (berguna bila file PDF belum di-upload — kalau tidak, tombol akan menuju halaman 404).
+- **File CV**: sudah tersedia dua berkas di folder `public/` —
+  `/CV_Tegar_Wahid_Alfasah.pdf` (Inggris) dan
+  `/CV_Tegar_Wahid_Alfasah_ID.pdf` (Indonesia). Isi kolom *URL file CV*
+  dengan salah satunya; defaultnya versi Inggris. Ingin mengganti isi CV?
+  Ubah objek `data` di `scripts/cv.mjs` lalu jalankan `npm run cv`.
+  Mengosongkan kolom ini akan menyembunyikan semua tombol "Download CV".
 
 ## 5. Reset / darurat
 

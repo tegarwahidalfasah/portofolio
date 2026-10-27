@@ -1,7 +1,7 @@
 {
-  "name": "react-vite-tailwind",
+  "name": "portofolio-tegar-wahid-alfasah",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,7 +13,8 @@
     "hash-pass": "node scripts/hash-password.mjs",
     "admin:check": "node scripts/serve-admin.mjs",
     "test": "npm run build && node tests/run.mjs",
-    "test:only": "node tests/run.mjs"
+    "test:only": "node tests/run.mjs",
+    "cv": "node scripts/cv.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -32,6 +33,7 @@
     "@vitejs/plugin-react": "5.1.1",
     "esbuild": "^0.27.0",
     "jsdom": "^25.0.1",
+    "pdfkit": "^0.20.2",
     "tailwindcss": "4.1.17",
     "typescript": "5.9.3",
     "vite": "7.3.2",

@@ -597,7 +597,7 @@ function TabProfil({
         <Field label="Foto profil (opsional)" hint="Kosongkan untuk memakai foto bawaan. Isi URL gambar atau unggah file foto dari perangkat.">
           <ImageInput value={p.photoUrl} onChange={(v) => set({ photoUrl: v })} placeholder="https://… atau pilih file foto" />
         </Field>
-        <Field label="URL file CV" hint="Tautan tombol 'Download CV'. Upload PDF ke repo (folder public/) lalu isi mis. /CV_Tegar_Wahid_Alfasah.pdf. Kosongkan untuk menyembunyikan tombol CV.">
+        <Field label="URL file CV" hint="Tautan tombol 'Download CV'. Dua berkas sudah tersedia: /CV_Tegar_Wahid_Alfasah.pdf (Inggris) dan /CV_Tegar_Wahid_Alfasah_ID.pdf (Indonesia). Kosongkan untuk menyembunyikan tombol CV.">
           <Text value={p.cvUrl} onChange={(v) => set({ cvUrl: v })} />
         </Field>
         {p.cvUrl && p.cvUrl.trim() !== "" && (

@@ -25,6 +25,11 @@ export default defineConfig({
   build: {
     outDir: "dist-admin",
     emptyOutDir: true,
+    /* admin.html dikirim api/admin.ts SENDIRIAN — tidak ada folder aset
+       yang ikut ter-deploy. Jadi semua aset kecil (termasuk file font
+       Inter ±48 KB) harus ikut jadi base64 di dalam HTML itu, kalau
+       tidak halaman admin akan kehilangan fontnya (404). */
+    assetsInlineLimit: 400_000,
     rollupOptions: {
       input: path.resolve(__dirname, "admin.html"),
     },

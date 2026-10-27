@@ -46,6 +46,7 @@ Perintah lain:
 | `npm run preview`     | Pratinjau hasil build situs                                      |
 | `npm run hash-pass`   | Buat hash password admin (`pbkdf2$…`)                            |
 | `npm run admin:check` | Jalankan gerbang `/admin` yang sama seperti di Vercel, lokal     |
+| `npm run cv`          | Buat ulang berkas CV PDF (versi EN & ID) di `public/`            |
 | `npm test`            | Build + seluruh suite tes (wajib lulus sebelum merge)            |
 | `npm run test:only`   | Jalankan tes tanpa build ulang                                   |
 
@@ -62,8 +63,10 @@ src/
   cms/               store, i18n, defaults, sinkron ID↔EN, UI Admin
   utils/             helper (embed media, cn)
 api/admin.ts         serverless function: gerbang login + kirim admin.html
-public/              aset statis (favicon, og-image, cms-content.json, robots.txt)
+public/              aset statis (favicon, og-image, cms-content.json, robots.txt, CV)
+scripts/             hash-pass, serve-admin (gerbang lokal), cv.mjs + font CV
 tests/               suite tes (dijalankan `npm test`)
+src/assets/fonts/    Inter Variable (woff2) — di-host sendiri, bukan Google Fonts
 ```
 
 ## Alur konten
@@ -75,6 +78,23 @@ tests/               suite tes (dijalankan `npm test`)
 3. Untuk menerbitkan perubahan: admin → **Unduh JSON** → ganti
    `public/cms-content.json` di repo → commit & push → Vercel deploy ulang.
    Panduan lengkap: [`CMS.md`](./CMS.md).
+
+## CV (PDF)
+
+Dua berkas, keduanya ikut ter-deploy dari `public/`:
+
+| Berkas                              | Bahasa     |
+| ----------------------------------- | ---------- |
+| `CV_Tegar_Wahid_Alfasah.pdf`        | Inggris    |
+| `CV_Tegar_Wahid_Alfasah_ID.pdf`     | Indonesia  |
+
+Tombol **CV / Download CV** memakai berkas yang ditunjuk `cvUrl`
+(`src/cms/defaults.ts`, default versi Inggris). Ingin versi Indonesia?
+Ganti `cvUrl` menjadi `/CV_Tegar_Wahid_Alfasah_ID.pdf` lewat CMS →
+tab **Profil** → *URL file CV*.
+
+Isi CV disalin dari `src/data.ts`; kalau data situs berubah, sesuaikan
+objek `data` di `scripts/cv.mjs` lalu jalankan `npm run cv`.
 
 ## Variabel lingkungan (Vercel)
 
@@ -98,7 +118,13 @@ Repo ini disiapkan untuk **Vercel**:
 
 ## Kontribusi & kualitas
 
-- CI (`.github/workflows/ci.yml`) menjalankan typecheck (`tsc --noEmit`),
+- Build situs tidak lagi digabung jadi satu berkas: JS vendor (React,
+  Framer Motion) dipisah ke chunk sendiri (`manualChunks`), jadi rilis
+  berikutnya cukup mengunduh ulang chunk aplikasi ±28 KB (gzip) dan
+  chunk vendor tetap dari cache. Halaman admin tetap single-file karena
+  dikirim `api/admin.ts` sebagai satu respons.
+- CI (`.github/workflows/ci.yml`) berjalan untuk push ke `main` dan
+  `arena/**` serta semua pull request, dan menjalankan typecheck (`tsc --noEmit`),
   build, seluruh tes, plus dua pemeriksaan tambahan: bundle publik harus
   bebas kode CMS, dan `dist-admin/admin.html` wajib ber-`noindex`.
 - Jalankan `npx tsc --noEmit && npm test` sebelum membuka pull request.
