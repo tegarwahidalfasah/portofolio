@@ -127,16 +127,18 @@ export function CaseStudies() {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleScrollLeft}
-                aria-label="Geser ke kiri"
-                title="Geser daftar karya ke kiri"
+                type="button"
+                aria-label={t.scrollLeft}
+                title={t.scrollLeftHint}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600 hover:scale-105"
               >
                 <ArrowLeft size={18} />
               </button>
               <button
                 onClick={handleScrollRight}
-                aria-label="Geser ke kanan"
-                title="Geser daftar karya ke kanan"
+                type="button"
+                aria-label={t.scrollRight}
+                title={t.scrollRightHint}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 dark:bg-slate-950/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600 hover:scale-105"
               >
                 <ArrowRight size={18} />
@@ -179,7 +181,7 @@ export function CaseStudies() {
         {filteredWorks.length === 0 ? (
           <div className="mt-12 rounded-3xl border border-dashed border-glass-300 p-12 text-center">
             <p className="font-display text-base text-text-muted">
-              Tidak ada karya dalam kategori ini.
+              {t.noWorksInCategory}
             </p>
           </div>
         ) : (

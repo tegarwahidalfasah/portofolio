@@ -32,10 +32,26 @@ export function Contact() {
     e.preventDefault();
     const purposeLabel = contactPurposes.find(p => p.value === formData.purpose)?.label || t.ctDefaultPurpose;
     const subject = `[${purposeLabel}] dari ${formData.name}`;
-    const body = `Nama: ${formData.name}%0AEmail: ${formData.email}%0AKeperluan: ${purposeLabel}%0A%0APesan:%0A${encodeURIComponent(formData.message)}`;
-    window.open(`mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${body}`, "_blank");
+    // Semua bagian di-encode; sebelumnya nama/email/pesan disambung mentah
+    // sehingga isian berisi & atau baris baru merusak tautan mailto.
+    const body = [
+      `${t.ctName}: ${formData.name}`,
+      `Email: ${formData.email}`,
+      `${t.ctPurpose}: ${purposeLabel}`,
+      "",
+      `${t.ctMessage}:`,
+      formData.message,
+    ].join("\n");
+    const mailto =
+      `mailto:${profile.email}` +
+      `?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`;
+    const win = window.open(mailto, "_blank");
+    // Popup blocker bisa menolak window.open; arahkan tab yang sama supaya
+    // pengunjung tetap sampai ke aplikasi emailnya.
+    if (!win) window.location.href = mailto;
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    setTimeout(() => setSubmitted(false), 6000);
   };
 
   return (
@@ -105,7 +121,11 @@ export function Contact() {
               </div>
 
               {submitted ? (
-                <div className="flex flex-col items-center gap-4 rounded-2xl border border-green-500/20 bg-green-500/5 p-10 text-center">
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="flex flex-col items-center gap-4 rounded-2xl border border-green-500/20 bg-green-500/5 p-10 text-center"
+                >
                   <CheckCircle size={40} className="text-green-500" />
                   <p className="font-display text-lg font-bold text-text-primary">
                     {t.ctOkTitle}
@@ -118,10 +138,15 @@ export function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
-                      <label className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
+                      <label
+                        htmlFor="contact-name"
+                        className="block font-mono text-[11px] uppercase tracking-widest text-text-muted"
+                      >
                         {t.ctName}
                       </label>
                       <input
+                        id="contact-name"
+                        name="name"
                         type="text"
                         required
                         value={formData.name}
@@ -131,10 +156,15 @@ export function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
+                      <label
+                        htmlFor="contact-email"
+                        className="block font-mono text-[11px] uppercase tracking-widest text-text-muted"
+                      >
                         Email
                       </label>
                       <input
+                        id="contact-email"
+                        name="email"
                         type="email"
                         required
                         value={formData.email}
@@ -146,10 +176,15 @@ export function Contact() {
                   </div>
 
                   <div>
-                    <label className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
+                    <label
+                      htmlFor="contact-purpose"
+                      className="block font-mono text-[11px] uppercase tracking-widest text-text-muted"
+                    >
                       {t.ctPurpose}
                     </label>
                     <select
+                      id="contact-purpose"
+                      name="purpose"
                       required
                       value={formData.purpose}
                       onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
@@ -163,10 +198,15 @@ export function Contact() {
                   </div>
 
                   <div>
-                    <label className="block font-mono text-[11px] uppercase tracking-widest text-text-muted">
+                    <label
+                      htmlFor="contact-message"
+                      className="block font-mono text-[11px] uppercase tracking-widest text-text-muted"
+                    >
                       {t.ctMessage}
                     </label>
                     <textarea
+                      id="contact-message"
+                      name="message"
                       required
                       rows={5}
                       value={formData.message}

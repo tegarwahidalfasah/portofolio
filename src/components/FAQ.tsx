@@ -31,7 +31,10 @@ export function FAQ() {
               <Reveal key={i} delay={0.06 * i}>
                 <div className="glass-card overflow-hidden">
                   <button
+                    type="button"
                     onClick={() => setOpenIndex(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-panel-${i}`}
                     className="flex w-full items-center justify-between gap-4 p-6 text-left transition-colors hover:bg-white/40 dark:hover:bg-white/10"
                   >
                     <span className="font-display text-base font-bold text-text-primary sm:text-lg">
@@ -48,7 +51,7 @@ export function FAQ() {
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="border-t border-glass-300/50 px-6 pb-6">
+                    <div id={`faq-panel-${i}`} className="border-t border-glass-300/50 px-6 pb-6">
                       <p className="mt-4 text-sm leading-relaxed text-text-secondary">
                         {faq.answer}
                       </p>

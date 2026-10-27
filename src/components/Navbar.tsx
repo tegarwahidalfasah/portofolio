@@ -105,6 +105,7 @@ export function Navbar() {
           <div className="hidden items-center gap-2.5 xl:flex">
             <LangSwitch lang={lang} setLang={setLang} />
             <button
+              type="button"
               onClick={toggle}
               aria-label={lang === "id" ? "Ganti mode gelap/terang" : "Toggle dark/light mode"}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-300 bg-white/60 text-text-secondary backdrop-blur-xl transition-all hover:border-accent-400 hover:text-accent-600 dark:bg-slate-950/60"
@@ -136,6 +137,7 @@ export function Navbar() {
           {/* Mobile: theme + toggle */}
           <div className="flex items-center gap-2 xl:hidden">
             <button
+              type="button"
               onClick={toggle}
               aria-label={lang === "id" ? "Ganti mode gelap/terang" : "Toggle dark/light mode"}
               className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-300 bg-glass-bg text-text-primary backdrop-blur-lg"
@@ -143,9 +145,12 @@ export function Navbar() {
               {theme === "dark" ? <Sun size={19} /> : <Moon size={19} />}
             </button>
             <button
+              type="button"
               onClick={() => setOpen(!open)}
               className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-300 bg-glass-bg text-text-primary backdrop-blur-lg"
               aria-label={t.toggleMenu}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
             >
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -157,6 +162,7 @@ export function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

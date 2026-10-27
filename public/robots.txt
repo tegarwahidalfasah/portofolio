@@ -1,0 +1,8 @@
+# Situs publik boleh diindeks. Halaman admin dijaga server dan
+# mengirim X-Robots-Tag: noindex, jadi tetap tidak akan masuk indeks.
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /hash-password.html
+
+Sitemap: https://portofolio-rosy-psi-76.vercel.app/sitemap.xml

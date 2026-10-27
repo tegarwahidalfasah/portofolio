@@ -384,3 +384,32 @@ pre {
 .dark .section-label {
   color: var(--color-accent-400);
 }
+
+/* ── Aksesibilitas keyboard ────────────────────────────────────
+   Sebelumnya tidak ada indikator fokus sama sekali: pengguna yang
+   menavigasi dengan Tab tidak tahu sedang berada di elemen mana. */
+:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  outline-offset: 3px;
+}
+.form-glass:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  outline-offset: 2px;
+}
+
+/* ── Hormati preferensi "kurangi gerakan" ─────────────────────
+   Animasi float/shimmer/marquee bisa memicu ketidaknyamanan.
+   Framer Motion ikut dijinakkan lewat animation-duration di bawah. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

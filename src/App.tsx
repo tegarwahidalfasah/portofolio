@@ -19,6 +19,7 @@ import { ScrollProgress } from "./components/ScrollProgress";
 import { CmsProvider, useCms } from "./cms/store";
 import { ThemeProvider } from "./cms/theme";
 import { Analytics } from "@vercel/analytics/react";
+import { MotionConfig } from "framer-motion";
 
 /* ───────────────────────────────────────────────
    Bundle ini HANYA berisi website publik. Halaman admin
@@ -73,10 +74,14 @@ function Site() {
 
 export default function App() {
   return (
-    <CmsProvider>
-      <ThemeProvider>
-        <Site />
-      </ThemeProvider>
-    </CmsProvider>
+    // reducedMotion="user" membuat semua animasi Framer Motion ikut
+    // preferensi "kurangi gerakan" di perangkat pengunjung.
+    <MotionConfig reducedMotion="user">
+      <CmsProvider>
+        <ThemeProvider>
+          <Site />
+        </ThemeProvider>
+      </CmsProvider>
+    </MotionConfig>
   );
 }
